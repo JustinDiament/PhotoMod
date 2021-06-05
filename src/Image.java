@@ -5,5 +5,5 @@ public interface Image {
 
 
   
-  Pixel getPixelAt(int x, int y);
+  PixelImpl getPixelAt(int x, int y);
 }
