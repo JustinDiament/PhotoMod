@@ -1,44 +1,27 @@
-// TODO: make interface
-//TODO: constructors should throw exception if given illegal rgb values, but other classes
-// just make sure this never happens
-// todo: nathan write tests
-public class Pixel {
-
-  private final int red;
-  private final int green;
-  private final int blue;
-
-  public Pixel(int red, int green, int blue) {
-    this.red = Pixel.clamp(red);
-    this.green = Pixel.clamp(green);
-    this.blue = Pixel.clamp(blue);
-  }
-
-  private static int clamp(int color) {
-    if (color > 255) {
-      return 255;
-    }
-    return Math.max(color, 0);
-  }
+/**
+ * Represents a single pixel of an image. A pixel has three base colors (red, green, blue) that are
+ * used in various combinations to create any color.
+ */
+public interface Pixel {
 
   /**
-   * @return
+   * Get the red value of the pixel.
+   *
+   * @return the integer value of the pixel's red value
    */
-  public int getRed() {
-    return this.red;
-  }
+  int getRed();
 
   /**
-   * @return
+   * Get the green value of the pixel.
+   *
+   * @return the integer value of the pixel's green value
    */
-  public int getGreen() {
-    return this.green;
-  }
+  int getGreen();
 
   /**
-   * @return
+   * Get the blue value of the pixel.
+   *
+   * @return the integer value of the pixel's blue value
    */
-  public int getBlue() {
-    return this.blue;
-  }
+  int getBlue();
 }

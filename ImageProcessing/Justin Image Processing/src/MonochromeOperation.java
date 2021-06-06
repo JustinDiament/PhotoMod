@@ -1,13 +1,20 @@
-public class MonochromeOperation implements ImageOperations {
+/**
+ * Function object to perform the "Monochrome" operation on an Image. The given Image's RGB color
+ * values are modified to make the overall image appear monochrome/grayscale, with each individual
+ * pixel having equal red, green, and blue values.
+ */
+public class MonochromeOperation implements ImageOperation {
 
   @Override
-  public void apply(Image i) {
-    for (int x = 0; x < i.getWidth(); x++) {
-      for (int y = 0; y < i.getHeight(); y++) {
-        Pixel p = i.getPixelAt(x, y);
+  public void apply(Image img) {
+    ImageUtil.requireNonNull(img);
+
+    for (int x = 0; x < img.getWidth(); x++) {
+      for (int y = 0; y < img.getHeight(); y++) {
+        Pixel p = img.getPixelAt(x, y);
         int newColor = (int) (0.2126 * p.getRed() + 0.7152 * p.getGreen() + 0.0722 * p.getBlue());
-        //TODO: Check if casting double to int is alright (I think it is)
-        i.replacePixel(x, y, new Pixel(newColor, newColor, newColor));
+
+        img.replacePixel(x, y, new PixelImpl(newColor, newColor, newColor));
       }
     }
   }
