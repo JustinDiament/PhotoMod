@@ -30,9 +30,7 @@ public class ImageModel implements ImageProcessingModel {
    * @throws IllegalArgumentException if the given Image is null
    */
   public ImageModel(Image image) throws IllegalArgumentException {
-    ImageUtil.requireNonNull(image);
-
-    this.image = image;
+    this.image = ImageUtil.requireNonNull(image);
     this.operationsMap = this.getOperations();
   }
 
@@ -49,11 +47,7 @@ public class ImageModel implements ImageProcessingModel {
 
   public void applyOperation(Operations o) throws IllegalArgumentException {
     ImageUtil.requireNonNull(o);
-
-    ImageOperation operation = this.getOperations().getOrDefault(o, null);
-
-    ImageUtil.requireNonNull(operation);
-
+    ImageOperation operation = ImageUtil.requireNonNull(this.operationsMap.getOrDefault(o, null));
     operation.apply(this.image);
   }
 
