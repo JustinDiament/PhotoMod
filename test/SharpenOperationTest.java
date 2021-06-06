@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,14 @@ public class SharpenOperationTest {
 
   ImageOperation s1;
   Pixel p1;
+  Pixel p2;
+  Pixel p3;
   List<List<Pixel>> l1;
+  List<List<Pixel>> l2;
+  List<List<Pixel>> l3;
   Image i1;
+  Image i2;
+  Image i3;
 
   /**
    * Initialize variables for testing.
@@ -22,17 +29,30 @@ public class SharpenOperationTest {
   public void init() {
     this.s1 = new SharpenOperation();
     this.p1 = new PixelImpl(10, 10, 10);
+    this.p2 = new PixelImpl(0, 0, 0);
+    this.p3 = new PixelImpl(255, 255, 255);
 
-    // initialize an image with a 5x5 2D list of Pixels with RGB values of 10
     this.l1 = new ArrayList<>();
+    this.l2 = new ArrayList<>();
+    this.l3 = new ArrayList<>();
+
     for (int i = 0; i < 5; i++) {
-      List<Pixel> row = new ArrayList<>();
+      List<Pixel> row1 = new ArrayList<>();
+      List<Pixel> row2 = new ArrayList<>();
+      List<Pixel> row3 = new ArrayList<>();
       for (int j = 0; j < 5; j++) {
-        row.add(this.p1);
+        row1.add(this.p1);
+        row2.add(this.p2);
+        row3.add(this.p3);
       }
-      this.l1.add(row);
+      this.l1.add(row1);
+      this.l2.add(row2);
+      this.l3.add(row3);
     }
+
     this.i1 = new ImageImpl(this.l1);
+    this.i2 = new ImageImpl(this.l2);
+    this.i3 = new ImageImpl(this.l3);
   }
 
   // test that apply cannot be given a null image
@@ -186,6 +206,50 @@ public class SharpenOperationTest {
         assertEquals(expectedSharpenValue, p1.getRed());
         assertEquals(expectedSharpenValue, p1.getGreen());
         assertEquals(expectedSharpenValue, p1.getBlue());
+      }
+    }
+  }
+
+  // test that pixel RGB values are clamped from underflow when the sharpen is applied
+  @Test
+  public void testClampUnderflow() {
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 5; j++) {
+        this.p2 = this.i2.getPixelAt(i, j);
+        assertEquals(0, p2.getRed());
+        assertEquals(0, p2.getGreen());
+        assertEquals(0, p2.getBlue());
+      }
+    }
+    this.s1.apply(this.i2);
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 5; j++) {
+        this.p2 = this.i2.getPixelAt(i, j);
+        assertTrue(0 <= p2.getRed());
+        assertTrue(0 <= p2.getGreen());
+        assertTrue(0 <= p2.getBlue());
+      }
+    }
+  }
+
+  // test that pixel RGB values are clamped from overflow when the sharpen is applied
+  @Test
+  public void testClampOverflow() {
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 5; j++) {
+        this.p3 = this.i3.getPixelAt(i, j);
+        assertEquals(255, p3.getRed());
+        assertEquals(255, p3.getGreen());
+        assertEquals(255, p3.getBlue());
+      }
+    }
+    this.s1.apply(this.i3);
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 5; j++) {
+        this.p3 = this.i3.getPixelAt(i, j);
+        assertTrue(255 >= p3.getRed());
+        assertTrue(255 >= p3.getGreen());
+        assertTrue(255 >= p3.getBlue());
       }
     }
   }
