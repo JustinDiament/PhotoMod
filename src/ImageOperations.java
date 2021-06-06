@@ -3,7 +3,7 @@ public interface ImageOperations {
   /**
    * 
    */
-  void apply();
+  void apply(Image img);
 }
 
   // TODO: do filtering (blur, sharpen) and color transformations (monochrome, sepia)

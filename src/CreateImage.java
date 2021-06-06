@@ -1,3 +1,3 @@
-public interface CreateImage {
-  Image create();
-}
+//public interface CreateImage {
+//  Image create();
+//}
