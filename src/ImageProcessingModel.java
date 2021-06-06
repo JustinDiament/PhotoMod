@@ -3,7 +3,6 @@
  * the user and modifies it with operations such as filters chosen by the user.
  */
 public interface ImageProcessingModel {
-  //TODO: Rename?
 
   /**
    * Applies the given Image operation to the Image stored by this model class.
