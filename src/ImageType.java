@@ -1,3 +1,3 @@
-public enum ImageType {
-  CHECKERBOARD
-}
+//public enum ImageType {
+//  CHECKERBOARD
+//}

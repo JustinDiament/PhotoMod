@@ -14,6 +14,10 @@ public class ImageUtil {
    * @param filename the path of the file.
    */
 
+  // TODO: make a separate interface for reading different file types
+  //  and make classes that implement it for each specific file type
+  //  interface has import() and export() methods
+
   // TODO: why doesn't this work :( check piazza/OH
   // eventually, change return type to create Image (see ppmToImage below)
   public static void readPPM(String filename) {
@@ -77,7 +81,7 @@ public class ImageUtil {
     return null;
   }
 
-/**
+  /**
    * Checks that the given input is not null.
    *
    * @param obj the object to be checked for being null
@@ -90,7 +94,4 @@ public class ImageUtil {
     }
     return obj;
   }
-
-
 }
-
