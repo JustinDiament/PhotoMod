@@ -1,3 +1,5 @@
+import model.FilterOperation;
+
 /**
  * A bad filter operation to be used for testing purposes. This filter operation defines an invalid
  * kernel since it does not have odd dimensions.

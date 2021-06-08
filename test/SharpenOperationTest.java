@@ -3,11 +3,17 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import model.image.Image;
+import model.image.ImageImpl;
+import model.operation.ImageOperation;
+import model.image.Pixel;
+import model.image.PixelImpl;
+import model.operation.SharpenOperation;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test class for the SharpenOperation class.
+ * Test class for the model.operation.SharpenOperation class.
  */
 public class SharpenOperationTest {
 

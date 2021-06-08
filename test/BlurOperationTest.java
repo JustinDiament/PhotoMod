@@ -3,6 +3,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import model.operation.BlurOperation;
+import model.image.Image;
+import model.image.ImageImpl;
+import model.operation.ImageOperation;
+import model.image.Pixel;
+import model.image.PixelImpl;
 import org.junit.Before;
 import org.junit.Test;
 
