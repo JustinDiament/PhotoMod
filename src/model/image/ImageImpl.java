@@ -60,12 +60,4 @@ public class ImageImpl implements Image {
   public int getHeight() {
     return this.image.get(0).size();
   }
-
-//  @Override
-//  public void replacePixel(int x, int y, Pixel p) throws IllegalArgumentException {
-//    if (x > this.getWidth() || y > this.getHeight() || x < 0 || y < 0) {
-//      throw new IllegalArgumentException("x and y must form a valid pixel index for this image");
-//    }
-//    this.image.get(x).set(y, ImageUtil.requireNonNull(p));
-//  }
 }

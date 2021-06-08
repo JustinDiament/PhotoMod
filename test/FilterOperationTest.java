@@ -6,7 +6,7 @@ import org.junit.Test;
  */
 public class FilterOperationTest {
 
-  ImageOperation b1;
+  private ImageOperation b1;
 
   // test that the FilterOperation constructor throws an exception if the implementing class
   // defines a kernel with even dimensions

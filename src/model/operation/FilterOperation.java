@@ -7,13 +7,12 @@ import model.image.Image;
 import model.image.ImageImpl;
 import model.image.Pixel;
 import model.image.PixelImpl;
-import model.operation.ImageOperation;
 
 /**
  * Represents filtering image operations, which are a subset of all image operations that involve
  * the use of a kernel to filter each of the pixels in an image.
  */
-abstract class FilterOperation implements ImageOperation {
+public abstract class FilterOperation implements ImageOperation {
 
   protected final double[][] kernel;
 
@@ -22,7 +21,7 @@ abstract class FilterOperation implements ImageOperation {
    *
    * @throws IllegalStateException if the kernel does not have odd dimensions
    */
-  FilterOperation() throws IllegalStateException {
+  public FilterOperation() throws IllegalStateException {
     this.kernel = this.getKernel();
 
     if (this.kernel.length % 2 == 0 || this.kernel[0].length % 2 == 0) {
@@ -32,14 +31,16 @@ abstract class FilterOperation implements ImageOperation {
 
   @Override
   public Image apply(Image img) throws IllegalArgumentException {
-    Image imgCopy = this.getImageCopy(ImageUtil.requireNonNull(img));
+    ImageUtil.requireNonNull(img);
+    List<List<Pixel>> copy = new ArrayList<>();
     for (int i = 0; i < img.getWidth(); i++) {
+      List<Pixel> row = new ArrayList<>();
       for (int j = 0; j < img.getHeight(); j++) {
-        this.filterPixel(imgCopy, i, j, this.getImageSection(img, i, j, this.kernel.length));
+        row.add(this.filterPixel(img, this.getImageSection(img, i, j, this.kernel.length)));
       }
+      copy.add(row);
     }
-    this.replaceImage(img, imgCopy);
-    return null;
+    return new ImageImpl(copy);
   }
 
   /**
@@ -48,45 +49,6 @@ abstract class FilterOperation implements ImageOperation {
    * @return the kernel to be used to filter an image
    */
   protected abstract double[][] getKernel();
-
-  /**
-   * Create a deep copy of the given image.
-   *
-   * @param img the image to be copied
-   * @return a deep copy of the given image
-   * @throws IllegalArgumentException if the given image is null
-   */
-  private Image getImageCopy(Image img) throws IllegalArgumentException {
-    ImageUtil.requireNonNull(img);
-    List<List<Pixel>> copy = new ArrayList<>();
-    for (int i = 0; i < img.getWidth(); i++) {
-      List<Pixel> rowCopy = new ArrayList<>();
-      for (int j = 0; j < img.getHeight(); j++) {
-        Pixel pixel = img.getPixelAt(i, j);
-        rowCopy.add(new PixelImpl(pixel.getRed(), pixel.getGreen(), pixel.getBlue()));
-      }
-      copy.add(rowCopy);
-    }
-    return new ImageImpl(copy);
-  }
-
-  /**
-   * Replaces the pixels of the original image with the pixels of the copy image.
-   *
-   * @param img     the image whose pixels are to be replaced
-   * @param imgCopy the image whose pixels are to be copied
-   * @throws IllegalArgumentException if either of the given images are null
-   */
-  private void replaceImage(Image img, Image imgCopy) throws IllegalArgumentException {
-    ImageUtil.requireNonNull(img);
-    ImageUtil.requireNonNull(imgCopy);
-    for (int i = 0; i < img.getWidth(); i++) {
-      for (int j = 0; j < img.getHeight(); j++) {
-        int a = 1;
-        //img.replacePixel(i, j, imgCopy.getPixelAt(i, j));
-      }
-    }
-  }
 
   /**
    * Grabs the section of pixels from an image surrounding the pixel at the given coordinates. The
@@ -129,13 +91,11 @@ abstract class FilterOperation implements ImageOperation {
    * values.</p>
    *
    * @param img     the image from which the section is obtained
-   * @param x       the x coordinate of the location of the desired pixel
-   * @param y       the y coordinate of the location of the desired pixel
    * @param section section of pixels surrounding the specified pixel
+   * @return a Pixel with the modified RGB values
    * @throws IllegalArgumentException if the given image or section are null
    */
-  private void filterPixel(Image img, int x, int y, Pixel[][] section)
-      throws IllegalArgumentException {
+  private Pixel filterPixel(Image img, Pixel[][] section) throws IllegalArgumentException {
     ImageUtil.requireNonNull(img);
     ImageUtil.requireNonNull(section);
     double red = 0;
@@ -148,7 +108,6 @@ abstract class FilterOperation implements ImageOperation {
         blue += this.kernel[i][j] * section[i][j].getBlue();
       }
     }
-    int a = 1;
-    //img.replacePixel(x, y, new PixelImpl((int) red, (int) green, (int) blue));
+    return new PixelImpl((int) red, (int) green, (int) blue);
   }
 }

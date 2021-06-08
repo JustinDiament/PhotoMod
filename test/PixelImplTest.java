@@ -10,8 +10,8 @@ import org.junit.Test;
  */
 public class PixelImplTest {
 
-  Pixel p1;
-  Pixel p2;
+  private Pixel p1;
+  private Pixel p2;
 
   /**
    * Initialize variables for testing.

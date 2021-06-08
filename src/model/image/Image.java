@@ -30,14 +30,4 @@ public interface Image {
    * @return height of this Image in pixels.
    */
   int getHeight();
-
-//  /**
-//   * Replaces the pixel at the given location in the image with the given pixel
-//   *
-//   * @param x the x coordinate of the location of the pixel to be replaced
-//   * @param y the y coordinate of the location of the pixel to be replaced
-//   * @throws IllegalArgumentException if the given location is invalid because x or y are less than
-//   *                                  0 or greater than the bounds of the image
-//   */
-//  void replacePixel(int x, int y, Pixel p) throws IllegalArgumentException;
 }

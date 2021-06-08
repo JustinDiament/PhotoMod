@@ -48,7 +48,7 @@ public class PPM implements ImageFile {
   }
 
   @Override
-  public void exportFile(String filename, Image img) { // add throws stuff
+  public void exportFile(String filename, Image img) throws IllegalArgumentException {
     ImageUtil.requireNonNull(img);
     byte[] lineSeparator = System.lineSeparator().getBytes();
 
@@ -57,7 +57,7 @@ public class PPM implements ImageFile {
       out = new FileOutputStream(ImageUtil.requireNonNull(filename), false);
 
       // write the standard PPM heading
-      out.write("P3".getBytes()); // StandardCharsets.UTF_8 ?
+      out.write("P3".getBytes());
       out.write(lineSeparator);
       out.write(String.valueOf(img.getWidth()).getBytes());
       out.write(lineSeparator);

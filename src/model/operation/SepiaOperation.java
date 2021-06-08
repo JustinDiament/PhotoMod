@@ -7,7 +7,6 @@ import model.image.Image;
 import model.image.ImageImpl;
 import model.image.Pixel;
 import model.image.PixelImpl;
-import model.operation.ImageOperation;
 
 /**
  * Function object to perform the "Sepia" operation on an Image. The given Image's RGB color values
@@ -22,7 +21,6 @@ public class SepiaOperation implements ImageOperation {
     List<List<Pixel>> copy = new ArrayList<>();
     for (int x = 0; x < img.getWidth(); x++) {
       List<Pixel> row = new ArrayList<>();
-
       for (int y = 0; y < img.getHeight(); y++) {
         Pixel p = img.getPixelAt(x, y);
         int red = p.getRed();
@@ -32,10 +30,6 @@ public class SepiaOperation implements ImageOperation {
             (int) (0.393 * red + 0.769 * green + 0.189 * blue),
             (int) (0.349 * red + 0.686 * green + 0.168 * blue),
             (int) (0.272 * red + 0.534 * green + 0.131 * blue)));
-//        img.replacePixel(x, y, new PixelImpl(
-//            (int) (0.393 * red + 0.769 * green + 0.189 * blue),
-//            (int) (0.349 * red + 0.686 * green + 0.168 * blue),
-//            (int) (0.272 * red + 0.534 * green + 0.131 * blue)));
       }
       copy.add(row);
     }

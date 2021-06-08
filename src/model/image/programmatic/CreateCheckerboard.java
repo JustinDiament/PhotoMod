@@ -34,17 +34,14 @@ public class CreateCheckerboard implements ProgrammaticCreator {
    */
   public CreateCheckerboard(int size, int numSquares, Color firstColor, Color secondColor)
       throws IllegalArgumentException {
-    ImageUtil.requireNonNull(firstColor);
-    ImageUtil.requireNonNull(secondColor);
-
     if (size < 1 || numSquares < 1) {
       throw new IllegalArgumentException("Numerical arguments must be positive");
     }
 
     this.size = size;
     this.numSquares = numSquares;
-    this.firstColor = firstColor;
-    this.secondColor = secondColor;
+    this.firstColor = ImageUtil.requireNonNull(firstColor);
+    this.secondColor = ImageUtil.requireNonNull(secondColor);
   }
 
   @Override

@@ -1,7 +1,5 @@
 package model.operation;
 
-import model.operation.FilterOperation;
-
 /**
  * Function object to perform the "Blur" operation on an Image. The given Image's RGB color values
  * are modified to make the overall image appear blurrier.

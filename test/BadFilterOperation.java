@@ -1,4 +1,5 @@
-import model.FilterOperation;
+
+import model.operation.FilterOperation;
 
 /**
  * A bad filter operation to be used for testing purposes. This filter operation defines an invalid

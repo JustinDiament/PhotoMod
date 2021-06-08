@@ -1,7 +1,5 @@
 package model.operation;
 
-import model.operation.FilterOperation;
-
 /**
  * Function object to perform the "Sharpen" operation on an Image. The given Image's RGB color
  * values are modified to sharpen the overall image by accentuating edges, or boundaries between
