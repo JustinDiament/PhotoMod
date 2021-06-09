@@ -81,9 +81,9 @@ public class BlurOperationTest {
     assertEquals(10, p1.getBlue());
     this.i4 = this.b1.apply(this.i1);
     p1 = this.i4.getPixelAt(0, 0);
-    assertEquals(5, p1.getRed());
-    assertEquals(5, p1.getGreen());
-    assertEquals(5, p1.getBlue());
+    assertEquals(6, p1.getRed());
+    assertEquals(6, p1.getGreen());
+    assertEquals(6, p1.getBlue());
   }
 
   // test that pixels are correctly blurred when the kernel overlaps 6 pixels
@@ -101,9 +101,9 @@ public class BlurOperationTest {
     assertEquals(10, p1.getBlue());
     this.i4 = this.b1.apply(this.i1);
     p1 = this.i4.getPixelAt(0, 1);
-    assertEquals(7, p1.getRed());
-    assertEquals(7, p1.getGreen());
-    assertEquals(7, p1.getBlue());
+    assertEquals(8, p1.getRed());
+    assertEquals(8, p1.getGreen());
+    assertEquals(8, p1.getBlue());
   }
 
   // test that pixels are correctly blurred when the kernel overlaps 9 pixels
@@ -138,11 +138,11 @@ public class BlurOperationTest {
       }
     }
     int[][] expectedBlurValues = {
-        {5, 7, 7, 7, 5},
-        {7, 10, 10, 10, 7},
-        {7, 10, 10, 10, 7},
-        {7, 10, 10, 10, 7},
-        {5, 7, 7, 7, 5}};
+        {6, 8, 8, 8, 6},
+        {8, 10, 10, 10, 8},
+        {8, 10, 10, 10, 8},
+        {8, 10, 10, 10, 8},
+        {6, 8, 8, 8, 6}};
     this.i4 = this.b1.apply(this.i1);
     for (int i = 0; i < 5; i++) {
       for (int j = 0; j < 5; j++) {

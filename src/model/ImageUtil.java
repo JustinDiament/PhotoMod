@@ -1,8 +1,11 @@
 package model;
 
+import java.awt.Color;
 import model.image.Image;
 import model.image.file.ImageFile;
 import model.image.file.PPM;
+import model.image.programmatic.CreateCheckerboard;
+import model.image.programmatic.ProgrammaticCreator;
 import model.operation.BlurOperation;
 import model.operation.ImageOperation;
 import model.operation.SharpenOperation;
@@ -19,14 +22,15 @@ public class ImageUtil {
     if (args.length > 0) {
       filename = args[0];
     } else {
-      filename = "res\\manhattan-small.ppm";
+      filename = "res\\Koala.ppm";
     }
 
     ImageFile ppm = new PPM();
     Image i = ppm.importFile(filename);
     ImageOperation o = new BlurOperation();
     Image i2 = o.apply(i);
-    ppm.exportFile("res\\skylinetest.ppm", i2);
+    //ProgrammaticCreator c = new CreateCheckerboard(50, 81, Color.BLACK, Color.WHITE);
+    ppm.exportFile("res\\koalablurfinal.ppm", i2);
   }
 
   /**

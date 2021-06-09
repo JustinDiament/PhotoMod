@@ -38,9 +38,9 @@ public class PPM implements ImageFile {
     System.out.printf("Width: %d\nHeight: %d\nMaximum RGB value: %d%n", width, height, maxValue);
 
     List<List<Pixel>> pixels = new ArrayList<>();
-    for (int i = 0; i < width; i++) {
+    for (int i = 0; i < height; i++) {
       List<Pixel> row = new ArrayList<>();
-      for (int j = 0; j < height; j++) {
+      for (int j = 0; j < width; j++) {
         int red = sc.nextInt();
         int green = sc.nextInt();
         int blue = sc.nextInt();
@@ -48,41 +48,49 @@ public class PPM implements ImageFile {
       }
       pixels.add(row);
     }
-    return new ImageImpl(pixels);
+
+    List<List<Pixel>> pixelsReversed = new ArrayList<>();
+
+    for (int i = 0; i < width; i++) {
+      List<Pixel> column = new ArrayList<>();
+      for (int j = 0; j < height; j++) {
+        column.add(pixels.get(j).get(i));
+      }
+
+      pixelsReversed.add(column);
+    }
+
+    return new ImageImpl(pixelsReversed);
   }
 
   @Override
   public void exportFile(String filename, Image img) throws IllegalArgumentException {
     ImageUtil.requireNonNull(img);
-    byte[] lineSeparator = System.lineSeparator().getBytes();
+    StringBuilder sb = new StringBuilder();
+    String lineSeparator = System.lineSeparator();
 
     FileOutputStream out;
     try {
       out = new FileOutputStream(ImageUtil.requireNonNull(filename), false);
 
       // write the standard PPM heading
-      out.write("P3".getBytes());
-      out.write(lineSeparator);
-      out.write(String.valueOf(img.getWidth()).getBytes());
-      out.write(lineSeparator);
-      out.write(String.valueOf(img.getHeight()).getBytes());
-      out.write(lineSeparator);
-      out.write(String.valueOf(255).getBytes());
-      out.write(lineSeparator);
+      sb.append("P3").append(lineSeparator);
+      sb.append(img.getWidth()).append(lineSeparator);
+      sb.append(img.getHeight()).append(lineSeparator);
+      sb.append(255).append(lineSeparator);
+      System.out.printf("Width: %d\nHeight: %d\nMaximum RGB value: %d%n", img.getWidth(), img.getHeight(), 255);
 
       // write the RGB values of all of the pixels in the image
-      for (int i = 0; i < img.getWidth(); i++) {
-        for (int j = 0; j < img.getHeight(); j++) {
-          Pixel p = img.getPixelAt(i, j);
-          out.write(String.valueOf(p.getRed()).getBytes());
-          out.write(lineSeparator);
-          out.write(String.valueOf(p.getGreen()).getBytes());
-          out.write(lineSeparator);
-          out.write(String.valueOf(p.getBlue()).getBytes());
-          out.write(lineSeparator);
+      for (int i = 0; i < img.getHeight(); i++) {
+        for (int j = 0; j < img.getWidth(); j++) {
+          Pixel p = img.getPixelAt(j, i);
+          sb.append(p.getRed()).append(lineSeparator);
+          sb.append(p.getGreen()).append(lineSeparator);
+          sb.append(p.getBlue()).append(lineSeparator);
         }
       }
 
+      out.write(sb.toString().getBytes());
       out.close();
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to export the image as a PPM file");

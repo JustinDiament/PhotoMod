@@ -36,7 +36,7 @@ public abstract class FilterOperation implements ImageOperation {
     for (int i = 0; i < img.getWidth(); i++) {
       List<Pixel> row = new ArrayList<>();
       for (int j = 0; j < img.getHeight(); j++) {
-        row.add(this.filterPixel(this.getImageSection(img, i, j, this.kernel.length)));
+        row.add(this.filterPixel(this.getImageSection(img, i, j)));
       }
       copy.add(row);
     }
@@ -57,13 +57,34 @@ public abstract class FilterOperation implements ImageOperation {
    * @param img        the image from which the section is obtained
    * @param x          the x coordinate of the location of the desired pixel
    * @param y          the y coordinate of the location of the desired pixel
-   * @param kernelSize the dimensions of the kernel for the specified filter
    * @return a section of pixels surrounding the specified pixel matching the size of the kernel
    * @throws IllegalArgumentException if the given image is null
    */
-  private Pixel[][] getImageSection(Image img, int x, int y, int kernelSize)
+  private Pixel[][] getImageSection(Image img, int x, int y)
       throws IllegalArgumentException {
     ImageUtil.requireNonNull(img);
+    int kernelSize = this.kernel.length;
+    int halfKernelSize = kernelSize / 2;
+
+//    Pixel[][] section = new Pixel[kernelSize][kernelSize];
+//    int sectionX = 0;
+//    for (int i = x - halfKernelSize; i <= x + halfKernelSize; i++) {
+//      int sectionY = 0;
+//      for (int j = y - halfKernelSize; j <= y + halfKernelSize; j++) {
+//        Pixel pixel;
+//        try {
+//          Pixel temp = img.getPixelAt(i, j);
+//          pixel = new PixelImpl(temp.getRed(), temp.getGreen(), temp.getBlue());
+//        } catch (IllegalArgumentException e) {
+//          pixel = new PixelImpl(0, 0, 0);
+//        }
+//        section[sectionX][sectionY] = pixel;
+//        sectionY++;
+//      }
+//      sectionX++;
+//    }
+//    return section;
+
     Pixel[][] section = new Pixel[kernelSize][kernelSize];
     int sectionX = 0;
     for (int i = x; i < x + kernelSize; i++) {
@@ -71,8 +92,9 @@ public abstract class FilterOperation implements ImageOperation {
       for (int j = y; j < y + kernelSize; j++) {
         Pixel pixel;
         try {
-          pixel = img.getPixelAt(i - (kernelSize / 2), j - (kernelSize / 2));
-        } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
+          Pixel temp = img.getPixelAt(i - (kernelSize / 2), j - (kernelSize / 2));
+          pixel = new PixelImpl(temp.getRed(), temp.getGreen(), temp.getBlue());
+        } catch (IllegalArgumentException e) {
           pixel = new PixelImpl(0, 0, 0);
         }
         section[sectionX][sectionY] = pixel;
@@ -110,6 +132,6 @@ public abstract class FilterOperation implements ImageOperation {
         blue += this.kernel[i][j] * section[i][j].getBlue();
       }
     }
-    return new PixelImpl((int) red, (int) green, (int) blue);
+    return new PixelImpl((int) Math.round(red), (int) Math.round(green), (int) Math.round(blue));
   }
 }
