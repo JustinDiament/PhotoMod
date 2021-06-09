@@ -19,12 +19,12 @@ public class Main {
     if (args.length > 0) {
       filename = args[0];
     } else {
-      filename = "res\\Koala.ppm";
+      filename = "res\\popeyes.ppm";
     }
 
     ImageProcessingModel m = new ImageProcessingModelImpl();
     Image i = m.importImage(filename);
     Image i2 = m.applyOperation(i, Operations.MONOCHROME);
-    m.exportImage("res\\Koala_monochrome.ppm", i2);
+    m.exportImage("res\\popeyes_monochrome.ppm", i2);
   }
 }

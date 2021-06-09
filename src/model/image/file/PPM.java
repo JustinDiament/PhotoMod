@@ -1,5 +1,7 @@
 package model.image.file;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class PPM implements ImageFile {
 
   @Override
   public Image importFile(String filename) throws IllegalArgumentException {
-    Scanner sc = new Scanner(ImageUtil.requireNonNull(ImageFile.readFile(filename)));
+    Scanner sc = new Scanner(ImageUtil.requireNonNull(this.readFile(filename)));
 
     String token = sc.next();
     if (!token.equals("P3")) {
@@ -48,12 +50,50 @@ public class PPM implements ImageFile {
       }
       pixels.add(row);
     }
+    return this.transpose(pixels);
+  }
 
+  /**
+   * Reads in an image file line by line and throws away any comment lines.
+   *
+   * @param filename the path of the file to read
+   * @return the data within the given file stored as a String, or null if the file does not exist
+   * @throws IllegalArgumentException if the given filename is null
+   */
+  private String readFile(String filename) throws IllegalArgumentException {
+    Scanner sc;
+
+    try {
+      sc = new Scanner(new FileInputStream(ImageUtil.requireNonNull(filename)));
+    } catch (FileNotFoundException e) {
+      System.out.println("File " + filename + " not found!");
+      return null;
+    }
+
+    StringBuilder sb = new StringBuilder();
+    while (sc.hasNextLine()) {
+      String s = sc.nextLine();
+      if (s.charAt(0) != '#') {
+        sb.append(s).append(System.lineSeparator());
+      }
+    }
+    return sb.toString();
+  }
+
+  /**
+   * Creates an Image with the given matrix of Pixels transposed.
+   *
+   * @param pixels the matrix of pixels to be transposed and used to create an Image
+   * @return an image using the given pixels transposed
+   * @throws IllegalArgumentException if the given pixels are null
+   */
+  private Image transpose(List<List<Pixel>> pixels) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(pixels);
     List<List<Pixel>> pixelsTranspose = new ArrayList<>();
-    for (int i = 0; i < width; i++) {
+    for (int i = 0; i < pixels.get(0).size(); i++) {
       List<Pixel> column = new ArrayList<>();
-      for (int j = 0; j < height; j++) {
-        column.add(pixels.get(j).get(i));
+      for (List<Pixel> pixel : pixels) {
+        column.add(pixel.get(i));
       }
       pixelsTranspose.add(column);
     }

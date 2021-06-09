@@ -21,7 +21,8 @@ public class CreateCheckerboard implements ProgrammaticCreator {
   private final Color secondColor;
 
   /**
-   * // TODO: docstring summary
+   * Function object to product a programmatically-generated Image of a checkerboard, in which two
+   * chosen colors alternate to form a repeating pattern of identically-sized squares.
    *
    * @param size        the width and height of the square checkerboard to be generated, in pixels.
    *                    Will be rounded down to the highest possible integer that will allow for

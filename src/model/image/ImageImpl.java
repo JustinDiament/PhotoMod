@@ -34,11 +34,11 @@ public class ImageImpl implements Image {
 
     List<List<Pixel>> copy = new ArrayList<>();
     for (List<Pixel> row : image) {
-      List<Pixel> rowCopy = new ArrayList<>();
+      List<Pixel> column = new ArrayList<>();
       for (Pixel pixel : row) {
-        rowCopy.add(new PixelImpl(pixel.getRed(), pixel.getGreen(), pixel.getBlue()));
+        column.add(new PixelImpl(pixel.getRed(), pixel.getGreen(), pixel.getBlue()));
       }
-      copy.add(rowCopy);
+      copy.add(column);
     }
     return copy;
   }

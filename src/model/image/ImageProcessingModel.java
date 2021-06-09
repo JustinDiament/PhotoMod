@@ -26,8 +26,9 @@ public interface ImageProcessingModel {
    * @param creator a ProgrammaticCreator object for a specific programmatic image type, such as
    *                checkerboard. Specifies the characteristics of that image
    * @return the programmatically-generated Image
+   * @throws IllegalArgumentException if the given ProgrammaticCreator is null
    */
-  Image createProgrammaticImage(ProgrammaticCreator creator);
+  Image createProgrammaticImage(ProgrammaticCreator creator) throws IllegalArgumentException;
 
   /**
    * Creates an Image object using the provided file name.
@@ -42,7 +43,7 @@ public interface ImageProcessingModel {
    * Exports the given Image to the provided file name.
    *
    * @param filename the path of the file to export
-   * @param img the Image to be exported to the corresponding file
+   * @param img      the Image to be exported to the corresponding file
    * @throws IllegalArgumentException if the file was unable to be exported
    */
   void exportImage(String filename, Image img) throws IllegalArgumentException;

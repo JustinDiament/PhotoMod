@@ -13,15 +13,9 @@ import model.operation.Operations;
 import model.operation.SepiaOperation;
 import model.operation.SharpenOperation;
 
-//TODO: eventually add some invariants, add docstrings and tests
-// TODO: check for passing in null values to all constructors
-
-
-// TODO: class diagram, readme
-
 /**
- * Represents the model of an Image modification program. The model processes Images provided by
- * the user and modifies it with operations such as filters chosen by the user.
+ * Represents the model of an Image modification program. The model processes Images provided by the
+ * user and modifies it with operations such as filters chosen by the user.
  */
 public class ImageProcessingModelImpl implements ImageProcessingModel {
 
@@ -36,7 +30,7 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
     this.operationsMap = this.getOperations();
     this.filesMap = this.getFiles();
   }
-  
+
   @Override
   public Image applyOperation(Image img, Operations o) throws IllegalArgumentException {
     ImageUtil.requireNonNull(o);
@@ -46,12 +40,15 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
-  public Image createProgrammaticImage(ProgrammaticCreator creator) {
+  public Image createProgrammaticImage(ProgrammaticCreator creator)
+      throws IllegalArgumentException {
+    ImageUtil.requireNonNull(creator);
     return creator.create();
   }
 
   @Override
   public Image importImage(String filename) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(filename);
     String extension = filename.substring(filename.indexOf(".") + 1);
     ImageFile file = ImageUtil.requireNonNull(this.filesMap.getOrDefault(extension, null));
     return file.importFile(filename);
@@ -59,6 +56,8 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
 
   @Override
   public void exportImage(String filename, Image img) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(filename);
+    ImageUtil.requireNonNull(img);
     String extension = filename.substring(filename.indexOf(".") + 1);
     ImageFile file = ImageUtil.requireNonNull(this.filesMap.getOrDefault(extension, null));
     file.exportFile(filename, img);
