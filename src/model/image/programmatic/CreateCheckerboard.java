@@ -21,6 +21,8 @@ public class CreateCheckerboard implements ProgrammaticCreator {
   private final Color secondColor;
 
   /**
+   * // TODO: docstring summary
+   *
    * @param size        the width and height of the square checkerboard to be generated, in pixels.
    *                    Will be rounded down to the highest possible integer that will allow for
    *                    each square to be equal in size
@@ -50,13 +52,11 @@ public class CreateCheckerboard implements ProgrammaticCreator {
     int squareSize = this.size / width;
 
     List<List<Pixel>> image = new ArrayList<>();
-
     for (int i = 0; i < squareSize * width; i++) {
       image.add(new ArrayList<>());
     }
 
     Color currentColor;
-
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < width; y++) {
         if ((x + y) % 2 == 0) {
@@ -64,7 +64,6 @@ public class CreateCheckerboard implements ProgrammaticCreator {
         } else {
           currentColor = this.secondColor;
         }
-
         for (int xPixel = x * squareSize; xPixel < x * squareSize + squareSize; xPixel++) {
           for (int yPixel = y * squareSize; yPixel < y * squareSize + squareSize; yPixel++) {
             image.get(xPixel).add(new PixelImpl(currentColor.getRed(), currentColor.getGreen(),
@@ -73,7 +72,6 @@ public class CreateCheckerboard implements ProgrammaticCreator {
         }
       }
     }
-
     return new ImageImpl(image);
   }
 }

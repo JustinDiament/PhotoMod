@@ -24,7 +24,7 @@ public interface ImageFile {
    * Exports the given Image to a file with the given file name.
    *
    * @param filename the path of the file to export
-   * @param img the Image object to export to the given file
+   * @param img      the Image object to export to the given file
    * @throws IllegalArgumentException if exporting the given Image to the file path failed
    */
   void exportFile(String filename, Image img) throws IllegalArgumentException;

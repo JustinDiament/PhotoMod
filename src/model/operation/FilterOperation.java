@@ -64,27 +64,6 @@ public abstract class FilterOperation implements ImageOperation {
       throws IllegalArgumentException {
     ImageUtil.requireNonNull(img);
     int kernelSize = this.kernel.length;
-    int halfKernelSize = kernelSize / 2;
-
-//    Pixel[][] section = new Pixel[kernelSize][kernelSize];
-//    int sectionX = 0;
-//    for (int i = x - halfKernelSize; i <= x + halfKernelSize; i++) {
-//      int sectionY = 0;
-//      for (int j = y - halfKernelSize; j <= y + halfKernelSize; j++) {
-//        Pixel pixel;
-//        try {
-//          Pixel temp = img.getPixelAt(i, j);
-//          pixel = new PixelImpl(temp.getRed(), temp.getGreen(), temp.getBlue());
-//        } catch (IllegalArgumentException e) {
-//          pixel = new PixelImpl(0, 0, 0);
-//        }
-//        section[sectionX][sectionY] = pixel;
-//        sectionY++;
-//      }
-//      sectionX++;
-//    }
-//    return section;
-
     Pixel[][] section = new Pixel[kernelSize][kernelSize];
     int sectionX = 0;
     for (int i = x; i < x + kernelSize; i++) {

@@ -49,18 +49,15 @@ public class PPM implements ImageFile {
       pixels.add(row);
     }
 
-    List<List<Pixel>> pixelsReversed = new ArrayList<>();
-
+    List<List<Pixel>> pixelsTranspose = new ArrayList<>();
     for (int i = 0; i < width; i++) {
       List<Pixel> column = new ArrayList<>();
       for (int j = 0; j < height; j++) {
         column.add(pixels.get(j).get(i));
       }
-
-      pixelsReversed.add(column);
+      pixelsTranspose.add(column);
     }
-
-    return new ImageImpl(pixelsReversed);
+    return new ImageImpl(pixelsTranspose);
   }
 
   @Override
@@ -78,7 +75,6 @@ public class PPM implements ImageFile {
       sb.append(img.getWidth()).append(lineSeparator);
       sb.append(img.getHeight()).append(lineSeparator);
       sb.append(255).append(lineSeparator);
-      System.out.printf("Width: %d\nHeight: %d\nMaximum RGB value: %d%n", img.getWidth(), img.getHeight(), 255);
 
       // write the RGB values of all of the pixels in the image
       for (int i = 0; i < img.getHeight(); i++) {
