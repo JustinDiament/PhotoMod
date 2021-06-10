@@ -3,10 +3,10 @@
 CS3500 Object-Oriented Design. _Northeastern University Summer 1 2021_
 
 
-| Original | Blur | Sharpen | Sepia | Monochrome |  
-|----------|------|---------|-------|------------|  
-|<img src="https://user-images.githubusercontent.com/52764831/121444843-3e0bc680-c95e-11eb-9f5b-586b514b4dab.png" width="100" height="75">|<img src="https://user-images.githubusercontent.com/52764831/121445311-3698ed00-c95f-11eb-95cd-4297f268ddb7.png" width="100" height="75">|<img src="https://user-images.githubusercontent.com/52764831/121445393-5d572380-c95f-11eb-9c8d-d4a58edaf307.png" width="100" height="75">|<img src="https://user-images.githubusercontent.com/52764831/121445418-68aa4f00-c95f-11eb-899b-d105eac94d57.png" width="100" height="75">|<img src="https://user-images.githubusercontent.com/52764831/121445440-74961100-c95f-11eb-94d7-6eb8f9168f8d.png" width="100" height="75">|
-
+| Original | Blur | Sharpen | Sepia | Monochrome | 
+|----------|------|---------|-------|------------| 
+|<img src="https://user-images.githubusercontent.com/52764831/121575831-cdb08400-c9f5-11eb-8177-933bc858cfa4.jpg" width="100" height="70">|<img src="https://user-images.githubusercontent.com/52764831/121575993-f8024180-c9f5-11eb-8090-98be3ac64ca8.png" width="100" height="70">|<img src="https://user-images.githubusercontent.com/52764831/121576177-23852c00-c9f6-11eb-8198-4485f348e31e.png" width="100" height="70">|<img src="https://user-images.githubusercontent.com/52764831/121576302-3b5cb000-c9f6-11eb-87d5-f05fc9e94f77.png" width="100" height="70">|<img src="https://user-images.githubusercontent.com/52764831/121576328-43b4eb00-c9f6-11eb-9469-d4ad8760caef.png" width="100" height="70">|
+|<img src="https://user-images.githubusercontent.com/52764831/121576880-dfdef200-c9f6-11eb-8c39-ce98cb86c958.jpg" width="80" height="100">|<img src="https://user-images.githubusercontent.com/52764831/121576704-a3ab9180-c9f6-11eb-86b3-6d23cee90119.png" width="80" height="100">|<img src="https://user-images.githubusercontent.com/52764831/121576963-fd13c080-c9f6-11eb-9887-a6d59cad566b.png" width="80" height="100">|<img src="https://user-images.githubusercontent.com/52764831/121577018-0d2ba000-c9f7-11eb-8bde-8f14ed4bbc78.png" width="80" height="100">|<img src="https://user-images.githubusercontent.com/52764831/121577055-1c125280-c9f7-11eb-8350-da05c75aa907.png" width="80" height="100">|
 
 ## Design
 
