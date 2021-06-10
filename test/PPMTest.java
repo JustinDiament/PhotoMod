@@ -20,9 +20,9 @@ import org.junit.Test;
  */
 public class PPMTest {
 
-  ImageFile i;
-  Image i1;
-  Image i2;
+  private ImageFile i;
+  private Image i1;
+  private Image i2;
 
   /**
    * Initialize variables for testing.

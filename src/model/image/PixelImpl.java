@@ -2,7 +2,9 @@ package model.image;
 
 /**
  * A pixel of an image with red, green, and blue values.
- * <p>Invariant: the red, green, and blue values of a pixel are 0-255, inclusive.</p>
+ * <p>INVARIANT: The red value of a pixel is between 0 and 255, inclusive.</p>
+ * <p>INVARIANT: The green value of a pixel is between 0 and 255, inclusive.</p>
+ * <p>INVARIANT: The blue value of a pixel is between 0 and 255, inclusive.</p>
  */
 public class PixelImpl implements Pixel {
 
@@ -13,9 +15,9 @@ public class PixelImpl implements Pixel {
   /**
    * Constructs a pixel using the given color values clamped between 0 and 255.
    *
-   * @param red the integer value of the pixel's red value
+   * @param red   the integer value of the pixel's red value
    * @param green the integer value of the pixel's green value
-   * @param blue the integer value of the pixel's blue value
+   * @param blue  the integer value of the pixel's blue value
    */
   public PixelImpl(int red, int green, int blue) {
     this.red = PixelImpl.clamp(red);

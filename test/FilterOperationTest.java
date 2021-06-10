@@ -6,12 +6,10 @@ import org.junit.Test;
  */
 public class FilterOperationTest {
 
-  private ImageOperation b1;
-
   // test that the FilterOperation constructor throws an exception if the implementing class
   // defines a kernel with even dimensions
   @Test(expected = IllegalStateException.class)
   public void testInvalidKernel() {
-    this.b1 = new BadFilterOperation();
+    new BadFilterOperation();
   }
 }

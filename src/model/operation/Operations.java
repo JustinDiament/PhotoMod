@@ -5,5 +5,5 @@ package model.operation;
  * filtering and color transformations.
  */
 public enum Operations {
-  BLUR, SHARPEN, MONOCHROME, SEPIA;
+  BLUR, SHARPEN, MONOCHROME, SEPIA
 }

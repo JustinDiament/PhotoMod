@@ -24,7 +24,6 @@ public class ImageProcessingModelImplTest {
 
   private ImageProcessingModel m1;
   private Pixel p1;
-  private Pixel p2;
   private Image i1;
   private Image i2;
   private ImageProcessingModel model;
@@ -40,7 +39,6 @@ public class ImageProcessingModelImplTest {
   public void init() {
     this.m1 = new ImageProcessingModelImpl();
     this.p1 = new PixelImpl(10, 10, 10);
-    this.p2 = new PixelImpl(255, 100, 0);
 
     List<List<Pixel>> l1 = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
@@ -56,7 +54,7 @@ public class ImageProcessingModelImplTest {
     for (int i = 0; i < 2; i++) {
       List<Pixel> row2 = new ArrayList<>();
       for (int j = 0; j < 2; j++) {
-        row2.add(this.p2);
+        row2.add(new PixelImpl(255, 100, 0));
       }
       l2.add(row2);
     }
@@ -1295,14 +1293,629 @@ public class ImageProcessingModelImplTest {
     assertEquals(0, modifiedBlackPixelsInImage.getPixelAt(2, 1).getBlue());
   }
 
-  // TODO
-  // sepia monochrome - j
-  // sepia blur - j
-  // sepia sharpen - j
-  // monochrome sepia - j
-  // monochrome blur - j
-  // monochrome sharpen - j
+  @Test
+  public void applyOperationSepiaThenMonochrome() {
+    assertEquals(5, this.steadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(6, this.steadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(7, this.steadilyIncreasingColors.getPixelAt(0, 0).getBlue());
 
+    assertEquals(10, this.steadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(12, this.steadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(14, this.steadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(15, this.steadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(18, this.steadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(21, this.steadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(20, this.steadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(24, this.steadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(28, this.steadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(105, this.steadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(106, this.steadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(107, this.steadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(110, this.steadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(112, this.steadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(114, this.steadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(115, this.steadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(118, this.steadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(121, this.steadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(120, this.steadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(124, this.steadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(128, this.steadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(205, this.steadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(206, this.steadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(207, this.steadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(210, this.steadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(212, this.steadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(214, this.steadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(215, this.steadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(218, this.steadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(221, this.steadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(220, this.steadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(224, this.steadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(228, this.steadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+
+    Image modifiedSteadilyIncreasingColors = this.model
+        .applyOperation(this.model
+                .applyOperation(this.steadilyIncreasingColors, Operations.SEPIA),
+            Operations.MONOCHROME);
+
+    assertEquals(7, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(7, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(7, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(15, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(15, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(15, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(23, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(23, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(23, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(30, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(30, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(30, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(129, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(129, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(129, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(136, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(136, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(136, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(144, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(144, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(144, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(152, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(152, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(152, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(245, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(245, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(245, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(250, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(250, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(250, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(251, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(251, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(251, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(251, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(251, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(251, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+  }
+
+  @Test
+  public void applyOperationSepiaThenBlur() {
+    assertEquals(5, this.steadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(6, this.steadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(7, this.steadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(10, this.steadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(12, this.steadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(14, this.steadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(15, this.steadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(18, this.steadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(21, this.steadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(20, this.steadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(24, this.steadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(28, this.steadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(105, this.steadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(106, this.steadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(107, this.steadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(110, this.steadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(112, this.steadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(114, this.steadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(115, this.steadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(118, this.steadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(121, this.steadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(120, this.steadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(124, this.steadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(128, this.steadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(205, this.steadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(206, this.steadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(207, this.steadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(210, this.steadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(212, this.steadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(214, this.steadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(215, this.steadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(218, this.steadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(221, this.steadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(220, this.steadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(224, this.steadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(228, this.steadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+
+    Image modifiedSteadilyIncreasingColors = this.model
+        .applyOperation(this.model
+                .applyOperation(this.steadilyIncreasingColors, Operations.SEPIA),
+            Operations.BLUR);
+
+    assertEquals(32, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(28, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(22, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(47, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(41, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(32, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(53, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(47, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(37, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(43, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(38, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(30, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(105, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(98, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(76, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(144, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(135, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(105, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(151, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(141, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(111, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(116, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(109, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(86, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(123, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(118, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(92, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(166, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(160, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(126, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(168, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(163, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(130, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(127, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(123, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(100, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+  }
+
+  @Test
+  public void applyOperationSepiaThenSharpen() {
+    assertEquals(5, this.steadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(6, this.steadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(7, this.steadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(10, this.steadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(12, this.steadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(14, this.steadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(15, this.steadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(18, this.steadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(21, this.steadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(20, this.steadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(24, this.steadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(28, this.steadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(105, this.steadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(106, this.steadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(107, this.steadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(110, this.steadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(112, this.steadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(114, this.steadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(115, this.steadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(118, this.steadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(121, this.steadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(120, this.steadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(124, this.steadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(128, this.steadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(205, this.steadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(206, this.steadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(207, this.steadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(210, this.steadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(212, this.steadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(214, this.steadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(215, this.steadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(218, this.steadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(221, this.steadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(220, this.steadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(224, this.steadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(228, this.steadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+
+    Image modifiedSteadilyIncreasingColors = this.model
+        .applyOperation(this.model
+                .applyOperation(this.steadilyIncreasingColors, Operations.SEPIA),
+            Operations.SHARPEN);
+
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(13, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(6, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(240, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(186, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(220, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(250, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+  }
+
+  @Test
+  public void applyOperationMonochromeThenSepia() {
+    assertEquals(5, this.steadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(6, this.steadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(7, this.steadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(10, this.steadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(12, this.steadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(14, this.steadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(15, this.steadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(18, this.steadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(21, this.steadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(20, this.steadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(24, this.steadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(28, this.steadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(105, this.steadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(106, this.steadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(107, this.steadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(110, this.steadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(112, this.steadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(114, this.steadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(115, this.steadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(118, this.steadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(121, this.steadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(120, this.steadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(124, this.steadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(128, this.steadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(205, this.steadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(206, this.steadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(207, this.steadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(210, this.steadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(212, this.steadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(214, this.steadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(215, this.steadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(218, this.steadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(221, this.steadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(220, this.steadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(224, this.steadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(228, this.steadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+
+    Image modifiedSteadilyIncreasingColors = this.model
+        .applyOperation(this.model
+                .applyOperation(this.steadilyIncreasingColors, Operations.MONOCHROME),
+            Operations.SEPIA);
+
+    assertEquals(6, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(6, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(4, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(14, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(13, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(10, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(22, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(20, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(15, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(31, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(27, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(21, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(141, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(126, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(98, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(149, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(133, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(104, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(158, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(140, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(109, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(166, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(147, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(115, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(246, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(192, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(253, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(197, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(203, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(208, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+  }
+
+  @Test
+  public void applyOperationMonochromeThenBlur() {
+    assertEquals(5, this.steadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(6, this.steadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(7, this.steadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(10, this.steadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(12, this.steadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(14, this.steadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(15, this.steadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(18, this.steadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(21, this.steadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(20, this.steadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(24, this.steadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(28, this.steadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(105, this.steadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(106, this.steadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(107, this.steadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(110, this.steadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(112, this.steadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(114, this.steadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(115, this.steadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(118, this.steadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(121, this.steadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(120, this.steadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(124, this.steadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(128, this.steadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(205, this.steadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(206, this.steadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(207, this.steadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(210, this.steadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(212, this.steadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(214, this.steadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(215, this.steadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(218, this.steadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(221, this.steadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(220, this.steadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(224, this.steadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(228, this.steadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+
+    Image modifiedSteadilyIncreasingColors = this.model
+        .applyOperation(this.model
+                .applyOperation(this.steadilyIncreasingColors, Operations.MONOCHROME),
+            Operations.BLUR);
+
+    assertEquals(23, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(23, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(23, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(33, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(33, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(33, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(38, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(38, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(38, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(31, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(31, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(31, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(80, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(80, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(80, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(111, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(111, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(111, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(117, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(117, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(117, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(91, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(91, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(91, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(98, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(98, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(98, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(133, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(133, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(133, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(138, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(138, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(138, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(106, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(106, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(106, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+  }
+
+  @Test
+  public void applyOperationMonochromeThenSharpen() {
+    assertEquals(5, this.steadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(6, this.steadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(7, this.steadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(10, this.steadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(12, this.steadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(14, this.steadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(15, this.steadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(18, this.steadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(21, this.steadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(20, this.steadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(24, this.steadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(28, this.steadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(105, this.steadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(106, this.steadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(107, this.steadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(110, this.steadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(112, this.steadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(114, this.steadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(115, this.steadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(118, this.steadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(121, this.steadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(120, this.steadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(124, this.steadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(128, this.steadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(205, this.steadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(206, this.steadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(207, this.steadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(210, this.steadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(212, this.steadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(214, this.steadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(215, this.steadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(218, this.steadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(221, this.steadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(220, this.steadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(224, this.steadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(228, this.steadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+
+    Image modifiedSteadilyIncreasingColors = this.model
+        .applyOperation(this.model
+                .applyOperation(this.steadilyIncreasingColors, Operations.MONOCHROME),
+            Operations.SHARPEN);
+
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getRed());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getGreen());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 0).getBlue());
+
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getRed());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getGreen());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 1).getBlue());
+
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getRed());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getGreen());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 2).getBlue());
+
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getRed());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getGreen());
+    assertEquals(0, modifiedSteadilyIncreasingColors.getPixelAt(0, 3).getBlue());
+
+    assertEquals(197, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getRed());
+    assertEquals(197, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getGreen());
+    assertEquals(197, modifiedSteadilyIncreasingColors.getPixelAt(1, 0).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 1).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(1, 2).getBlue());
+
+    assertEquals(231, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getRed());
+    assertEquals(231, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getGreen());
+    assertEquals(231, modifiedSteadilyIncreasingColors.getPixelAt(1, 3).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 0).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 1).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 2).getBlue());
+
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getRed());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getGreen());
+    assertEquals(255, modifiedSteadilyIncreasingColors.getPixelAt(2, 3).getBlue());
+  }
 
   // test that a given image can be correctly processed using blur then sepia
   @Test
