@@ -22,9 +22,11 @@ import org.junit.Test;
  */
 public class ImageProcessingModelImplTest {
 
-  ImageProcessingModel m1;
+  private ImageProcessingModel m1;
   private Pixel p1;
+  private Pixel p2;
   private Image i1;
+  private Image i2;
   private ImageProcessingModel model;
   private Image steadilyIncreasingColors;
   private Image blackPixelsInImage;
@@ -38,6 +40,7 @@ public class ImageProcessingModelImplTest {
   public void init() {
     this.m1 = new ImageProcessingModelImpl();
     this.p1 = new PixelImpl(10, 10, 10);
+    this.p2 = new PixelImpl(255, 100, 0);
 
     List<List<Pixel>> l1 = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
@@ -48,6 +51,16 @@ public class ImageProcessingModelImplTest {
       l1.add(row1);
     }
     this.i1 = new ImageImpl(l1);
+
+    List<List<Pixel>> l2 = new ArrayList<>();
+    for (int i = 0; i < 2; i++) {
+      List<Pixel> row2 = new ArrayList<>();
+      for (int j = 0; j < 2; j++) {
+        row2.add(this.p2);
+      }
+      l2.add(row2);
+    }
+    this.i2 = new ImageImpl(l2);
 
     this.model = new ImageProcessingModelImpl();
 
@@ -91,9 +104,6 @@ public class ImageProcessingModelImplTest {
         new ArrayList<>(Collections.singletonList(
             new PixelImpl(255, 255, 255)))));
   }
-
-  // TODO: split based on the operations we did
-  // TODO: use combinations of operations, use a single operation multiple times
 
   @Test
   public void applyOperationSepiaClampedButNoWayToClampBlue() {
@@ -1292,13 +1302,294 @@ public class ImageProcessingModelImplTest {
   // monochrome sepia - j
   // monochrome blur - j
   // monochrome sharpen - j
-  // blur sepia - n
-  // blur monochrome - n
-  // blur sharpen - n
-  // sharpen sepia - n
-  // sharpen monochome - n
-  // sharpen blur - n
 
+
+  // test that a given image can be correctly processed using blur then sepia
+  @Test
+  public void testApplyBlurSepia() {
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        this.p1 = this.i2.getPixelAt(i, j);
+        assertEquals(255, p1.getRed());
+        assertEquals(100, p1.getGreen());
+        assertEquals(0, p1.getBlue());
+      }
+    }
+    Image img = this.m1.applyOperation(this.i2, Operations.BLUR);
+
+    assertEquals(143, img.getPixelAt(0, 0).getRed());
+    assertEquals(56, img.getPixelAt(0, 0).getGreen());
+    assertEquals(0, img.getPixelAt(0, 0).getBlue());
+
+    assertEquals(143, img.getPixelAt(0, 1).getRed());
+    assertEquals(56, img.getPixelAt(0, 1).getGreen());
+    assertEquals(0, img.getPixelAt(0, 1).getBlue());
+
+    assertEquals(143, img.getPixelAt(1, 0).getRed());
+    assertEquals(56, img.getPixelAt(1, 0).getGreen());
+    assertEquals(0, img.getPixelAt(1, 0).getBlue());
+
+    assertEquals(143, img.getPixelAt(1, 1).getRed());
+    assertEquals(56, img.getPixelAt(1, 1).getGreen());
+    assertEquals(0, img.getPixelAt(1, 1).getBlue());
+
+    Image img2 = this.m1.applyOperation(img, Operations.SEPIA);
+
+    assertEquals(56, img2.getPixelAt(0, 0).getRed());
+    assertEquals(49, img2.getPixelAt(0, 0).getGreen());
+    assertEquals(38, img2.getPixelAt(0, 0).getBlue());
+
+    assertEquals(56, img2.getPixelAt(0, 1).getRed());
+    assertEquals(49, img2.getPixelAt(0, 1).getGreen());
+    assertEquals(38, img2.getPixelAt(0, 1).getBlue());
+
+    assertEquals(56, img2.getPixelAt(1, 0).getRed());
+    assertEquals(49, img2.getPixelAt(1, 0).getGreen());
+    assertEquals(38, img2.getPixelAt(1, 0).getBlue());
+
+    assertEquals(56, img2.getPixelAt(1, 1).getRed());
+    assertEquals(49, img2.getPixelAt(1, 1).getGreen());
+    assertEquals(38, img2.getPixelAt(1, 1).getBlue());
+  }
+
+  // test that a given image can be correctly processed using blur then monochrome
+  @Test
+  public void testApplyBlurMonochrome() {
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        this.p1 = this.i2.getPixelAt(i, j);
+        assertEquals(255, p1.getRed());
+        assertEquals(100, p1.getGreen());
+        assertEquals(0, p1.getBlue());
+      }
+    }
+    Image img = this.m1.applyOperation(this.i2, Operations.BLUR);
+
+    assertEquals(143, img.getPixelAt(0, 0).getRed());
+    assertEquals(56, img.getPixelAt(0, 0).getGreen());
+    assertEquals(0, img.getPixelAt(0, 0).getBlue());
+
+    assertEquals(143, img.getPixelAt(0, 1).getRed());
+    assertEquals(56, img.getPixelAt(0, 1).getGreen());
+    assertEquals(0, img.getPixelAt(0, 1).getBlue());
+
+    assertEquals(143, img.getPixelAt(1, 0).getRed());
+    assertEquals(56, img.getPixelAt(1, 0).getGreen());
+    assertEquals(0, img.getPixelAt(1, 0).getBlue());
+
+    assertEquals(143, img.getPixelAt(1, 1).getRed());
+    assertEquals(56, img.getPixelAt(1, 1).getGreen());
+    assertEquals(0, img.getPixelAt(1, 1).getBlue());
+
+    Image img2 = this.m1.applyOperation(img, Operations.MONOCHROME);
+
+    assertEquals(70, img2.getPixelAt(0, 0).getRed());
+    assertEquals(70, img2.getPixelAt(0, 0).getGreen());
+    assertEquals(70, img2.getPixelAt(0, 0).getBlue());
+
+    assertEquals(70, img2.getPixelAt(0, 1).getRed());
+    assertEquals(70, img2.getPixelAt(0, 1).getGreen());
+    assertEquals(70, img2.getPixelAt(0, 1).getBlue());
+
+    assertEquals(70, img2.getPixelAt(1, 0).getRed());
+    assertEquals(70, img2.getPixelAt(1, 0).getGreen());
+    assertEquals(70, img2.getPixelAt(1, 0).getBlue());
+
+    assertEquals(70, img2.getPixelAt(1, 1).getRed());
+    assertEquals(70, img2.getPixelAt(1, 1).getGreen());
+    assertEquals(70, img2.getPixelAt(1, 1).getBlue());
+  }
+
+  // test that a given image can be correctly processed using blur then sharpen
+  @Test
+  public void testApplyBlurSharpen() {
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        this.p1 = this.i2.getPixelAt(i, j);
+        assertEquals(255, p1.getRed());
+        assertEquals(100, p1.getGreen());
+        assertEquals(0, p1.getBlue());
+      }
+    }
+    Image img = this.m1.applyOperation(this.i2, Operations.BLUR);
+
+    assertEquals(143, img.getPixelAt(0, 0).getRed());
+    assertEquals(56, img.getPixelAt(0, 0).getGreen());
+    assertEquals(0, img.getPixelAt(0, 0).getBlue());
+
+    assertEquals(143, img.getPixelAt(0, 1).getRed());
+    assertEquals(56, img.getPixelAt(0, 1).getGreen());
+    assertEquals(0, img.getPixelAt(0, 1).getBlue());
+
+    assertEquals(143, img.getPixelAt(1, 0).getRed());
+    assertEquals(56, img.getPixelAt(1, 0).getGreen());
+    assertEquals(0, img.getPixelAt(1, 0).getBlue());
+
+    assertEquals(143, img.getPixelAt(1, 1).getRed());
+    assertEquals(56, img.getPixelAt(1, 1).getGreen());
+    assertEquals(0, img.getPixelAt(1, 1).getBlue());
+
+    Image img2 = this.m1.applyOperation(img, Operations.SHARPEN);
+
+    assertEquals(250, img2.getPixelAt(0, 0).getRed());
+    assertEquals(98, img2.getPixelAt(0, 0).getGreen());
+    assertEquals(0, img2.getPixelAt(0, 0).getBlue());
+
+    assertEquals(250, img2.getPixelAt(0, 1).getRed());
+    assertEquals(98, img2.getPixelAt(0, 1).getGreen());
+    assertEquals(0, img2.getPixelAt(0, 1).getBlue());
+
+    assertEquals(250, img2.getPixelAt(1, 0).getRed());
+    assertEquals(98, img2.getPixelAt(1, 0).getGreen());
+    assertEquals(0, img2.getPixelAt(1, 0).getBlue());
+
+    assertEquals(250, img2.getPixelAt(1, 1).getRed());
+    assertEquals(98, img2.getPixelAt(1, 1).getGreen());
+    assertEquals(0, img2.getPixelAt(1, 1).getBlue());
+  }
+
+  // test that a given image can be correctly processed using sharpen then sepia
+  @Test
+  public void testApplySharpenSepia() {
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        this.p1 = this.i2.getPixelAt(i, j);
+        assertEquals(255, p1.getRed());
+        assertEquals(100, p1.getGreen());
+        assertEquals(0, p1.getBlue());
+      }
+    }
+    Image img = this.m1.applyOperation(this.i2, Operations.SHARPEN);
+
+    assertEquals(255, img.getPixelAt(0, 0).getRed());
+    assertEquals(175, img.getPixelAt(0, 0).getGreen());
+    assertEquals(0, img.getPixelAt(0, 0).getBlue());
+
+    assertEquals(255, img.getPixelAt(0, 1).getRed());
+    assertEquals(175, img.getPixelAt(0, 1).getGreen());
+    assertEquals(0, img.getPixelAt(0, 1).getBlue());
+
+    assertEquals(255, img.getPixelAt(1, 0).getRed());
+    assertEquals(175, img.getPixelAt(1, 0).getGreen());
+    assertEquals(0, img.getPixelAt(1, 0).getBlue());
+
+    assertEquals(255, img.getPixelAt(1, 1).getRed());
+    assertEquals(175, img.getPixelAt(1, 1).getGreen());
+    assertEquals(0, img.getPixelAt(1, 1).getBlue());
+
+    Image img2 = this.m1.applyOperation(img, Operations.SEPIA);
+
+    assertEquals(100, img2.getPixelAt(0, 0).getRed());
+    assertEquals(88, img2.getPixelAt(0, 0).getGreen());
+    assertEquals(69, img2.getPixelAt(0, 0).getBlue());
+
+    assertEquals(100, img2.getPixelAt(0, 1).getRed());
+    assertEquals(88, img2.getPixelAt(0, 1).getGreen());
+    assertEquals(69, img2.getPixelAt(0, 1).getBlue());
+
+    assertEquals(100, img2.getPixelAt(1, 0).getRed());
+    assertEquals(88, img2.getPixelAt(1, 0).getGreen());
+    assertEquals(69, img2.getPixelAt(1, 0).getBlue());
+
+    assertEquals(100, img2.getPixelAt(1, 1).getRed());
+    assertEquals(88, img2.getPixelAt(1, 1).getGreen());
+    assertEquals(69, img2.getPixelAt(1, 1).getBlue());
+  }
+
+  // test that a given image can be correctly processed using sharpen then monochrome
+  @Test
+  public void testApplySharpenMonochrome() {
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        this.p1 = this.i2.getPixelAt(i, j);
+        assertEquals(255, p1.getRed());
+        assertEquals(100, p1.getGreen());
+        assertEquals(0, p1.getBlue());
+      }
+    }
+    Image img = this.m1.applyOperation(this.i2, Operations.SHARPEN);
+
+    assertEquals(255, img.getPixelAt(0, 0).getRed());
+    assertEquals(175, img.getPixelAt(0, 0).getGreen());
+    assertEquals(0, img.getPixelAt(0, 0).getBlue());
+
+    assertEquals(255, img.getPixelAt(0, 1).getRed());
+    assertEquals(175, img.getPixelAt(0, 1).getGreen());
+    assertEquals(0, img.getPixelAt(0, 1).getBlue());
+
+    assertEquals(255, img.getPixelAt(1, 0).getRed());
+    assertEquals(175, img.getPixelAt(1, 0).getGreen());
+    assertEquals(0, img.getPixelAt(1, 0).getBlue());
+
+    assertEquals(255, img.getPixelAt(1, 1).getRed());
+    assertEquals(175, img.getPixelAt(1, 1).getGreen());
+    assertEquals(0, img.getPixelAt(1, 1).getBlue());
+
+    Image img2 = this.m1.applyOperation(img, Operations.MONOCHROME);
+
+    assertEquals(179, img2.getPixelAt(0, 0).getRed());
+    assertEquals(179, img2.getPixelAt(0, 0).getGreen());
+    assertEquals(179, img2.getPixelAt(0, 0).getBlue());
+
+    assertEquals(179, img2.getPixelAt(0, 1).getRed());
+    assertEquals(179, img2.getPixelAt(0, 1).getGreen());
+    assertEquals(179, img2.getPixelAt(0, 1).getBlue());
+
+    assertEquals(179, img2.getPixelAt(1, 0).getRed());
+    assertEquals(179, img2.getPixelAt(1, 0).getGreen());
+    assertEquals(179, img2.getPixelAt(1, 0).getBlue());
+
+    assertEquals(179, img2.getPixelAt(1, 1).getRed());
+    assertEquals(179, img2.getPixelAt(1, 1).getGreen());
+    assertEquals(179, img2.getPixelAt(1, 1).getBlue());
+  }
+
+  // test that a given image can be correctly processed using sharpen then blur
+  @Test
+  public void testApplySharpenBlur() {
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        this.p1 = this.i2.getPixelAt(i, j);
+        assertEquals(255, p1.getRed());
+        assertEquals(100, p1.getGreen());
+        assertEquals(0, p1.getBlue());
+      }
+    }
+    Image img = this.m1.applyOperation(this.i2, Operations.SHARPEN);
+
+    assertEquals(255, img.getPixelAt(0, 0).getRed());
+    assertEquals(175, img.getPixelAt(0, 0).getGreen());
+    assertEquals(0, img.getPixelAt(0, 0).getBlue());
+
+    assertEquals(255, img.getPixelAt(0, 1).getRed());
+    assertEquals(175, img.getPixelAt(0, 1).getGreen());
+    assertEquals(0, img.getPixelAt(0, 1).getBlue());
+
+    assertEquals(255, img.getPixelAt(1, 0).getRed());
+    assertEquals(175, img.getPixelAt(1, 0).getGreen());
+    assertEquals(0, img.getPixelAt(1, 0).getBlue());
+
+    assertEquals(255, img.getPixelAt(1, 1).getRed());
+    assertEquals(175, img.getPixelAt(1, 1).getGreen());
+    assertEquals(0, img.getPixelAt(1, 1).getBlue());
+
+    Image img2 = this.m1.applyOperation(img, Operations.BLUR);
+    assertEquals(143, img2.getPixelAt(0, 0).getRed());
+    assertEquals(98, img2.getPixelAt(0, 0).getGreen());
+    assertEquals(0, img2.getPixelAt(0, 0).getBlue());
+
+    assertEquals(143, img2.getPixelAt(0, 1).getRed());
+    assertEquals(98, img2.getPixelAt(0, 1).getGreen());
+    assertEquals(0, img2.getPixelAt(0, 1).getBlue());
+
+    assertEquals(143, img2.getPixelAt(1, 0).getRed());
+    assertEquals(98, img2.getPixelAt(1, 0).getGreen());
+    assertEquals(0, img2.getPixelAt(1, 0).getBlue());
+
+    assertEquals(143, img2.getPixelAt(1, 1).getRed());
+    assertEquals(98, img2.getPixelAt(1, 1).getGreen());
+    assertEquals(0, img2.getPixelAt(1, 1).getBlue());
+  }
 
   // test that a null file cannot be read
   @Test(expected = IllegalArgumentException.class)

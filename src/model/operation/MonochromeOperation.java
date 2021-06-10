@@ -16,7 +16,7 @@ import model.image.PixelImpl;
 public class MonochromeOperation implements ImageOperation {
 
   @Override
-  public Image apply(Image img) {
+  public Image apply(Image img) throws IllegalArgumentException {
     ImageUtil.requireNonNull(img);
 
     List<List<Pixel>> copy = new ArrayList<>();

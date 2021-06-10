@@ -54,9 +54,9 @@ public abstract class FilterOperation implements ImageOperation {
    * Grabs the section of pixels from an image surrounding the pixel at the given coordinates. The
    * obtained section matches the specified size of the filter kernel.
    *
-   * @param img        the image from which the section is obtained
-   * @param x          the x coordinate of the location of the desired pixel
-   * @param y          the y coordinate of the location of the desired pixel
+   * @param img the image from which the section is obtained
+   * @param x   the x coordinate of the location of the desired pixel
+   * @param y   the y coordinate of the location of the desired pixel
    * @return a section of pixels surrounding the specified pixel matching the size of the kernel
    * @throws IllegalArgumentException if the given image is null
    */
