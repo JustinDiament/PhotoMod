@@ -1,4 +1,6 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -2231,12 +2233,12 @@ public class ImageProcessingModelImplTest {
   // test that a valid PPM is imported properly and a corresponding Image object is created
   @Test
   public void testImportPPM() {
-    Image img = this.m1.importImage("res\\popeyes.ppm");
+    Image img = this.m1.importImage("res\\test\\test_good.ppm");
     assertNotNull(img);
     assertTrue(img instanceof ImageImpl);
     assertEquals(ImageImpl.class, img.getClass());
-    assertEquals(56, img.getHeight());
-    assertEquals(84, img.getWidth());
+    assertEquals(1, img.getHeight());
+    assertEquals(1, img.getWidth());
   }
 
   // test that a null file cannot be written

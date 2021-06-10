@@ -1,4 +1,3 @@
-import model.operation.ImageOperation;
 import org.junit.Test;
 
 /**

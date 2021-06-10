@@ -65,12 +65,12 @@ public class PPMTest {
   @Test
   public void testImportPPM() {
     assertNull(this.i1);
-    this.i1 = this.i.importFile("res\\popeyes.ppm");
+    this.i1 = this.i.importFile("res\\test\\test_good.ppm");
     assertNotNull(this.i1);
     assertTrue(this.i1 instanceof ImageImpl);
     assertEquals(ImageImpl.class, this.i1.getClass());
-    assertEquals(56, this.i1.getHeight());
-    assertEquals(84, this.i1.getWidth());
+    assertEquals(1, this.i1.getHeight());
+    assertEquals(1, this.i1.getWidth());
   }
 
   // test that a null file cannot be written
