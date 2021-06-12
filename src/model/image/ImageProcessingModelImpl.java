@@ -19,8 +19,9 @@ import model.operation.SharpenOperation;
  */
 public class ImageProcessingModelImpl implements ImageProcessingModel {
 
-  private final Map<Operations, ImageOperation> operationsMap;
-  private final Map<String, ImageFile> filesMap;
+  // Made these fields protected to use in the new model class since they are not public-facing
+  protected final Map<Operations, ImageOperation> operationsMap;
+  protected final Map<String, ImageFile> filesMap;
 
   /**
    * Creates an image processing model that is able to handle image files and perform operations on

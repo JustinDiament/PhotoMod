@@ -24,7 +24,7 @@ public class Main {
 
     ImageProcessingModel m = new ImageProcessingModelImpl();
     Image i = m.importImage(filename);
-    Image i2 = m.applyOperation(i, Operations.MONOCHROME);
-    m.exportImage("res\\popeyes_monochrome.ppm", i2);
+    Image i2 = m.applyOperation(i, Operations.BLUR);
+    m.exportImage("res\\popeyes_blur.ppm", i2);
   }
 }
