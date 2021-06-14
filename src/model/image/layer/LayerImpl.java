@@ -26,7 +26,7 @@ public class LayerImpl implements Layer {
   }
 
   public LayerImpl(Image img, String name) {
-    this(img, name, false);
+    this(img, name, true);
   }
 
 

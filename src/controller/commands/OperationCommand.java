@@ -1,5 +1,6 @@
 package controller.commands;
 
+import model.ImageUtil;
 import model.image.ImageLayerModel;
 import model.operation.Operations;
 
@@ -13,7 +14,10 @@ abstract class OperationCommand implements Command {
 
   @Override
   public void execute(String specification, ImageLayerModel model) throws IllegalArgumentException {
-    int numTimesToApply = 0;
+    ImageUtil.requireNonNull(specification);
+    ImageUtil.requireNonNull(model);
+
+    int numTimesToApply;
 
     try {
       numTimesToApply = Integer.parseInt(specification);

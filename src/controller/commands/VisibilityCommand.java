@@ -20,7 +20,6 @@ public class VisibilityCommand implements Command {
       model.setCurrentLayerVisibility(false);
     } else {
       throw new IllegalArgumentException("Specified visibility level is invalid.");
-      // todo: inform user, skip over, and/or throw error (or default to a swap?)
     }
   }
 }

@@ -1,6 +1,7 @@
 package controller.commands;
 
 import java.util.List;
+import model.ImageUtil;
 import model.image.ImageLayerModel;
 
 /**
@@ -10,6 +11,9 @@ public class RemoveLayerCommand implements Command {
 
   @Override
   public void execute(String specification, ImageLayerModel model) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(specification);
+    ImageUtil.requireNonNull(model);
+
     List<String> layerNames = model.getLayerNames();
 
     for (int i = 0; i < layerNames.size(); i++) {

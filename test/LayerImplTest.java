@@ -36,7 +36,7 @@ public class LayerImplTest {
 
 
     this.l1 = new LayerImpl(this.i1, "l1");
-    this.l2 = new LayerImpl(this.i1, "l2", true);
+    this.l2 = new LayerImpl(this.i1, "l2", false);
   }
 
   @Test
@@ -51,8 +51,8 @@ public class LayerImplTest {
   }
 
   @Test
-  public void testDefaultVisibilityFalse() {
-    assertFalse(this.l1.getVisibility());
+  public void testDefaultVisibilityTrue() {
+    assertTrue(this.l1.getVisibility());
   }
 
   @Test
@@ -75,16 +75,16 @@ public class LayerImplTest {
 
   @Test
   public void testGetVisibility() {
-    assertFalse(this.l1.getVisibility());
-    assertTrue(this.l2.getVisibility());
+    assertTrue(this.l1.getVisibility());
+    assertFalse(this.l2.getVisibility());
   }
 
   @Test
   public void testSetVisibility() {
-    assertFalse(this.l1.getVisibility());
-    this.l1.setVisibility(true);
     assertTrue(this.l1.getVisibility());
     this.l1.setVisibility(false);
     assertFalse(this.l1.getVisibility());
+    this.l1.setVisibility(true);
+    assertTrue(this.l1.getVisibility());
   }
 }

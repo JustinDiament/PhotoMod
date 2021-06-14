@@ -17,4 +17,6 @@ public interface ImageLayerModel extends ImageProcessingModel {
   void removeLayer(int index) throws IllegalArgumentException;
 
   void setCurrentLayerImage(Image img);
+
+  void exportTopImage(String filename) throws IllegalArgumentException;
 }

@@ -1,8 +1,5 @@
 package model.image;
 
-// TODO: if we need new public methods, add ImageLayerModel interface that extends existing
-//  interface
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,7 +21,6 @@ import model.image.layer.LayerImpl;
 import model.image.programmatic.ProgrammaticCreator;
 import model.operation.Operations;
 
-// todo: controller has currentLayer field that gets mutated based on user input
 // todo: docstrings everywhere, add public methods to interface
 public class ImageLayerModelImpl extends ImageProcessingModelImpl implements ImageLayerModel {
 
@@ -43,14 +39,14 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     this.layers.add(new LayerImpl(null, name));
   }
 
-
+  @Override
   public void setCurrentLayerImage(Image img) {
     Layer current = this.getCurrentLayer();
     this.layers
         .set(this.currentLayer, new LayerImpl(img, current.getName(), current.getVisibility()));
   }
 
-  // todo: add this to new interface
+  @Override
   public void setCurrentLayer(int index) {
     this.isValidLayer(index);
     this.currentLayer = index;
@@ -69,7 +65,7 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     }
   }
 
-  // todo: add this to new interface
+  @Override
   public Layer getCurrentLayer() throws IllegalArgumentException {
     this.isValidLayer(this.currentLayer);
     return this.layers.get(this.currentLayer);
@@ -94,9 +90,7 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   public void removeLayer(int index) throws IllegalArgumentException {
     this.isValidLayer(index);
     this.layers.remove(index);
-    // todo: should this set currentlayer to -1? or previous layer?
   }
-
 
   @Override
   public Image applyOperation(Image img, Operations o) throws IllegalArgumentException {
@@ -182,7 +176,20 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     } catch (IOException e) {
       throw new IllegalArgumentException("Unable to create a text file");
     }
-    // todo: what to do with image argument? ignore? pass in null?
+  }
+
+  @Override
+  public void exportTopImage(String filename) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(filename);
+
+    for (int i = this.layers.size() - 1; i >= 0; i--) {
+      Layer l = this.layers.get(i);
+      if (l.getVisibility()) {
+        super.exportImage(filename, l.getImage());
+        return;
+      }
+    }
+    throw new IllegalArgumentException("No layers are visible");
   }
 
   /**
