@@ -119,7 +119,7 @@ public class ImageControllerImpl implements ImageController {
    */
   private void renderMessage(String message) throws IllegalStateException {
     try {
-      this.view.renderMessage(message);
+      this.view.renderMessage(message + "\n");
     } catch (IOException e) {
       throw new IllegalStateException("Failed transmitting the message to the provided Appendable");
     }
