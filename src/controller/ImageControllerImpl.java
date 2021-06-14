@@ -74,7 +74,7 @@ public class ImageControllerImpl implements ImageController {
     try {
       this.rd = new FileReader(ImageUtil.requireNonNull(fileName));
     } catch (FileNotFoundException e) {
-      throw new IllegalArgumentException("File with the specified name not found");
+      throw new IllegalArgumentException(String.format("File %s not found", fileName));
     }
   }
 
@@ -132,6 +132,9 @@ public class ImageControllerImpl implements ImageController {
 
     while (scanner.hasNext()) {
       String latestCommand = scanner.next();
+      if (this.isQuit(latestCommand)) {
+        return;
+      }
       Command commandToRun = possibleCommands.getOrDefault(latestCommand, null);
 
       if (commandToRun != null) {
@@ -139,6 +142,9 @@ public class ImageControllerImpl implements ImageController {
 
         if (scanner.hasNext()) {
           specification = scanner.next();
+          if (this.isQuit(specification)) {
+            return;
+          }
         } else {
           this.renderMessage("Final command is missing a specification.");
           // todo: inform (or throw exception) that last command is missing its specification
@@ -155,5 +161,13 @@ public class ImageControllerImpl implements ImageController {
         // todo: inform (or throw exception) about invalid command
       }
     }
+  }
+
+  private boolean isQuit(String input) {
+    if (input.equalsIgnoreCase("q")) {
+      this.renderMessage("Scripting has been quit prematurely");
+      return true;
+    }
+    return false;
   }
 }
