@@ -165,7 +165,7 @@ public class ImageControllerImpl implements ImageController {
 
   private boolean isQuit(String input) {
     if (input.equalsIgnoreCase("q")) {
-      this.renderMessage("Scripting has been quit prematurely");
+      this.renderMessage("Scripting was quit");
       return true;
     }
     return false;
