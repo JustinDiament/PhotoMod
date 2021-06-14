@@ -10,6 +10,7 @@ import model.image.ImageImpl;
 import model.image.Pixel;
 import model.image.PixelImpl;
 
+// todo: docstrings everywhere
 public class LayerImpl implements Layer {
 
   private final Image img;
@@ -31,6 +32,10 @@ public class LayerImpl implements Layer {
 
   @Override
   public Image getImage() {
+    if (this.img == null) {
+      return null;
+    }
+
     List<List<Pixel>> copy = new ArrayList<>();
     for (int i = 0; i < img.getWidth(); i++) {
       List<Pixel> row = new ArrayList<>();
@@ -42,7 +47,6 @@ public class LayerImpl implements Layer {
     }
     return new ImageImpl(copy);
   }
-
 
   @Override
   public String getName() {

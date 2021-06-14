@@ -23,7 +23,7 @@ public class ImageImpl implements Image {
   }
 
   /**
-   * Copy constructor for ImageImpl.
+   * Copy constructor for ImageImpl that creates a deep copy of the given Image.
    *
    * @param img the Image to be copied and saved
    */
