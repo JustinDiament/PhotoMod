@@ -23,6 +23,25 @@ public class ImageImpl implements Image {
   }
 
   /**
+   * Copy constructor for ImageImpl.
+   *
+   * @param img the Image to be copied and saved
+   */
+  public ImageImpl(Image img) {
+    List<List<Pixel>> copy = new ArrayList<>();
+    for (int i = 0; i < img.getWidth(); i++) {
+      List<Pixel> row = new ArrayList<>();
+      for (int j = 0; j < img.getHeight(); j++) {
+        Pixel p = img.getPixelAt(i, j);
+        row.add(new PixelImpl(p.getRed(), p.getGreen(),p.getBlue()));
+      }
+      copy.add(row);
+    }
+
+    this.image = copy;
+  }
+
+  /**
    * Produces a deep copy of the given list of pixels.
    *
    * @param image the list of pixels to be copied

@@ -10,7 +10,6 @@ import model.image.file.ImageFile;
 import model.image.layer.Layer;
 import model.image.layer.LayerImpl;
 import model.image.programmatic.ProgrammaticCreator;
-import model.operation.ImageOperation;
 import model.operation.Operations;
 
 // todo: controller has currentLayer field that gets mutated based on user input
@@ -41,19 +40,24 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
 
   private void isValidLayer(int index) throws IllegalArgumentException {
     if (index < 0 || index >= layers.size()) {
-      throw new IllegalArgumentException("Provided index layer is out of bounds");
+      throw new IllegalStateException("Layer index is not valid.");
     }
   }
 
   @Override
   public List<String> getLayerNames() {
-    //todo: write
-    return null;
+    List<String> layerNames = new ArrayList<>();
+
+    for (Layer layer : layers) {
+      layerNames.add(layer.getName());
+    }
+    return layerNames;
   }
 
   @Override
   public void removeLayer(int index) throws IllegalArgumentException {
-    //todo: write
+    this.isValidLayer(index);
+    this.layers.remove(index);
   }
 
   // todo: add this to new interface
@@ -66,24 +70,27 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   // todo: add this to new interface
   @Override
   public void setCurrentLayerVisibility(boolean visibility) {
+    this.isValidLayer(this.currentLayer);
     this.getCurrentLayer().setVisibility(visibility);
   }
 
   @Override
   public Image applyOperation(Image img, Operations o) throws IllegalArgumentException {
+    this.isValidLayer(this.currentLayer);
     Image newImage = super.applyOperation(img, o);
     layers.set(this.currentLayer, new LayerImpl(newImage, this.layers.get(currentLayer).getName(),
         this.layers.get(currentLayer).getVisibility()));
-    return newImage;
+    return new ImageImpl(newImage);
   }
 
   @Override
   public Image createProgrammaticImage(ProgrammaticCreator creator)
       throws IllegalArgumentException {
+    this.isValidLayer(this.currentLayer);
     Image newImage = super.createProgrammaticImage(creator);
     layers.set(this.currentLayer, new LayerImpl(newImage, this.layers.get(currentLayer).getName(),
         this.layers.get(currentLayer).getVisibility()));
-    return newImage;
+    return new ImageImpl(newImage);
   }
 
   @Override

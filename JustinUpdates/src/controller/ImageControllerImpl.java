@@ -9,39 +9,95 @@ import controller.commands.RemoveLayerCommand;
 import controller.commands.SepiaCommand;
 import controller.commands.SharpenCommand;
 import controller.commands.VisibilityCommand;
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import model.ImageUtil;
-import model.image.ImageProcessingModel;
+import model.image.ImageLayerModel;
+import view.ImageTextView;
+import view.ImageTextViewImpl;
 
+/**
+ * Represents an implementation of the controller for an Image modification program. This controller
+ * can accept commands for the Image modification program through user input on the keyboard, any
+ * Readable object, or from a text file containing a list of commands. These commands will create
+ * and modify the layers of a composite Image. This controller implementation accepts one word
+ * commands followed by a specification/modifier for how that command should be applied.
+ */
 public class ImageControllerImpl implements ImageController {
 
-  // store an instance of the model as a field
-  // eventually, store an appendable/instance of the view to render messages
-
-  // having two different constructors, take in a readable?
-  // is reading from a file similar to readable/scanner?
-
-  // method handle user input from a readable
-  // probably will need helper methods to store the supported commands
-  // maybe command pattern here? ^
-
-  ImageProcessingModel model;
+  ImageLayerModel model;
   Readable rd;
-  //Appendable ap; TODO: figure out if/how we are communicating errors in input to the user
+  ImageTextView view;
 
-  public ImageControllerImpl(ImageProcessingModel model, Readable rd/*, Appendable ap*/)
+  /**
+   * Constructs a ImageControllerImpl object that carries out operations based on the given model's
+   * specifications and reads commands from the given Readable object.
+   *
+   * @param model the model to carry out the requested operations
+   * @param rd    the Readable object that specifies operations and modifiers to be carried out on
+   *              the model's Image and its layers. The Readable can be user input from the keyboard
+   *              via System.in, a StringReader, or a FileReader to read commands from a text file
+   * @param ap    an Appendable object that will be passed to a view to communicate any errors that
+   *              occur in command input
+   * @throws IllegalArgumentException if any of the given arguments are null
+   */
+  public ImageControllerImpl(ImageLayerModel model, Readable rd, Appendable ap)
       throws IllegalArgumentException {
 
     this.model = ImageUtil.requireNonNull(model);
     this.rd = ImageUtil.requireNonNull(rd);
-    //this.ap
+    this.view = new ImageTextViewImpl(ap);
   }
 
+  /**
+   * Constructs a ImageControllerImpl object that carries out operations based on the given model's
+   * specifications and reads commands from the file with the given name.
+   *
+   * @param model    the model to carry out the requested operations
+   * @param fileName the name of a file containing commands to be used to control the Image
+   *                 modification program
+   * @param ap       an Appendable object that will be passed to a view to communicate any errors
+   *                 that occur in command input
+   * @throws IllegalArgumentException if any of the given arguments are null
+   */
+  public ImageControllerImpl(ImageLayerModel model, String fileName, Appendable ap)
+      throws IllegalArgumentException {
 
+    this.model = ImageUtil.requireNonNull(model);
+    this.view = new ImageTextViewImpl(ap);
+
+    try {
+      this.rd = new FileReader(ImageUtil.requireNonNull(fileName));
+    } catch (FileNotFoundException e) {
+      throw new IllegalArgumentException("File with the specified name not found");
+    }
+  }
+
+  /**
+   * Constructs a ImageControllerImpl object that carries out operations based on the given model's
+   * specifications and reads commands from the keyboard via System.in
+   *
+   * @param model the model to carry out the requested operations
+   * @param ap    an Appendable object that will be passed to a view to communicate any errors that
+   *              occur in command input
+   * @throws IllegalArgumentException if any of the given arguments are null
+   */
+  public ImageControllerImpl(ImageLayerModel model, Appendable ap)
+      throws IllegalArgumentException {
+    this(model, new InputStreamReader(System.in), ap);
+  }
+
+  /**
+   * Produces a Map of the text commands for various operations to the function objects that carry
+   * out the operations supported by this controller implementation.
+   *
+   * @return a HashMap of the operations supported by this controller implementation
+   */
   protected Map<String, Command> getCommands() {
     Map<String, Command> commands = new HashMap<>();
 
@@ -57,35 +113,51 @@ public class ImageControllerImpl implements ImageController {
     return commands;
   }
 
-  public void run() {
-    Scanner scanner = new Scanner(rd);
-
-      List<Command> commandsToRun = parseInput(scanner);
-
+  /**
+   * Send a message to the provided data destination to be rendered by the view.
+   *
+   * @param message the message to be transmitted
+   * @throws IllegalStateException if transmission of the message to the provided destination fails
+   */
+  void renderMessage(String message) throws IllegalStateException {
+    try {
+      this.view.renderMessage(message);
+    } catch (IOException e) {
+      throw new IllegalStateException("Failed transmitting the message to the provided Appendable");
+    }
   }
 
-  private List<Command> parseInput(Scanner scanner) {
+  @Override
+  public void run() {
+    Scanner scanner = new Scanner(this.rd);
     Map<String, Command> possibleCommands = this.getCommands();
 
-    List<Command> commandsToRun = new ArrayList<>();
-
-    while(scanner.hasNext()) {
+    while (scanner.hasNext()) {
       String latestCommand = scanner.next();
+      Command commandToRun = possibleCommands.getOrDefault(latestCommand, null);
 
-      if (scanner.hasNext()) {
-        String specification = scanner.next();
+      if (commandToRun != null) {
+        String specification = "";
+
+        if (scanner.hasNext()) {
+          specification = scanner.next();
+        } else {
+          this.renderMessage("Final command is missing a specification.");
+          // todo: inform (or throw exception) that last command is missing its specification
+        }
+
+        try {
+          commandToRun.execute(specification, this.model);
+        } catch (IllegalArgumentException e) {
+          this.renderMessage("Command failed to execute. Reason: " + e.getMessage());
+        }
+
+      } else {
+        this.renderMessage("Provided command is invalid or not supported.");
+        // todo: inform (or throw exception) about invalid command
       }
-      else {
-        // todo: decide what to do if odd number of strings in input
-      }
-
-      commandsToRun.add(possibleCommands.getOrDefault(latestCommand, null));
-      // todo: make it throw a proper error if null
-
-      // probably just run it now not return the list? adjust accordingly
     }
-
-    return null;
   }
-
 }
+
+
