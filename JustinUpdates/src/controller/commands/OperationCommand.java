@@ -1,5 +1,6 @@
 package controller.commands;
 
+import model.ImageUtil;
 import model.image.ImageLayerModel;
 import model.operation.Operations;
 
@@ -13,15 +14,16 @@ abstract class OperationCommand implements Command {
 
   @Override
   public void execute(String specification, ImageLayerModel model) throws IllegalArgumentException {
-    int numTimesToApply = 0;
+    ImageUtil.requireNonNull(specification);
+    ImageUtil.requireNonNull(model);
+
+    int numTimesToApply;
 
     try {
       numTimesToApply = Integer.parseInt(specification);
     } catch (NumberFormatException e) {
       throw new IllegalArgumentException(
           "Specified number of times to apply filter operation is not a number.");
-      //todo: inform (or throw error) that this command can't work bc not a number
-      // or could choose to default to 1 time?
     }
 
     if (numTimesToApply < 1) {

@@ -15,4 +15,6 @@ public interface ImageLayerModel extends ImageProcessingModel {
   List<String> getLayerNames();
 
   void removeLayer(int index) throws IllegalArgumentException;
+
+  void setCurrentLayerImage(Image img);
 }

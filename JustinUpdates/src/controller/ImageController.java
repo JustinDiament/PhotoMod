@@ -9,7 +9,7 @@ package controller;
 public interface ImageController {
 
   /**
-   * Run the controller and being reading commands to control the Image modification program.
+   * Run the controller and begin reading commands to control the Image modification program.
    */
   void run();
 }

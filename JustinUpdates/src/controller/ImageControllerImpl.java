@@ -4,6 +4,8 @@ import controller.commands.BlurCommand;
 import controller.commands.ChangeCurrentLayerCommand;
 import controller.commands.Command;
 import controller.commands.CreateLayerCommand;
+import controller.commands.ExportAllCommand;
+import controller.commands.ImportCommand;
 import controller.commands.MonochromeCommand;
 import controller.commands.RemoveLayerCommand;
 import controller.commands.SepiaCommand;
@@ -74,7 +76,7 @@ public class ImageControllerImpl implements ImageController {
     try {
       this.rd = new FileReader(ImageUtil.requireNonNull(fileName));
     } catch (FileNotFoundException e) {
-      throw new IllegalArgumentException("File with the specified name not found");
+      throw new IllegalArgumentException(String.format("File %s not found", fileName));
     }
   }
 
@@ -100,15 +102,17 @@ public class ImageControllerImpl implements ImageController {
    */
   protected Map<String, Command> getCommands() {
     Map<String, Command> commands = new HashMap<>();
-
-    commands.put("Blur", new BlurCommand());
-    commands.put("Sharpen", new SharpenCommand());
-    commands.put("Sepia", new SepiaCommand());
-    commands.put("Monochrome", new MonochromeCommand());
-    commands.put("Current", new ChangeCurrentLayerCommand());
-    commands.put("CreateLayer", new CreateLayerCommand());
-    commands.put("RemoveLayer", new RemoveLayerCommand());
-    commands.put("Visibility", new VisibilityCommand());
+    commands.put("blur", new BlurCommand());
+    commands.put("sharpen", new SharpenCommand());
+    commands.put("sepia", new SepiaCommand());
+    commands.put("monochrome", new MonochromeCommand());
+    commands.put("current", new ChangeCurrentLayerCommand());
+    commands.put("createlayer", new CreateLayerCommand());
+    commands.put("removelayer", new RemoveLayerCommand());
+    commands.put("visibility", new VisibilityCommand());
+    commands.put("createcheckerboard", new VisibilityCommand());
+    commands.put("import", new ImportCommand());
+    commands.put("exportall", new ExportAllCommand());
 
     return commands;
   }
@@ -119,9 +123,9 @@ public class ImageControllerImpl implements ImageController {
    * @param message the message to be transmitted
    * @throws IllegalStateException if transmission of the message to the provided destination fails
    */
-  void renderMessage(String message) throws IllegalStateException {
+  private void renderMessage(String message) throws IllegalStateException {
     try {
-      this.view.renderMessage(message);
+      this.view.renderMessage(message + "\n");
     } catch (IOException e) {
       throw new IllegalStateException("Failed transmitting the message to the provided Appendable");
     }
@@ -133,17 +137,23 @@ public class ImageControllerImpl implements ImageController {
     Map<String, Command> possibleCommands = this.getCommands();
 
     while (scanner.hasNext()) {
-      String latestCommand = scanner.next();
+      String latestCommand = scanner.next().toLowerCase();
+      if (this.isQuit(latestCommand)) {
+        return;
+      }
+
       Command commandToRun = possibleCommands.getOrDefault(latestCommand, null);
 
       if (commandToRun != null) {
         String specification = "";
 
         if (scanner.hasNext()) {
-          specification = scanner.next();
+          specification = scanner.next().toLowerCase();
+          if (this.isQuit(specification)) {
+            return;
+          }
         } else {
           this.renderMessage("Final command is missing a specification.");
-          // todo: inform (or throw exception) that last command is missing its specification
         }
 
         try {
@@ -154,10 +164,21 @@ public class ImageControllerImpl implements ImageController {
 
       } else {
         this.renderMessage("Provided command is invalid or not supported.");
-        // todo: inform (or throw exception) about invalid command
       }
     }
   }
+
+  /**
+   * Checks if the user input indicates that the program should quit scripting.
+   *
+   * @param input the message to check for quitting
+   * @return whether the user input has indicated to quit scripting
+   */
+  private boolean isQuit(String input) {
+    if (input.equalsIgnoreCase("q")) {
+      this.renderMessage("Scripting was quit");
+      return true;
+    }
+    return false;
+  }
 }
-
-

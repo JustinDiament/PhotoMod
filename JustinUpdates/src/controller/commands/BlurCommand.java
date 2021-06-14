@@ -12,4 +12,3 @@ public class BlurCommand extends OperationCommand {
     return Operations.BLUR;
   }
 }
-

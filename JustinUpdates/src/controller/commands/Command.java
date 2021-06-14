@@ -17,5 +17,3 @@ public interface Command {
    */
   void execute(String specification, ImageLayerModel model);
 }
-
-

@@ -1,5 +1,6 @@
 package controller.commands;
 
+import model.ImageUtil;
 import model.image.ImageLayerModel;
 
 /**
@@ -9,6 +10,9 @@ public class CreateLayerCommand implements Command {
 
   @Override
   public void execute(String specification, ImageLayerModel model) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(specification);
+    ImageUtil.requireNonNull(model);
+
     model.addLayer(specification);
   }
 }

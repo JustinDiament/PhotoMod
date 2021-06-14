@@ -12,12 +12,19 @@ public class ImageTextViewImpl implements ImageTextView {
   private final Appendable ap;
 
   /**
-   * Constructs a ImageTextViewImpl object using a given Appendable object.
+   * Constructs an ImageTextViewImpl object using a given Appendable object.
    *
    * @param ap the Appendable that messages to be displayed in the view will be transcribed to
    */
   public ImageTextViewImpl(Appendable ap) {
     this.ap = (ap == null) ? System.out : ap;
+  }
+
+  /**
+   * Constructs an ImageTextViewImpl object using System.out as the default Appendable.
+   */
+  public ImageTextViewImpl() {
+    this(System.out);
   }
 
   @Override

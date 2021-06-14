@@ -1,18 +1,12 @@
 package model.image.file;
 
-import model.image.Image;
-
-// todo
-
-public class PNG implements ImageFile {
-
-  @Override
-  public Image importFile(String filename) throws IllegalArgumentException {
-    return null;
-  }
+/**
+ * Represents an image file in PNG format. PNG files are handled using ImageIO and BufferedImages.
+ */
+public class PNG extends ImageFileFormat {
 
   @Override
-  public void exportFile(String filename, Image img) throws IllegalArgumentException {
-
+  protected String getExtension() {
+    return "png";
   }
 }
