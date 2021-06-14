@@ -163,6 +163,12 @@ public class ImageControllerImpl implements ImageController {
     }
   }
 
+  /**
+   * Checks if the user input indicates that the program should quit scripting.
+   *
+   * @param input the message to check for quitting
+   * @return whether the user input has indicated to quit scripting
+   */
   private boolean isQuit(String input) {
     if (input.equalsIgnoreCase("q")) {
       this.renderMessage("Scripting was quit");

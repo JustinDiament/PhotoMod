@@ -25,7 +25,7 @@ import model.image.programmatic.ProgrammaticCreator;
 import model.operation.Operations;
 
 // todo: controller has currentLayer field that gets mutated based on user input
-
+// todo: docstrings everywhere, add public methods to interface
 public class ImageLayerModelImpl extends ImageProcessingModelImpl implements ImageLayerModel {
 
   // todo: document why we need these fields
@@ -39,7 +39,6 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
 
 
   @Override
-  // todo: why does this take in a name??
   public void addLayer(String name) {
     this.layers.add(new LayerImpl(null, name));
   }
@@ -58,7 +57,12 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
 
-
+  /**
+   * Checks if the given index corresponds to a layer in the list of layers.
+   *
+   * @param index the index to check for validity
+   * @throws IllegalArgumentException if the index falls outside the bounds of the list of layers
+   */
   private void isValidLayer(int index) throws IllegalArgumentException {
     if (index < 0 || index >= layers.size()) {
       throw new IllegalArgumentException("Layer index is invalid");
@@ -181,9 +185,12 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     // todo: what to do with image argument? ignore? pass in null?
   }
 
-  // check that the dimensions of all layers are the same
+  /**
+   * Checks that the given image shares the same dimensions as the rest of the layers.
+   *
+   * @param img the image to check the dimensions of
+   */
   private void verifyLayerDimensions(Image img) {
-    // do nothing if the model has no layers
     if (this.layers.size() == 0) {
       return;
     }
