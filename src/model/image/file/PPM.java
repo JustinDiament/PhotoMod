@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 import model.ImageUtil;
 import model.image.Image;
-import model.image.ImageImpl;
 import model.image.Pixel;
 import model.image.PixelImpl;
 
@@ -23,7 +22,7 @@ import model.image.PixelImpl;
  *   <li>RGB values of each pixel</li>
  * </ul>
  */
-public class PPM implements ImageFile {
+public class PPM extends ImageFileFormat {
 
   @Override
   public Image importFile(String filename) throws IllegalArgumentException {
@@ -80,26 +79,6 @@ public class PPM implements ImageFile {
     return sb.toString();
   }
 
-  /**
-   * Creates an Image with the given matrix of Pixels transposed.
-   *
-   * @param pixels the matrix of pixels to be transposed and used to create an Image
-   * @return an image using the given pixels transposed
-   * @throws IllegalArgumentException if the given pixels are null
-   */
-  private Image transpose(List<List<Pixel>> pixels) throws IllegalArgumentException {
-    ImageUtil.requireNonNull(pixels);
-    List<List<Pixel>> pixelsTranspose = new ArrayList<>();
-    for (int i = 0; i < pixels.get(0).size(); i++) {
-      List<Pixel> column = new ArrayList<>();
-      for (List<Pixel> pixel : pixels) {
-        column.add(pixel.get(i));
-      }
-      pixelsTranspose.add(column);
-    }
-    return new ImageImpl(pixelsTranspose);
-  }
-
   @Override
   public void exportFile(String filename, Image img) throws IllegalArgumentException {
     ImageUtil.requireNonNull(img);
@@ -131,5 +110,10 @@ public class PPM implements ImageFile {
     } catch (IOException e) {
       throw new IllegalArgumentException("Failed to export the image as a PPM file");
     }
+  }
+
+  @Override
+  protected String getExtension() {
+    return "ppm";
   }
 }

@@ -36,7 +36,7 @@ public class ImageImplTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void listOfPixelsCannotBeNull() {
-    new ImageImpl(null);
+    new ImageImpl((List<List<Pixel>>) null);
   }
 
   @Test

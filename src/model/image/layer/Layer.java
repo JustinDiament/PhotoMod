@@ -6,7 +6,6 @@ public interface Layer {
 
   Image getImage();
   String getName();
-  void setVisibility();
+  void setVisibility(boolean visibility);
   boolean getVisibility();
-
 }

@@ -2237,8 +2237,8 @@ public class ImageProcessingModelImplTest {
     assertNotNull(img);
     assertTrue(img instanceof ImageImpl);
     assertEquals(ImageImpl.class, img.getClass());
-    assertEquals(1, img.getHeight());
-    assertEquals(1, img.getWidth());
+    assertEquals(5, img.getHeight());
+    assertEquals(5, img.getWidth());
   }
 
   // test that a null file cannot be written
@@ -2250,14 +2250,14 @@ public class ImageProcessingModelImplTest {
   // test that a null image cannot be written
   @Test(expected = IllegalArgumentException.class)
   public void testExportNullImage() {
-    this.m1.exportImage("res\\test\\test_export.ppm", null);
+    this.m1.exportImage("res\\test\\test_good.ppm", null);
   }
 
   // test that a valid image is able to be exported properly to a valid file path
   @Test
   public void testExportPPM() {
-    this.m1.exportImage("res\\test\\test_export.ppm", this.i1);
-    Image img = this.m1.importImage("res\\test\\test_export.ppm");
+    this.m1.exportImage("res\\test\\test_good.ppm", this.i1);
+    Image img = this.m1.importImage("res\\test\\test_good.ppm");
     assertNotNull(img);
     assertTrue(img instanceof ImageImpl);
     assertEquals(ImageImpl.class, img.getClass());
@@ -2266,13 +2266,13 @@ public class ImageProcessingModelImplTest {
   // test that a valid image overwrites an existing image at the valid file path
   @Test
   public void testExportPPMOverwrite() {
-    this.m1.exportImage("res\\test\\test_export.ppm", this.i1);
-    Image img = this.m1.importImage("res\\test\\test_export.ppm");
+    this.m1.exportImage("res\\test\\test_good.ppm", this.i1);
+    Image img = this.m1.importImage("res\\test\\test_good.ppm");
     assertNotNull(img);
     assertTrue(img instanceof ImageImpl);
     assertEquals(ImageImpl.class, img.getClass());
-    this.m1.exportImage("res\\test\\test_export.ppm", this.i1);
-    Image img2 = this.m1.importImage("res\\test\\test_export.ppm");
+    this.m1.exportImage("res\\test\\test_good.ppm", this.i1);
+    Image img2 = this.m1.importImage("res\\test\\test_good.ppm");
     assertNotNull(img2);
     assertTrue(img2 instanceof ImageImpl);
     assertEquals(ImageImpl.class, img2.getClass());

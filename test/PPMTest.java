@@ -82,16 +82,16 @@ public class PPMTest {
   // test that a null image cannot be written
   @Test(expected = IllegalArgumentException.class)
   public void testExportNullImage() {
-    this.i.exportFile("res\\test\\test_export.ppm", null);
+    this.i.exportFile("res\\test\\test_good.ppm", null);
   }
 
   // test that a valid image is able to be exported properly to a valid file path
   @Test
   public void testExportPPM() {
     assertNotNull(this.i2);
-    this.i.exportFile("res\\test\\test_export.ppm", this.i2);
+    this.i.exportFile("res\\test\\test_good.ppm", this.i2);
     assertNull(this.i1);
-    this.i1 = this.i.importFile("res\\test\\test_export.ppm");
+    this.i1 = this.i.importFile("res\\test\\test_good.ppm");
     assertNotNull(this.i1);
     assertTrue(this.i1 instanceof ImageImpl);
     assertEquals(ImageImpl.class, this.i1.getClass());
@@ -101,14 +101,14 @@ public class PPMTest {
   @Test
   public void testExportPPMOverwrite() {
     assertNotNull(this.i2);
-    this.i.exportFile("res\\test\\test_export.ppm", this.i2);
+    this.i.exportFile("res\\test\\test_good.ppm", this.i2);
     assertNull(this.i1);
-    this.i1 = this.i.importFile("res\\test\\test_export.ppm");
+    this.i1 = this.i.importFile("res\\test\\test_good.ppm");
     assertNotNull(this.i1);
     assertTrue(this.i1 instanceof ImageImpl);
     assertEquals(ImageImpl.class, this.i1.getClass());
-    this.i.exportFile("res\\test\\test_export.ppm", this.i2);
-    this.i1 = this.i.importFile("res\\test\\test_export.ppm");
+    this.i.exportFile("res\\test\\test_good.ppm", this.i2);
+    this.i1 = this.i.importFile("res\\test\\test_good.ppm");
     assertNotNull(this.i1);
     assertTrue(this.i1 instanceof ImageImpl);
     assertEquals(ImageImpl.class, this.i1.getClass());
