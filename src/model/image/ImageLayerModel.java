@@ -11,11 +11,30 @@ import model.image.layer.Layer;
  */
 public interface ImageLayerModel extends ImageProcessingModel {
 
-  void addLayer(String name);
+  /**
+   * Adds a new layer to the top of the list of layers with a default null Image and set to
+   * visible.
+   *
+   * @param name the name to give to the new layer
+   * @throws IllegalArgumentException if the given name is null
+   */
+  void addLayer(String name) throws IllegalArgumentException;
 
-  void setCurrentLayerImage(Image img);
+  /**
+   * Sets the Image stored by the current layer to the given image.
+   *
+   * @param img the new Image to store in the current layer
+   * @throws IllegalArgumentException if the current layer index is invalid
+   */
+  void setCurrentLayerImage(Image img) throws IllegalArgumentException;
 
-  void setCurrentLayer(int index);
+  /**
+   * Sets the current layer index to the given value.
+   *
+   * @param index the value to set as the current layer index
+   * @throws IllegalArgumentException if the given index is invalid
+   */
+  void setCurrentLayer(int index) throws IllegalArgumentException;
 
   /**
    * Retrieves the current layer specified by the model from the list of layers.

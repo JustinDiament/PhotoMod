@@ -21,31 +21,41 @@ import model.image.layer.LayerImpl;
 import model.image.programmatic.ProgrammaticCreator;
 import model.operation.Operations;
 
-// todo: docstrings everywhere, add public methods to interface
+/**
+ * Represents the model of an Image modification program. The model processes Images provided by the
+ * user and modifies it with operations such as filters chosen by the user. The model stores Images
+ * that it processes within Layers that can be individually manipulated, as well as index that
+ * points to the current layer to manipulate. The model also provides the ability to import and
+ * export both single and multi-layered images.
+ */
 public class ImageLayerModelImpl extends ImageProcessingModelImpl implements ImageLayerModel {
 
   private final List<Layer> layers;
   private int currentLayer;
 
+  /**
+   * Constructs a layered image processing model that is able to handle image files and perform
+   * operations on Image objects that are stored as Layers.
+   */
   public ImageLayerModelImpl() {
     this.layers = new ArrayList<>();
     this.currentLayer = -1;
   }
 
   @Override
-  public void addLayer(String name) {
+  public void addLayer(String name) throws IllegalArgumentException {
     this.layers.add(new LayerImpl(null, name));
   }
 
   @Override
-  public void setCurrentLayerImage(Image img) {
+  public void setCurrentLayerImage(Image img) throws IllegalArgumentException {
     Layer current = this.getCurrentLayer();
     this.layers
         .set(this.currentLayer, new LayerImpl(img, current.getName(), current.getVisibility()));
   }
 
   @Override
-  public void setCurrentLayer(int index) {
+  public void setCurrentLayer(int index) throws IllegalArgumentException {
     this.isValidLayer(index);
     this.currentLayer = index;
   }
@@ -155,7 +165,8 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
 
       // create a directory to store all files
       File f = new File(filename);
-      if (!f.getParentFile().mkdir() && Files.notExists(Path.of(String.valueOf(f.getParentFile())))) {
+      if (!f.getParentFile().mkdir() && Files
+          .notExists(Path.of(String.valueOf(f.getParentFile())))) {
         throw new IllegalArgumentException("Unable to create a directory for the layered image");
       }
 
