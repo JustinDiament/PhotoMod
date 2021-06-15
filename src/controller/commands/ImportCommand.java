@@ -15,7 +15,7 @@ public class ImportCommand implements Command {
     ImageUtil.requireNonNull(specification);
     ImageUtil.requireNonNull(model);
 
-    String[] splitOnPeriod = specification.split(".");
+    String[] splitOnPeriod = specification.split("\\.");
 
     if (splitOnPeriod.length != 2) {
       throw new IllegalArgumentException("Image name to be imported lacks extension type.");

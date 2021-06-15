@@ -17,7 +17,7 @@ public class RemoveLayerCommand implements Command {
     List<String> layerNames = model.getLayerNames();
 
     for (int i = 0; i < layerNames.size(); i++) {
-      if (layerNames.get(i) == specification) {
+      if (layerNames.get(i).equals(specification)) {
         model.removeLayer(i);
 
         model.setCurrentLayer(-1);

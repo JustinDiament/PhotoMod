@@ -6,6 +6,7 @@ import controller.commands.Command;
 import controller.commands.CreateCheckerboardCommand;
 import controller.commands.CreateLayerCommand;
 import controller.commands.ExportAllCommand;
+import controller.commands.ExportCommand;
 import controller.commands.ImportCommand;
 import controller.commands.MonochromeCommand;
 import controller.commands.RemoveLayerCommand;
@@ -114,6 +115,7 @@ public class ImageControllerImpl implements ImageController {
     commands.put("createcheckerboard", new CreateCheckerboardCommand());
     commands.put("import", new ImportCommand());
     commands.put("exportall", new ExportAllCommand());
+    commands.put("export", new ExportCommand());
 
     return commands;
   }
