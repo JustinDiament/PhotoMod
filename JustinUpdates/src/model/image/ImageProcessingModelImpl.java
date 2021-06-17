@@ -48,18 +48,19 @@ public class ImageProcessingModelImpl implements ImageProcessingModel {
   }
 
   @Override
-  public Image importImage(String filename) throws IllegalArgumentException {
+  public Image importImage(String filename, String extension) throws IllegalArgumentException {
     ImageUtil.requireNonNull(filename);
-    String extension = filename.substring(filename.indexOf(".") + 1);
+    ImageUtil.requireNonNull(extension);
     ImageFile file = ImageUtil.requireNonNull(this.filesMap.getOrDefault(extension, null));
     return file.importFile(filename);
   }
 
   @Override
-  public void exportImage(String filename, Image img) throws IllegalArgumentException {
+  public void exportImage(String filename, String extension, Image img)
+      throws IllegalArgumentException {
     ImageUtil.requireNonNull(filename);
+    ImageUtil.requireNonNull(extension);
     ImageUtil.requireNonNull(img);
-    String extension = filename.substring(filename.indexOf(".") + 1);
     ImageFile file = ImageUtil.requireNonNull(this.filesMap.getOrDefault(extension, null));
     file.exportFile(filename, img);
   }

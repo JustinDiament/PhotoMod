@@ -3,6 +3,8 @@ package controller.commands;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+import model.ImageUtil;
 import model.image.ImageLayerModel;
 import model.image.programmatic.CreateCheckerboard;
 
@@ -13,35 +15,52 @@ import model.image.programmatic.CreateCheckerboard;
 public class CreateCheckerboardCommand implements Command {
 
   @Override
-  public void execute(String specification, ImageLayerModel model) {
+  public void execute(Scanner scanner, ImageLayerModel model) {
+    ImageUtil.requireNonNull(scanner);
+    ImageUtil.requireNonNull(model);
 
-    String[] specifications = specification.split("-");
-
-    if (specifications.length != 4) {
-      throw new IllegalArgumentException(
-          "Specifications for creation of checkerboard incorrectly provided.");
-    }
-
-    int size;
-    int numSquares;
-    Color color1;
+    int size = 0;
+    int numSquares = 0;
+    Color color1 = Color.BLACK;
     Color color2;
 
-    try {
-      size = Integer.parseInt(specifications[0]);
-      numSquares = Integer.parseInt(specifications[1]);
+    if (scanner.hasNext()) {
+      try {
+        size = Integer.parseInt(scanner.next());
 
-    } catch (NumberFormatException e) {
-      throw new IllegalArgumentException(
-          "Integer arguments for checkerboard image incorrectly provided.");
+      } catch (NumberFormatException e) {
+        throw new IllegalArgumentException(
+            "Size of checkerboard provided is not an integer.");
+      }
     }
 
-    color1 = this.getSupportedColors().getOrDefault(specifications[2], null);
-    color2 = this.getSupportedColors().getOrDefault(specifications[3], null);
+    if (scanner.hasNext()) {
+      try {
+        numSquares = Integer.parseInt(scanner.next());
 
-    if (color1 == null || color2 == null) {
+      } catch (NumberFormatException e) {
+        throw new IllegalArgumentException(
+            "Size of checkerboard provided is not an integer.");
+      }
+    }
+
+    if (scanner.hasNext()) {
+      color1 = this.getSupportedColors().getOrDefault(scanner.next(), null);
+
+      if (color1 == null) {
+        throw new IllegalArgumentException("First requested color not supported.");
+      }
+    }
+
+    if (scanner.hasNext()) {
+      color2 = this.getSupportedColors().getOrDefault(scanner.next(), null);
+
+      if (color2 == null) {
+        throw new IllegalArgumentException("Second requested color not supported.");
+      }
+    } else {
       throw new IllegalArgumentException(
-          "Color arguments for checkerboard image incorrectly provided.");
+          "Not all specifications for checkerboard creation provided");
     }
 
     model.createProgrammaticImage(new CreateCheckerboard(size, numSquares, color1, color2));
@@ -54,8 +73,7 @@ public class CreateCheckerboardCommand implements Command {
    * @return a Map of names of colors to the Color types that are supported
    */
   protected Map<String, Color> getSupportedColors() {
-    Map<String, Color> supportedColors = new HashMap();
-
+    Map<String, Color> supportedColors = new HashMap<>();
     supportedColors.put("blue", Color.BLUE);
     supportedColors.put("black", Color.BLACK);
     supportedColors.put("white", Color.WHITE);
@@ -66,7 +84,6 @@ public class CreateCheckerboardCommand implements Command {
     supportedColors.put("cyan", Color.CYAN);
     supportedColors.put("magenta", Color.MAGENTA);
     supportedColors.put("gray", Color.GRAY);
-
     return supportedColors;
   }
 }

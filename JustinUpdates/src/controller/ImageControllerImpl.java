@@ -3,8 +3,10 @@ package controller;
 import controller.commands.BlurCommand;
 import controller.commands.ChangeCurrentLayerCommand;
 import controller.commands.Command;
+import controller.commands.CreateCheckerboardCommand;
 import controller.commands.CreateLayerCommand;
 import controller.commands.ExportAllCommand;
+import controller.commands.ExportCommand;
 import controller.commands.ImportCommand;
 import controller.commands.MonochromeCommand;
 import controller.commands.RemoveLayerCommand;
@@ -110,9 +112,10 @@ public class ImageControllerImpl implements ImageController {
     commands.put("createlayer", new CreateLayerCommand());
     commands.put("removelayer", new RemoveLayerCommand());
     commands.put("visibility", new VisibilityCommand());
-    commands.put("createcheckerboard", new VisibilityCommand());
+    commands.put("createcheckerboard", new CreateCheckerboardCommand());
     commands.put("import", new ImportCommand());
     commands.put("exportall", new ExportAllCommand());
+    commands.put("export", new ExportCommand());
 
     return commands;
   }
@@ -138,6 +141,7 @@ public class ImageControllerImpl implements ImageController {
 
     while (scanner.hasNext()) {
       String latestCommand = scanner.next().toLowerCase();
+
       if (this.isQuit(latestCommand)) {
         return;
       }
@@ -145,23 +149,11 @@ public class ImageControllerImpl implements ImageController {
       Command commandToRun = possibleCommands.getOrDefault(latestCommand, null);
 
       if (commandToRun != null) {
-        String specification = "";
-
-        if (scanner.hasNext()) {
-          specification = scanner.next().toLowerCase();
-          if (this.isQuit(specification)) {
-            return;
-          }
-        } else {
-          this.renderMessage("Final command is missing a specification.");
-        }
-
         try {
-          commandToRun.execute(specification, this.model);
+          commandToRun.execute(scanner, this.model);
         } catch (IllegalArgumentException e) {
           this.renderMessage("Command failed to execute. Reason: " + e.getMessage());
         }
-
       } else {
         this.renderMessage("Provided command is invalid or not supported.");
       }
@@ -176,7 +168,7 @@ public class ImageControllerImpl implements ImageController {
    */
   private boolean isQuit(String input) {
     if (input.equalsIgnoreCase("q")) {
-      this.renderMessage("Scripting was quit");
+      this.renderMessage("Image processing has been quit.");
       return true;
     }
     return false;

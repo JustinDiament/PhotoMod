@@ -1,8 +1,5 @@
 package model.image;
 
-// TODO: if we need new public methods, add ImageLayerModel interface that extends existing
-//  interface
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,38 +21,49 @@ import model.image.layer.LayerImpl;
 import model.image.programmatic.ProgrammaticCreator;
 import model.operation.Operations;
 
-// todo: controller has currentLayer field that gets mutated based on user input
-// todo: docstrings everywhere, add public methods to interface
+/**
+ * Represents the model of an Image modification program. The model processes Images provided by the
+ * user and modifies it with operations such as filters chosen by the user. The model stores Images
+ * that it processes within Layers that can be individually manipulated, as well as index that
+ * points to the current layer to manipulate. The model also provides the ability to import and
+ * export both single and multi-layered images.
+ */
 public class ImageLayerModelImpl extends ImageProcessingModelImpl implements ImageLayerModel {
 
-  // todo: document why we need these fields
   private final List<Layer> layers;
   private int currentLayer;
 
+  /**
+   * Constructs a layered image processing model that is able to handle image files and perform
+   * operations on Image objects that are stored as Layers.
+   */
   public ImageLayerModelImpl() {
     this.layers = new ArrayList<>();
     this.currentLayer = -1;
   }
 
-
   @Override
-  public void addLayer(String name) {
+  public void addLayer(String name) throws IllegalArgumentException {
     this.layers.add(new LayerImpl(null, name));
   }
 
-
-  public void setCurrentLayerImage(Image img) {
+  @Override
+  public void setCurrentLayerImage(Image img) throws IllegalArgumentException {
     Layer current = this.getCurrentLayer();
     this.layers
         .set(this.currentLayer, new LayerImpl(img, current.getName(), current.getVisibility()));
   }
 
-  // todo: add this to new interface
-  public void setCurrentLayer(int index) {
+  @Override
+  public void setCurrentLayer(int index) throws IllegalArgumentException {
+    if (index == -1) {
+      this.currentLayer = index;
+      return;
+    }
+
     this.isValidLayer(index);
     this.currentLayer = index;
   }
-
 
   /**
    * Checks if the given index corresponds to a layer in the list of layers.
@@ -69,14 +77,14 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     }
   }
 
-  // todo: add this to new interface
+  @Override
   public Layer getCurrentLayer() throws IllegalArgumentException {
     this.isValidLayer(this.currentLayer);
     return this.layers.get(this.currentLayer);
   }
 
   @Override
-  public void setCurrentLayerVisibility(boolean visibility) {
+  public void setCurrentLayerVisibility(boolean visibility) throws IllegalArgumentException {
     this.isValidLayer(this.currentLayer);
     this.getCurrentLayer().setVisibility(visibility);
   }
@@ -94,9 +102,7 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   public void removeLayer(int index) throws IllegalArgumentException {
     this.isValidLayer(index);
     this.layers.remove(index);
-    // todo: should this set currentlayer to -1? or previous layer?
   }
-
 
   @Override
   public Image applyOperation(Image img, Operations o) throws IllegalArgumentException {
@@ -118,15 +124,16 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
   @Override
-  public Image importImage(String filename) throws IllegalArgumentException {
+  public Image importImage(String filename, String extension) throws IllegalArgumentException {
     // initialize local variables
     ImageUtil.requireNonNull(filename);
-    String extension = filename.substring(filename.indexOf(".") + 1);
+    ImageUtil.requireNonNull(extension);
 
     // check if the provided filename is for a single or multi-layered image
     if (!extension.equals("txt")) {
-      Image img = super.importImage(filename);
+      Image img = super.importImage(filename, extension);
       this.setCurrentLayerImage(img);
+      this.verifyLayerDimensions(img);
       return img;
     }
 
@@ -139,32 +146,38 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     }
 
     while (sc.hasNext()) {
-      String s = sc.next();
-      Image img = super.importImage(s);
+      String path = sc.next();
+      String ext = sc.next();
+      String filepath = path.substring(0, path.indexOf("."));
+      this.addLayer(filepath);
+      this.setCurrentLayer(this.currentLayer == -1 ? 0 : this.currentLayer);
+      Image img = super.importImage(path, ext);
       this.setCurrentLayerImage(img);
       this.verifyLayerDimensions(img);
+      this.currentLayer++;
     }
     return this.layers.get(this.layers.size() - 1).getImage();
   }
 
   @Override
-  public void exportImage(String filename, Image img) throws IllegalArgumentException {
-    // initialize local variables
-    ImageUtil.requireNonNull(filename);
-    String extension = filename.substring(filename.indexOf(".") + 1);
-    String path = filename.substring(0, filename.indexOf("."));
-    StringBuilder sb = new StringBuilder();
-    String lineSeparator = System.lineSeparator();
-
-    // create a directory to store all files
-    File f = new File(filename);
-    if (!f.getParentFile().mkdir() && Files.notExists(Path.of(String.valueOf(f.getParentFile())))) {
-      throw new IllegalArgumentException("Unable to create a directory for the layered image");
-    }
-
-    // create a text file to store the files paths of all images
-    File txt = new File(path + ".txt");
+  public void exportImage(String filename, String extension, Image img) throws IllegalArgumentException {
     try {
+      // initialize local variables
+      ImageUtil.requireNonNull(filename);
+      ImageUtil.requireNonNull(extension);
+      String path = filename.substring(0, filename.indexOf("."));
+      StringBuilder sb = new StringBuilder();
+      String lineSeparator = System.lineSeparator();
+
+      // create a directory to store all files
+      File f = new File(filename);
+      if (!f.getParentFile().mkdir() && Files
+          .notExists(Path.of(String.valueOf(f.getParentFile())))) {
+        throw new IllegalArgumentException("Unable to create a directory for the layered image");
+      }
+
+      // create a text file to store the files paths of all images
+      File txt = new File(path + ".txt");
       if (!txt.createNewFile() && !Files.exists(Paths.get(path + ".txt"))) {
         throw new IOException();
       }
@@ -172,32 +185,47 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
 
       // export all layers as separate images and write their paths to the text file
       for (Layer l : this.layers) {
-        String imagePath = path + "_" + l.getName() + "." + extension;
-        super.exportImage(imagePath, l.getImage());
-        sb.append(imagePath).append(lineSeparator);
+        String imagePath = path + l.getName() + "." + extension;
+        super.exportImage(imagePath, extension, l.getImage());
+        sb.append(imagePath).append(" ").append(extension).append(lineSeparator);
       }
 
       txtWriter.write(sb.toString());
       txtWriter.close();
-    } catch (IOException e) {
+    } catch (NullPointerException | IOException e) {
       throw new IllegalArgumentException("Unable to create a text file");
     }
-    // todo: what to do with image argument? ignore? pass in null?
+  }
+
+  @Override
+  public void exportTopImage(String filename, String extension) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(filename);
+    ImageUtil.requireNonNull(extension);
+
+    for (int i = this.layers.size() - 1; i >= 0; i--) {
+      Layer l = this.layers.get(i);
+      if (l.getVisibility()) {
+        super.exportImage(filename, extension, l.getImage());
+        return;
+      }
+    }
+    throw new IllegalArgumentException("No layers are visible");
   }
 
   /**
    * Checks that the given image shares the same dimensions as the rest of the layers.
    *
    * @param img the image to check the dimensions of
+   * @throws IllegalArgumentException if the given image has different dimensions
    */
-  private void verifyLayerDimensions(Image img) {
+  private void verifyLayerDimensions(Image img) throws IllegalArgumentException {
     if (this.layers.size() == 0) {
       return;
     }
     for (Layer l : this.layers) {
       Image i = l.getImage();
       if ((i != null) && (i.getWidth() != img.getWidth() || i.getHeight() != img.getHeight())) {
-        throw new IllegalStateException("Layers in the model have differing dimensions");
+        throw new IllegalArgumentException("Layers in the model have differing dimensions");
       }
     }
   }

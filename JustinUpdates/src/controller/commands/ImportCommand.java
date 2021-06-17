@@ -1,5 +1,6 @@
 package controller.commands;
 
+import java.util.Scanner;
 import model.ImageUtil;
 import model.image.ImageLayerModel;
 
@@ -11,20 +12,24 @@ import model.image.ImageLayerModel;
 public class ImportCommand implements Command {
 
   @Override
-  public void execute(String specification, ImageLayerModel model) {
-    ImageUtil.requireNonNull(specification);
+  public void execute(Scanner scanner, ImageLayerModel model) {
+    ImageUtil.requireNonNull(scanner);
     ImageUtil.requireNonNull(model);
 
-    String[] splitOnPeriod = specification.split(".");
+    String fileName = "";
 
-    if (splitOnPeriod.length != 2) {
-      throw new IllegalArgumentException("Image name to be imported lacks extension type.");
+    if (scanner.hasNext()) {
+      fileName = scanner.next();
     }
 
-    try {
-      model.importImage(specification);
-    } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException("Failed to import file.");
+    if (scanner.hasNext()) {
+      try {
+        model.importImage(fileName, scanner.next().toLowerCase());
+      } catch (IllegalArgumentException e) {
+        throw new IllegalArgumentException("Failed to import file.");
+      }
+    } else {
+      throw new IllegalArgumentException("Not all specifications to import file provided.");
     }
   }
 }

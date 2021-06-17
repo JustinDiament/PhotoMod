@@ -5,9 +5,9 @@ import model.ImageUtil;
 import model.image.ImageLayerModel;
 
 /**
- * Function object to export all layers of an Image as a multi-layer Image.
+ * Function object to export the current layer of an Image when the export operation is requested.
  */
-public class ExportAllCommand implements Command {
+public class ExportCommand implements Command {
 
   @Override
   public void execute(Scanner scanner, ImageLayerModel model) {
@@ -22,7 +22,7 @@ public class ExportAllCommand implements Command {
 
     if (scanner.hasNext()) {
       try {
-        model.exportImage(fileName, scanner.next().toLowerCase(), null);
+        model.exportTopImage(fileName, scanner.next().toLowerCase());
       } catch (IllegalArgumentException e) {
         throw new IllegalArgumentException("Failed to export file.");
       }
