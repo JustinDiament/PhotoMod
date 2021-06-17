@@ -1,2 +1,2 @@
-res\test\layer\test.jpg
-res\test\layer\test2.jpg
+res\test\layer\test.jpg jpg
+res\test\layer\test2.jpg jpg

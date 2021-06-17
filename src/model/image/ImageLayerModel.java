@@ -72,8 +72,9 @@ public interface ImageLayerModel extends ImageProcessingModel {
    * Exports the topmost visible layer in the model as an image file.
    *
    * @param filename the file path to export the topmost image to
+   * @param extension the extension of the file type to export
    * @throws IllegalArgumentException if the file is unable to be exported or there are no visible
    *                                  layers in the model
    */
-  void exportTopImage(String filename) throws IllegalArgumentException;
+  void exportTopImage(String filename, String extension) throws IllegalArgumentException;
 }

@@ -20,7 +20,7 @@ public class ExportCommand implements Command {
     }
 
     try {
-      model.exportTopImage(specification);
+      model.exportTopImage(specification, "jpg");
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("Failed to export file.");
     }

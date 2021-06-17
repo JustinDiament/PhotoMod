@@ -77,6 +77,6 @@ public class Main {
     lm.addLayer("");
     lm.setCurrentLayer(0);
     lm.setCurrentLayerImage(aa);
-    lm.exportImage("res\\test_bad.jpg", null);
+    lm.exportImage("res\\test_bad.jpg", "jpg", null);
   }
 }

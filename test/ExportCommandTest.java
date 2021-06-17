@@ -48,7 +48,7 @@ public class ExportCommandTest {
   public void testExportTopmostVisibleLayer() {
     this.m.addLayer("");
     this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg");
+    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
     this.c.execute("res\\test\\layer\\test.jpg", this.m);
   }

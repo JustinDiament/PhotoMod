@@ -43,11 +43,11 @@ public class ExportAllCommandTest {
   public void testExportAllLayers() {
     this.m.addLayer("");
     this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg");
+    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
     this.m.addLayer("2");
     this.m.setCurrentLayer(1);
-    this.m.importImage("res\\test\\layer\\test2.jpg");
+    this.m.importImage("res\\test\\layer\\test2.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
     this.c.execute("res\\test\\layer\\test.jpg", this.m);
   }

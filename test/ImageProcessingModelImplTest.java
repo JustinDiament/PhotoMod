@@ -2209,31 +2209,31 @@ public class ImageProcessingModelImplTest {
   // test that a null file cannot be read
   @Test(expected = IllegalArgumentException.class)
   public void testImportNull() {
-    this.m1.importImage(null);
+    this.m1.importImage(null, "jpg");
   }
 
   // test that a file that cannot be found cannot be read
   @Test(expected = IllegalArgumentException.class)
   public void testImportFake() {
-    this.m1.importImage("");
+    this.m1.importImage("", "jpg");
   }
 
   // test that a file type that isn't included in the map cannot be read
   @Test(expected = IllegalArgumentException.class)
   public void testImportInvalidFileType() {
-    this.m1.importImage("res\\test\\test.txt");
+    this.m1.importImage("res\\test\\test.txt", "txt");
   }
 
   // test that an invalid PPM file cannot be read
   @Test(expected = IllegalArgumentException.class)
   public void testImportBadPPM() {
-    this.m1.importImage("res\\test\\test_bad.ppm");
+    this.m1.importImage("res\\test\\test_bad.ppm", "ppm");
   }
 
   // test that a valid PPM is imported properly and a corresponding Image object is created
   @Test
   public void testImportPPM() {
-    Image img = this.m1.importImage("res\\test\\test_good.ppm");
+    Image img = this.m1.importImage("res\\test\\test_good.ppm", "ppm");
     assertNotNull(img);
     assertTrue(img instanceof ImageImpl);
     assertEquals(ImageImpl.class, img.getClass());
@@ -2244,20 +2244,20 @@ public class ImageProcessingModelImplTest {
   // test that a null file cannot be written
   @Test(expected = IllegalArgumentException.class)
   public void testExportNullFile() {
-    this.m1.exportImage(null, this.i1);
+    this.m1.exportImage(null, "ppm", this.i1);
   }
 
   // test that a null image cannot be written
   @Test(expected = IllegalArgumentException.class)
   public void testExportNullImage() {
-    this.m1.exportImage("res\\test\\test_good.ppm", null);
+    this.m1.exportImage("res\\test\\test_good.ppm", "ppm", null);
   }
 
   // test that a valid image is able to be exported properly to a valid file path
   @Test
   public void testExportPPM() {
-    this.m1.exportImage("res\\test\\test_good.ppm", this.i1);
-    Image img = this.m1.importImage("res\\test\\test_good.ppm");
+    this.m1.exportImage("res\\test\\test_good.ppm", "ppm", this.i1);
+    Image img = this.m1.importImage("res\\test\\test_good.ppm", "ppm");
     assertNotNull(img);
     assertTrue(img instanceof ImageImpl);
     assertEquals(ImageImpl.class, img.getClass());
@@ -2266,13 +2266,13 @@ public class ImageProcessingModelImplTest {
   // test that a valid image overwrites an existing image at the valid file path
   @Test
   public void testExportPPMOverwrite() {
-    this.m1.exportImage("res\\test\\test_good.ppm", this.i1);
-    Image img = this.m1.importImage("res\\test\\test_good.ppm");
+    this.m1.exportImage("res\\test\\test_good.ppm", "ppm", this.i1);
+    Image img = this.m1.importImage("res\\test\\test_good.ppm", "ppm");
     assertNotNull(img);
     assertTrue(img instanceof ImageImpl);
     assertEquals(ImageImpl.class, img.getClass());
-    this.m1.exportImage("res\\test\\test_good.ppm", this.i1);
-    Image img2 = this.m1.importImage("res\\test\\test_good.ppm");
+    this.m1.exportImage("res\\test\\test_good.ppm", "ppm", this.i1);
+    Image img2 = this.m1.importImage("res\\test\\test_good.ppm", "ppm");
     assertNotNull(img2);
     assertTrue(img2 instanceof ImageImpl);
     assertEquals(ImageImpl.class, img2.getClass());

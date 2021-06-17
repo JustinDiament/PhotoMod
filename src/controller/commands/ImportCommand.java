@@ -22,7 +22,7 @@ public class ImportCommand implements Command {
     }
 
     try {
-      model.importImage(specification);
+      model.importImage(specification, "jpg");
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("Failed to import file.");
     }

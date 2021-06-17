@@ -102,73 +102,72 @@ public class ImageLayerModelImplTest {
     assertEquals(0, this.m.getLayerNames().size());
   }
 
-
   // todo: applyOperation
   // todo: createProgrammaticImage
 
 
   @Test(expected = IllegalArgumentException.class)
   public void testExportTopImageNullFile() {
-    this.m.exportTopImage(null);
+    this.m.exportTopImage(null, "jpg");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testExportTopImageInvalidFile() {
-    this.m.exportTopImage("");
+    this.m.exportTopImage("", "jpg");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testExportTopImageNoVisibleLayers() {
-    this.m.exportTopImage("res\\test\\layer\\test.jpg");
+    this.m.exportTopImage("res\\test\\layer\\test.jpg", "jpg");
   }
 
   @Test
   public void testExportTopImage() {
     this.m.addLayer("");
     this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg");
+    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.m.exportTopImage("res\\test\\layer\\test.jpg");
+    this.m.exportTopImage("res\\test\\layer\\test.jpg", "jpg");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testExportNullFile() {
-    this.m.exportImage(null, null);
+    this.m.exportImage(null, "jpg", null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testExportInvalidFile() {
-    this.m.exportImage(".", null);
+    this.m.exportImage(".", "jpg", null);
   }
 
   @Test
   public void testExport() {
     this.m.addLayer("");
     this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg");
+    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
     this.m.addLayer("2");
     this.m.setCurrentLayer(1);
-    this.m.importImage("res\\test\\layer\\test2.jpg");
+    this.m.importImage("res\\test\\layer\\test2.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.m.exportImage("res\\test\\layer\\test.jpg", null);
+    this.m.exportImage("res\\test\\layer\\test.jpg", "jpg", null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testImportNullFile() {
-    this.m.importImage(null);
+    this.m.importImage(null, "jpg");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testImportInvalidFile() {
-    this.m.importImage(".");
+    this.m.importImage(".", "jpg");
   }
 
   @Test
   public void importSingleImage() {
     this.m.addLayer("first");
     this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg");
+    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
     assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
     assertEquals(1, this.m.getCurrentLayer().getImage().getWidth());
@@ -177,7 +176,7 @@ public class ImageLayerModelImplTest {
 
   @Test
   public void testImportLayeredImage() {
-    this.m.importImage("res\\test\\layer\\test.txt");
+    this.m.importImage("res\\test\\layer\\test.txt", "txt");
     assertEquals(2, this.m.getLayerNames().size());
     this.m.setCurrentLayer(0);
     assertTrue(this.m.getCurrentLayer().getVisibility());
@@ -195,9 +194,9 @@ public class ImageLayerModelImplTest {
   public void testImportLayeredImageInvalidDimensions() {
     this.m.addLayer("first");
     this.m.setCurrentLayer(0);
-    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test.jpg"));
+    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test.jpg", "jpg"));
     this.m.addLayer("second");
     this.m.setCurrentLayer(1);
-    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test_bad.jpg"));
+    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test_bad.jpg", "jpg"));
   }
 }

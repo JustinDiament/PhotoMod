@@ -119,14 +119,14 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
   @Override
-  public Image importImage(String filename) throws IllegalArgumentException {
+  public Image importImage(String filename, String extension) throws IllegalArgumentException {
     // initialize local variables
     ImageUtil.requireNonNull(filename);
-    String extension = filename.substring(filename.indexOf(".") + 1);
+    ImageUtil.requireNonNull(extension);
 
     // check if the provided filename is for a single or multi-layered image
     if (!extension.equals("txt")) {
-      Image img = super.importImage(filename);
+      Image img = super.importImage(filename, extension);
       this.setCurrentLayerImage(img);
       this.verifyLayerDimensions(img);
       return img;
@@ -141,11 +141,12 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     }
 
     while (sc.hasNext()) {
-      String s = sc.next();
-      String filepath = s.substring(0, s.indexOf("."));
+      String path = sc.next();
+      String ext = sc.next();
+      String filepath = path.substring(0, path.indexOf("."));
       this.addLayer(filepath);
       this.setCurrentLayer(this.currentLayer == -1 ? 0 : this.currentLayer);
-      Image img = super.importImage(s);
+      Image img = super.importImage(path, ext);
       this.setCurrentLayerImage(img);
       this.verifyLayerDimensions(img);
       this.currentLayer++;
@@ -154,11 +155,11 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
   @Override
-  public void exportImage(String filename, Image img) throws IllegalArgumentException {
+  public void exportImage(String filename, String extension, Image img) throws IllegalArgumentException {
     try {
       // initialize local variables
       ImageUtil.requireNonNull(filename);
-      String extension = filename.substring(filename.indexOf(".") + 1);
+      ImageUtil.requireNonNull(extension);
       String path = filename.substring(0, filename.indexOf("."));
       StringBuilder sb = new StringBuilder();
       String lineSeparator = System.lineSeparator();
@@ -180,8 +181,8 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
       // export all layers as separate images and write their paths to the text file
       for (Layer l : this.layers) {
         String imagePath = path + l.getName() + "." + extension;
-        super.exportImage(imagePath, l.getImage());
-        sb.append(imagePath).append(lineSeparator);
+        super.exportImage(imagePath, extension, l.getImage());
+        sb.append(imagePath).append(" ").append(extension).append(lineSeparator);
       }
 
       txtWriter.write(sb.toString());
@@ -192,13 +193,14 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
   @Override
-  public void exportTopImage(String filename) throws IllegalArgumentException {
+  public void exportTopImage(String filename, String extension) throws IllegalArgumentException {
     ImageUtil.requireNonNull(filename);
+    ImageUtil.requireNonNull(extension);
 
     for (int i = this.layers.size() - 1; i >= 0; i--) {
       Layer l = this.layers.get(i);
       if (l.getVisibility()) {
-        super.exportImage(filename, l.getImage());
+        super.exportImage(filename, extension, l.getImage());
         return;
       }
     }
