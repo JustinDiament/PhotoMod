@@ -601,7 +601,7 @@ public class ImageLayerModelImplTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testExportInvalidFile() {
-    this.m.exportImage(".", "jpg", null);
+    this.m.exportImage("", "jpg", null);
   }
 
   @Test
@@ -614,7 +614,7 @@ public class ImageLayerModelImplTest {
     this.m.setCurrentLayer(1);
     this.m.importImage("res\\test\\layer\\test2.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.m.exportImage("res\\test\\layer\\test.jpg", "jpg", null);
+    this.m.exportImage("res\\test\\layer\\test", "jpg", null);
   }
 
   @Test(expected = IllegalArgumentException.class)

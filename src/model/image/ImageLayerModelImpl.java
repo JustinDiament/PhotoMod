@@ -168,27 +168,25 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
       // initialize local variables
       ImageUtil.requireNonNull(filename);
       ImageUtil.requireNonNull(extension);
-      String path = filename.substring(0, filename.indexOf("."));
       StringBuilder sb = new StringBuilder();
       String lineSeparator = System.lineSeparator();
 
       // create a directory to store all files
-      File f = new File(filename);
-      if (!f.getParentFile().mkdir() && Files
-          .notExists(Path.of(String.valueOf(f.getParentFile())))) {
+      File txt = new File(filename + ".txt");
+      if (!txt.getParentFile().mkdir() && Files
+          .notExists(Path.of(String.valueOf(txt.getParentFile())))) {
         throw new IllegalArgumentException("Unable to create a directory for the layered image");
       }
 
       // create a text file to store the files paths of all images
-      File txt = new File(path + ".txt");
-      if (!txt.createNewFile() && !Files.exists(Paths.get(path + ".txt"))) {
+      if (!txt.createNewFile() && !Files.exists(Paths.get(filename + ".txt"))) {
         throw new IOException();
       }
       FileWriter txtWriter = new FileWriter(txt.getPath());
 
       // export all layers as separate images and write their paths to the text file
       for (Layer l : this.layers) {
-        String imagePath = path + l.getName() + "." + extension;
+        String imagePath = filename + l.getName() + "." + extension;
         super.exportImage(imagePath, extension, l.getImage());
         sb.append(imagePath).append(" ").append(extension).append(lineSeparator);
       }
