@@ -56,6 +56,10 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
 
   @Override
   public void setCurrentLayer(int index) throws IllegalArgumentException {
+    if (index == -1) {
+      this.currentLayer = index;
+      return;
+    }
     this.isValidLayer(index);
     this.currentLayer = index;
   }

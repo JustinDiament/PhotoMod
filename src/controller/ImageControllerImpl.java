@@ -84,16 +84,15 @@ public class ImageControllerImpl implements ImageController {
 
   /**
    * Constructs a ImageControllerImpl object that carries out operations based on the given model's
-   * specifications and reads commands from the keyboard via System.in
+   * specifications, reads commands from the keyboard via System.in, and renders messages to the
+   * user via System.out
    *
    * @param model the model to carry out the requested operations
-   * @param ap    an Appendable object that will be passed to a view to communicate any errors that
-   *              occur in command input
    * @throws IllegalArgumentException if any of the given arguments are null
    */
-  public ImageControllerImpl(ImageLayerModel model, Appendable ap)
+  public ImageControllerImpl(ImageLayerModel model)
       throws IllegalArgumentException {
-    this(model, new InputStreamReader(System.in), ap);
+    this(model, new InputStreamReader(System.in), System.out);
   }
 
   /**
@@ -141,6 +140,7 @@ public class ImageControllerImpl implements ImageController {
 
     while (scanner.hasNext()) {
       String latestCommand = scanner.next().toLowerCase();
+
       if (this.isQuit(latestCommand)) {
         return;
       }
@@ -148,23 +148,11 @@ public class ImageControllerImpl implements ImageController {
       Command commandToRun = possibleCommands.getOrDefault(latestCommand, null);
 
       if (commandToRun != null) {
-        String specification = "";
-
-        if (scanner.hasNext()) {
-          specification = scanner.next().toLowerCase();
-          if (this.isQuit(specification)) {
-            return;
-          }
-        } else {
-          this.renderMessage("Final command is missing a specification.");
-        }
-
         try {
-          commandToRun.execute(specification, this.model);
+          commandToRun.execute(scanner, this.model);
         } catch (IllegalArgumentException e) {
           this.renderMessage("Command failed to execute. Reason: " + e.getMessage());
         }
-
       } else {
         this.renderMessage("Provided command is invalid or not supported.");
       }
@@ -179,7 +167,7 @@ public class ImageControllerImpl implements ImageController {
    */
   private boolean isQuit(String input) {
     if (input.equalsIgnoreCase("q")) {
-      this.renderMessage("Scripting was quit");
+      this.renderMessage("Image processing has been quit.");
       return true;
     }
     return false;

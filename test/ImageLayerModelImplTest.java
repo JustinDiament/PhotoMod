@@ -4,8 +4,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collections;
+import model.image.Image;
+import model.image.ImageImpl;
 import model.image.ImageLayerModel;
 import model.image.ImageLayerModelImpl;
+import model.image.PixelImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +19,7 @@ import org.junit.Test;
 public class ImageLayerModelImplTest {
 
   private ImageLayerModel m;
+  private Image i1;
 
   /**
    * Initialize variables for testing.
@@ -22,6 +27,8 @@ public class ImageLayerModelImplTest {
   @Before
   public void init() {
     this.m = new ImageLayerModelImpl();
+    this.i1 = new ImageImpl(Collections.singletonList(
+        Collections.singletonList(new PixelImpl(0, 0, 0))));
   }
 
   @Test
@@ -34,9 +41,67 @@ public class ImageLayerModelImplTest {
     this.m.getCurrentLayer();
   }
 
-  // todo: addLayer
-  // todo: setCurrentLayerImage
-  // todo: setCurrentLayer
+  @Test
+  public void testAddLayer() {
+    this.m.addLayer("l");
+    this.m.setCurrentLayer(0);
+    assertNull(this.m.getCurrentLayer().getImage());
+    assertEquals("l", this.m.getCurrentLayer().getName());
+    assertTrue(this.m.getCurrentLayer().getVisibility());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddLayerNullName() {
+    this.m.addLayer(null);
+  }
+
+  @Test
+  public void testSetCurrentLayerImage() {
+    this.m.addLayer("l");
+    this.m.setCurrentLayer(0);
+    this.m.setCurrentLayerImage(this.i1);
+    assertEquals(1, this.m.getCurrentLayer().getImage().getWidth());
+    assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
+    assertEquals(0, this.m.getCurrentLayer().getImage().getPixelAt(0, 0).getRed());
+    assertEquals(0, this.m.getCurrentLayer().getImage().getPixelAt(0, 0).getGreen());
+    assertEquals(0, this.m.getCurrentLayer().getImage().getPixelAt(0, 0).getBlue());
+    assertEquals("l", this.m.getCurrentLayer().getName());
+    assertTrue(this.m.getCurrentLayer().getVisibility());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetCurrentLayerImageNoLayers() {
+    this.m.setCurrentLayerImage(this.i1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetCurrentLayerImageNull() {
+    this.m.setCurrentLayerImage(null);
+  }
+
+  @Test
+  public void testSetCurrentLayerValidIndexPositive() {
+    this.m.addLayer("");
+    this.m.setCurrentLayer(0);
+    assertNull(this.m.getCurrentLayer().getImage());
+    assertEquals("", this.m.getCurrentLayer().getName());
+    assertTrue(this.m.getCurrentLayer().getVisibility());
+  }
+
+  @Test
+  public void testSetCurrentLayerValidIndexNegativeOne() {
+    this.m.setCurrentLayer(-1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetCurrentLayerInvalidIndexHigh() {
+    this.m.setCurrentLayer(10);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetCurrentLayerInvalidIndexLow() {
+    this.m.setCurrentLayer(-10);
+  }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetCurrentLayerInvalidIndex() {

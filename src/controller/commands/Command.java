@@ -1,5 +1,6 @@
 package controller.commands;
 
+import java.util.Scanner;
 import model.image.ImageLayerModel;
 
 /**
@@ -11,9 +12,9 @@ public interface Command {
   /**
    * Execute the operation of a specific command object's type on the given model's Images.
    *
-   * @param specification a modifier value to effect the execution of a particular command
-   * @param model         the ImageLayerModel object that controls the execution of commands and the
-   *                      Images being modified
+   * @param scanner the Scanner object to read data to configure the command's execution parameters
+   * @param model   the ImageLayerModel object that controls the execution of commands and the
+   *                Images being modified
    */
-  void execute(String specification, ImageLayerModel model);
+  void execute(Scanner scanner, ImageLayerModel model);
 }

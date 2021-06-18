@@ -1,5 +1,6 @@
 package controller.commands;
 
+import java.util.Scanner;
 import model.ImageUtil;
 import model.image.ImageLayerModel;
 
@@ -10,13 +11,22 @@ import model.image.ImageLayerModel;
 public class VisibilityCommand implements Command {
 
   @Override
-  public void execute(String specification, ImageLayerModel model) {
-    ImageUtil.requireNonNull(specification);
+  public void execute(Scanner scanner, ImageLayerModel model) {
+    ImageUtil.requireNonNull(scanner);
     ImageUtil.requireNonNull(model);
 
-    if (specification.equals("visible")) {
+    String visibility;
+
+    if (scanner.hasNext()) {
+      visibility = scanner.next();
+    }
+    else {
+      throw new IllegalArgumentException("No visibility level provided.");
+    }
+
+    if (visibility.equals("visible")) {
       model.setCurrentLayerVisibility(true);
-    } else if (specification.equals("invisible")) {
+    } else if (visibility.equals("invisible")) {
       model.setCurrentLayerVisibility(false);
     } else {
       throw new IllegalArgumentException("Specified visibility level is invalid.");
