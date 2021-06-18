@@ -34,9 +34,9 @@ import view.ImageTextViewImpl;
  */
 public class ImageControllerImpl implements ImageController {
 
-  ImageLayerModel model;
-  Readable rd;
-  ImageTextView view;
+  private final ImageLayerModel model;
+  private final Readable rd;
+  private final ImageTextView view;
 
   /**
    * Constructs a ImageControllerImpl object that carries out operations based on the given model's
@@ -150,7 +150,7 @@ public class ImageControllerImpl implements ImageController {
       if (commandToRun != null) {
         try {
           commandToRun.execute(scanner, this.model);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalStateException | IllegalArgumentException e) {
           this.renderMessage("Command failed to execute. Reason: " + e.getMessage());
         }
       } else {

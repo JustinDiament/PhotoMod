@@ -40,18 +40,18 @@ public interface ImageLayerModel extends ImageProcessingModel {
    * Retrieves the current layer specified by the model from the list of layers.
    *
    * @return the current layer from the list of layers
-   * @throws IllegalArgumentException if the current layer index is invalid
+   * @throws IllegalStateException if the current layer index is invalid
    */
-  Layer getCurrentLayer() throws IllegalArgumentException;
+  Layer getCurrentLayer() throws IllegalStateException;
 
   /**
    * Sets the visibility of the current layer to the specified value
    *
    * @param visibility the value to set the current layer's visibility to: true for visible, false
    *                   for invisible
-   * @throws IllegalArgumentException if the current layer index is invalid
+   * @throws IllegalStateException if the current layer index is invalid
    */
-  void setCurrentLayerVisibility(boolean visibility) throws IllegalArgumentException;
+  void setCurrentLayerVisibility(boolean visibility) throws IllegalStateException;
 
   /**
    * Generates a list of names of all of the layers.
@@ -77,4 +77,52 @@ public interface ImageLayerModel extends ImageProcessingModel {
    *                                  layers in the model
    */
   void exportTopImage(String filename, String extension) throws IllegalArgumentException;
+
+  /**
+   * Returns the Pixel in the current layer at the given location.
+   *
+   * @param x the x coordinate of the desired Pixel
+   * @param y the y coordinate of the desired Pixel
+   * @return the Pixel at the given location
+   * @throws IllegalArgumentException if the given location is outside the bounds of the current
+   *                                  layer
+   * @throws IllegalStateException    if the current layer has no Image or if the current layer is
+   *                                  invalid
+   */
+  Pixel getPixelInCurrentLayerAt(int x, int y)
+      throws IllegalArgumentException, IllegalStateException;
+
+  /**
+   * Returns a List of all of the Pixels in the Image in the current layer.
+   *
+   * @return a list of the current layer's image's pixels
+   * @throws IllegalStateException if the current layer has no Image or if the current layer is
+   *                               invalid
+   */
+  List<List<Pixel>> getCurrentLayerImagePixels() throws IllegalStateException;
+
+  /**
+   * Returns the Image contained by the current layer.
+   *
+   * @return the current layer's Image
+   * @throws IllegalStateException if the current layer has no Image or if the current layer is
+   *                               invalid
+   */
+  Image getCurrentLayerImage() throws IllegalStateException;
+
+  /**
+   * Returns the name of the current Layer.
+   *
+   * @return the current layer's name
+   * @throws IllegalStateException if the current layer is invalid
+   */
+  String getCurrentLayerName() throws IllegalStateException;
+
+  /**
+   * Is the current layer visible?
+   *
+   * @return the current layer's visibility status (true if it is visible, false if it is not)
+   * @throws IllegalStateException if the current layer is invalid
+   */
+  boolean getCurrentLayerVisibility() throws IllegalStateException;
 }

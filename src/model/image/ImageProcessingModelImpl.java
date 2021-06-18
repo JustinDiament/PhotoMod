@@ -19,7 +19,11 @@ import model.operation.SharpenOperation;
  */
 public class ImageProcessingModelImpl implements ImageProcessingModel {
 
-  // Made these fields protected to use in the new model class since they are not public-facing
+  // MODIFICATION: Changed these fields from private to protected. Protected methods below, namely
+  // getFiles and getOperations, were already protected with the intent to override them in future
+  // model extensions. However, in order to do so, access to these fields was needed. As a result,
+  // they were changed to protected. They are still not public facing, so this change will not
+  // cause issues with clients usage of the model.
   protected final Map<Operations, ImageOperation> operationsMap;
   protected final Map<String, ImageFile> filesMap;
 
