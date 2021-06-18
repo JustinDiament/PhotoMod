@@ -77,14 +77,18 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
   @Override
-  public Layer getCurrentLayer() throws IllegalArgumentException {
-    this.isValidLayer(this.currentLayer);
+  public Layer getCurrentLayer() throws IllegalStateException {
+    try {
+      this.isValidLayer(this.currentLayer);
+    }
+    catch (IllegalArgumentException e) {
+      throw new IllegalStateException("Current layer index is invalid");
+    }
     return this.layers.get(this.currentLayer);
   }
 
   @Override
-  public void setCurrentLayerVisibility(boolean visibility) throws IllegalArgumentException {
-    this.isValidLayer(this.currentLayer);
+  public void setCurrentLayerVisibility(boolean visibility) throws IllegalStateException {
     this.getCurrentLayer().setVisibility(visibility);
   }
 
@@ -164,27 +168,25 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
       // initialize local variables
       ImageUtil.requireNonNull(filename);
       ImageUtil.requireNonNull(extension);
-      String path = filename.substring(0, filename.indexOf("."));
       StringBuilder sb = new StringBuilder();
       String lineSeparator = System.lineSeparator();
 
       // create a directory to store all files
-      File f = new File(filename);
-      if (!f.getParentFile().mkdir() && Files
-          .notExists(Path.of(String.valueOf(f.getParentFile())))) {
+      File txt = new File(filename + ".txt");
+      if (!txt.getParentFile().mkdir() && Files
+          .notExists(Path.of(String.valueOf(txt.getParentFile())))) {
         throw new IllegalArgumentException("Unable to create a directory for the layered image");
       }
 
       // create a text file to store the files paths of all images
-      File txt = new File(path + ".txt");
-      if (!txt.createNewFile() && !Files.exists(Paths.get(path + ".txt"))) {
+      if (!txt.createNewFile() && !Files.exists(Paths.get(filename + ".txt"))) {
         throw new IOException();
       }
       FileWriter txtWriter = new FileWriter(txt.getPath());
 
       // export all layers as separate images and write their paths to the text file
       for (Layer l : this.layers) {
-        String imagePath = path + l.getName() + "." + extension;
+        String imagePath = filename + l.getName() + "." + extension;
         super.exportImage(imagePath, extension, l.getImage());
         sb.append(imagePath).append(" ").append(extension).append(lineSeparator);
       }
@@ -236,5 +238,50 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     files.put("jpg", new JPEG());
     files.put("png", new PNG());
     return files;
+  }
+
+  @Override
+  public Pixel getPixelInCurrentLayerAt(int x, int y)
+      throws IllegalArgumentException, IllegalStateException {
+
+    if (this.getCurrentLayer().getImage() != null) {
+      return this.getCurrentLayer().getImage().getPixelAt(x, y);
+    }
+    throw new IllegalStateException("Current layer has no Image");
+  }
+
+  @Override
+  public List<List<Pixel>> getCurrentLayerImagePixels() throws IllegalStateException {
+    Image currentImage = this.getCurrentLayer().getImage();
+
+    if (currentImage != null) {
+      List<List<Pixel>> pixels = new ArrayList<>();
+      for (int i = 0; i < currentImage.getWidth(); i++) {
+        pixels.add(new ArrayList<>());
+        for (int j = 0; j < currentImage.getHeight(); j++) {
+          pixels.get(i).add(currentImage.getPixelAt(i, j));
+        }
+      }
+      return pixels;
+    }
+    throw new IllegalStateException("Current layer has no Image");
+  }
+
+  @Override
+  public Image getCurrentLayerImage() throws IllegalStateException {
+    if (this.getCurrentLayer().getImage() != null) {
+      return this.getCurrentLayer().getImage();
+    }
+    throw new IllegalStateException("Current layer has no Image");
+  }
+
+  @Override
+  public String getCurrentLayerName() throws IllegalStateException {
+    return this.getCurrentLayer().getName();
+  }
+
+  @Override
+  public boolean getCurrentLayerVisibility() throws IllegalStateException {
+    return this.getCurrentLayer().getVisibility();
   }
 }

@@ -52,7 +52,7 @@ public class ExportAllCommandTest {
     this.m.setCurrentLayer(1);
     this.m.importImage("res\\test\\layer\\test2.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.s = new Scanner("res\\test\\layer\\test.jpg jpg");
+    this.s = new Scanner("res\\test\\layer\\test jpg");
     this.c.execute( this.s, this.m);
   }
 }

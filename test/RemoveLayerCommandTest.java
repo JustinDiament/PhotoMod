@@ -66,8 +66,8 @@ public class RemoveLayerCommandTest {
 
     try {
       this.model.getCurrentLayer();
-    } catch (IllegalArgumentException e) {
-      assertEquals("Layer index is invalid", e.getMessage());
+    } catch (IllegalStateException | IllegalArgumentException e) {
+      assertEquals("Current layer index is invalid", e.getMessage());
     }
 
     assertFalse(this.model.getLayerNames().contains("one"));
@@ -87,8 +87,8 @@ public class RemoveLayerCommandTest {
 
     try {
       this.model.getCurrentLayer();
-    } catch (IllegalArgumentException e) {
-      assertEquals("Layer index is invalid", e.getMessage());
+    } catch (IllegalStateException | IllegalArgumentException e) {
+      assertEquals("Current layer index is invalid", e.getMessage());
     }
 
     assertFalse(this.model.getLayerNames().contains("one"));
@@ -109,8 +109,8 @@ public class RemoveLayerCommandTest {
 
     try {
       this.model.getCurrentLayer();
-    } catch (IllegalArgumentException e) {
-      assertEquals("Layer index is invalid", e.getMessage());
+    } catch (IllegalStateException | IllegalArgumentException e) {
+      assertEquals("Current layer index is invalid", e.getMessage());
     }
 
     assertFalse(this.model.getLayerNames().contains("one"));
