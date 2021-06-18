@@ -1,55 +1,54 @@
-/*
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import controller.commands.Command;
 import controller.commands.ImportCommand;
+import java.util.Scanner;
 import model.image.ImageLayerModel;
 import model.image.ImageLayerModelImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-*/
 /**
  * Test class for the ImportCommand class.
- *//*
-
+ */
 public class ImportCommandTest {
 
   private Command c;
   private ImageLayerModel m;
+  private Scanner s;
 
-  */
-/**
+  /**
    * Initialize variables for testing.
-   *//*
-
+   */
   @Before
   public void init() {
     this.c = new ImportCommand();
     this.m = new ImageLayerModelImpl();
+    this.s = new Scanner("");
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testImportNullSpec() {
+  public void testImportNullScanner() {
     this.c.execute(null, this.m);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testImportNullModel() {
-    this.c.execute("res\\test\\layer\\test.jpg", null);
+    this.c.execute(this.s, null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidFileSpec() {
-    this.c.execute("", this.m);
+    this.c.execute(this.s, this.m);
   }
 
   @Test
   public void testImportSingleImage() {
     this.m.addLayer("first");
     this.m.setCurrentLayer(0);
-    this.c.execute("res\\test\\layer\\test.jpg", this.m);
+    this.s = new Scanner("res\\test\\layer\\test.jpg jpg");
+    this.c.execute(this.s, this.m);
     assertTrue(this.m.getCurrentLayer().getVisibility());
     assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
     assertEquals(1, this.m.getCurrentLayer().getImage().getWidth());
@@ -58,7 +57,8 @@ public class ImportCommandTest {
 
   @Test
   public void testImportLayeredImage() {
-    this.c.execute("res\\test\\layer\\test.txt", this.m);
+    this.s = new Scanner("res\\test\\layer\\test.txt txt");
+    this.c.execute(this.s, this.m);
     assertEquals(2, this.m.getLayerNames().size());
     this.m.setCurrentLayer(0);
     assertTrue(this.m.getCurrentLayer().getVisibility());
@@ -72,4 +72,3 @@ public class ImportCommandTest {
     assertEquals("res\\test\\layer\\test2", this.m.getCurrentLayer().getName());
   }
 }
-*/

@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import controller.commands.ChangeCurrentLayerCommand;
@@ -61,7 +62,7 @@ public class ChangeCurrentLayerCommandTest {
 
     change.execute(new Scanner("two"), this.model);
 
-    assertEquals(null, this.model.getCurrentLayer().getImage());
+    assertNull(this.model.getCurrentLayer().getImage());
     assertFalse(this.model.getCurrentLayer().getVisibility());
     assertEquals("two", this.model.getCurrentLayer().getName());
   }
@@ -74,7 +75,7 @@ public class ChangeCurrentLayerCommandTest {
 
     change.execute(new Scanner("two stuff"), this.model);
 
-    assertEquals(null, this.model.getCurrentLayer().getImage());
+    assertNull(this.model.getCurrentLayer().getImage());
     assertFalse(this.model.getCurrentLayer().getVisibility());
     assertEquals("two", this.model.getCurrentLayer().getName());
   }

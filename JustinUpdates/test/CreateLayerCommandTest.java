@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import controller.commands.CreateLayerCommand;
@@ -56,7 +57,7 @@ public class CreateLayerCommandTest {
     this.model.setCurrentLayer(1);
     assertEquals("two", this.model.getCurrentLayer().getName());
     assertTrue(this.model.getCurrentLayer().getVisibility());
-    assertEquals(null, this.model.getCurrentLayer().getImage());
+    assertNull(this.model.getCurrentLayer().getImage());
   }
 
   @Test
@@ -70,6 +71,6 @@ public class CreateLayerCommandTest {
     this.model.setCurrentLayer(1);
     assertEquals("two", this.model.getCurrentLayer().getName());
     assertTrue(this.model.getCurrentLayer().getVisibility());
-    assertEquals(null, this.model.getCurrentLayer().getImage());
+    assertNull(this.model.getCurrentLayer().getImage());
   }
 }

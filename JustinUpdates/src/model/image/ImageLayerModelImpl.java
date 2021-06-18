@@ -60,7 +60,6 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
       this.currentLayer = index;
       return;
     }
-
     this.isValidLayer(index);
     this.currentLayer = index;
   }
@@ -78,14 +77,18 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
   @Override
-  public Layer getCurrentLayer() throws IllegalArgumentException {
-    this.isValidLayer(this.currentLayer);
+  public Layer getCurrentLayer() throws IllegalStateException {
+    try {
+      this.isValidLayer(this.currentLayer);
+    }
+    catch (IllegalArgumentException e) {
+      throw new IllegalStateException("Current layer index is invalid");
+    }
     return this.layers.get(this.currentLayer);
   }
 
   @Override
-  public void setCurrentLayerVisibility(boolean visibility) throws IllegalArgumentException {
-    this.isValidLayer(this.currentLayer);
+  public void setCurrentLayerVisibility(boolean visibility) throws IllegalStateException {
     this.getCurrentLayer().setVisibility(visibility);
   }
 
@@ -237,5 +240,55 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     files.put("jpg", new JPEG());
     files.put("png", new PNG());
     return files;
+  }
+
+  @Override
+  public Pixel getPixelInCurrentLayerAt(int x, int y)
+      throws IllegalArgumentException, IllegalStateException {
+
+    if (this.getCurrentLayer().getImage() != null) {
+      return this.getCurrentLayer().getImage().getPixelAt(x, y);
+    }
+    throw new IllegalStateException("Current layer has no Image");
+  }
+
+  @Override
+  public List<List<Pixel>> getCurrentLayerImagePixels() throws IllegalStateException {
+    Image currentImage = this.getCurrentLayer().getImage();
+
+    if (currentImage != null) {
+      List<List<Pixel>> pixels = new ArrayList<>();
+
+      for (int i = 0; i < currentImage.getWidth(); i++) {
+        pixels.add(new ArrayList<>());
+
+        for (int j = 0; j < currentImage.getHeight(); j++) {
+          pixels.get(i).add(currentImage.getPixelAt(i, j));
+        }
+      }
+      return pixels;
+    }
+    throw new IllegalStateException("Current layer has no Image");
+  }
+
+  @Override
+  public Image getCurrentLayerImage() throws IllegalStateException {
+
+    if (this.getCurrentLayer().getImage() != null) {
+      return this.getCurrentLayer().getImage();
+    }
+    throw new IllegalStateException("Current layer has no Image");
+  }
+
+  @Override
+  public String getCurrentLayerName() throws IllegalStateException {
+
+    return this.getCurrentLayer().getName();
+  }
+
+  @Override
+  public boolean getCurrentLayerVisibility() throws IllegalStateException {
+
+    return this.getCurrentLayer().getVisibility();
   }
 }
