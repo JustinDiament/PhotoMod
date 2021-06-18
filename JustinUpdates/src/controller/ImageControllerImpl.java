@@ -150,7 +150,7 @@ public class ImageControllerImpl implements ImageController {
       if (commandToRun != null) {
         try {
           commandToRun.execute(scanner, this.model);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | IllegalStateException e) {
           this.renderMessage("Command failed to execute. Reason: " + e.getMessage());
         }
       } else {
@@ -166,7 +166,7 @@ public class ImageControllerImpl implements ImageController {
    * @return whether the user input has indicated to quit scripting
    */
   private boolean isQuit(String input) {
-    if (input.equalsIgnoreCase("q")) {
+    if (input.equalsIgnoreCase("quit")) {
       this.renderMessage("Image processing has been quit.");
       return true;
     }
