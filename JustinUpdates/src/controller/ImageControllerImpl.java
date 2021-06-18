@@ -34,9 +34,9 @@ import view.ImageTextViewImpl;
  */
 public class ImageControllerImpl implements ImageController {
 
-  ImageLayerModel model;
-  Readable rd;
-  ImageTextView view;
+  private final ImageLayerModel model;
+  private final Readable rd;
+  private final ImageTextView view;
 
   /**
    * Constructs a ImageControllerImpl object that carries out operations based on the given model's
@@ -55,7 +55,7 @@ public class ImageControllerImpl implements ImageController {
 
     this.model = ImageUtil.requireNonNull(model);
     this.rd = ImageUtil.requireNonNull(rd);
-    this.view = new ImageTextViewImpl(ap);
+    this.view = new ImageTextViewImpl(ImageUtil.requireNonNull(ap));
   }
 
   /**
@@ -73,7 +73,7 @@ public class ImageControllerImpl implements ImageController {
       throws IllegalArgumentException {
 
     this.model = ImageUtil.requireNonNull(model);
-    this.view = new ImageTextViewImpl(ap);
+    this.view = new ImageTextViewImpl(ImageUtil.requireNonNull(ap));
 
     try {
       this.rd = new FileReader(ImageUtil.requireNonNull(fileName));
@@ -84,16 +84,15 @@ public class ImageControllerImpl implements ImageController {
 
   /**
    * Constructs a ImageControllerImpl object that carries out operations based on the given model's
-   * specifications and reads commands from the keyboard via System.in
+   * specifications, reads commands from the keyboard via System.in, and renders messages to the
+   * user via System.out
    *
    * @param model the model to carry out the requested operations
-   * @param ap    an Appendable object that will be passed to a view to communicate any errors that
-   *              occur in command input
    * @throws IllegalArgumentException if any of the given arguments are null
    */
-  public ImageControllerImpl(ImageLayerModel model, Appendable ap)
+  public ImageControllerImpl(ImageLayerModel model)
       throws IllegalArgumentException {
-    this(model, new InputStreamReader(System.in), ap);
+    this(model, new InputStreamReader(System.in), System.out);
   }
 
   /**

@@ -1,47 +1,45 @@
-/*
 import static org.junit.Assert.assertTrue;
 
 import controller.commands.Command;
 import controller.commands.ExportAllCommand;
+import java.util.Scanner;
 import model.image.ImageLayerModel;
 import model.image.ImageLayerModelImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-*/
 /**
  * Test class for the ExportAllCommand class.
- *//*
-
+ */
 public class ExportAllCommandTest {
 
   private Command c;
   private ImageLayerModel m;
+  private Scanner s;
 
-  */
-/**
+  /**
    * Initialize variables for testing.
-   *//*
-
+   */
   @Before
   public void init() {
     this.c = new ExportAllCommand();
     this.m = new ImageLayerModelImpl();
+    this.s = new Scanner("");
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testExportNullSpec() {
+  public void testExportNullScanner() {
     this.c.execute(null, this.m);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testExportNullModel() {
-    this.c.execute("res\\test\\layer\\test.jpg", null);
+    this.c.execute(this.s, null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidFileSpec() {
-    this.c.execute("", this.m);
+    this.c.execute(this.s, this.m);
   }
 
   @Test
@@ -54,7 +52,7 @@ public class ExportAllCommandTest {
     this.m.setCurrentLayer(1);
     this.m.importImage("res\\test\\layer\\test2.jpg", "jpg");
     assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.c.execute("res\\test\\layer\\test.jpg", this.m);
+    this.s = new Scanner("res\\test\\layer\\test.jpg jpg");
+    this.c.execute( this.s, this.m);
   }
 }
-*/

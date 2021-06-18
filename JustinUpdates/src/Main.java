@@ -1,3 +1,5 @@
+import controller.ImageController;
+import controller.ImageControllerImpl;
 import java.util.ArrayList;
 import java.util.List;
 import model.image.Image;
@@ -31,52 +33,11 @@ public class Main {
    * @param args the command line arguments passed to the main method
    */
   public static void main(String[] args) {
-    String filename;
+    System.out.println("Supported commands:\nblur\nsharpen\nsepia\nmonochrome\ncurrent\ncreatelayer"
+        + "\nremovelayer\nvisibility\ncreatecheckerboard\nimport\nexportall\nexport\n");
 
-    if (args.length > 0) {
-      filename = args[0];
-    } else {
-      filename = "res\\n\\popeyes_test.txt";
-    }
-
-//    ImageLayerModel l = new ImageLayerModelImpl();
-//    l.addLayer("eee");
-//    l.setCurrentLayer(0);
-//    l.importImage(filename);
-//    l.addLayer("asdfffff");
-//    l.setCurrentLayer(0);
-//    l.setCurrentLayerImage(new PNG().importFile("res\\n\\popeyes_test.png"));
-//    l.exportImage("res\\n\\popeyes_test.png", null);
-
-//    ImageProcessingModel m = new ImageProcessingModelImpl();
-//    Image i = m.importImage(filename);
-//    Image i2 = m.applyOperation(i, Operations.BLUR);
-//    m.exportImage("res\\popeyes_blur.ppm", i2);
-
-
-//    ImageFile ppm = new PPM();
-//    ImageFile jpeg = new JPEG();
-//    ImageFile png = new PNG();
-//    ImageOperation o = new SepiaOperation();
-//    ImageOperation b = new BlurOperation();
-//    ImageOperation s = new SharpenOperation();
-//    Image i = png.importFile(filename);
-//    Image i2 = s.apply(i);
-//    png.exportFile("res\\popeyes_sharpen.png", i2);
-
-    List<List<Pixel>> li = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      List<Pixel> row = new ArrayList<>();
-      for (int j = 0; j < 5; j++) {
-        row.add(new PixelImpl(0, 0, 0));
-      }
-      li.add(row);
-    }
-    Image aa = new ImageImpl(li);
-    ImageLayerModel lm = new ImageLayerModelImpl();
-    lm.addLayer("");
-    lm.setCurrentLayer(0);
-    lm.setCurrentLayerImage(aa);
-    lm.exportImage("res\\test_bad.jpg", "jpg", null);
+    ImageLayerModel model = new ImageLayerModelImpl();
+    ImageController controller = new ImageControllerImpl(model);
+    controller.run();
   }
 }
