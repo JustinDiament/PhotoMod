@@ -1,16 +1,17 @@
 createlayer one 
 createlayer two 
 current one 
-import res//test//quetzal//quetzal.jpg jpg
+import res//test//quetzal//quetzaljpg.jpg jpg
+import res//test//quetzal//quetzal.txt txt
 sharpen
 current two
-import res//test//quetzal//quetzal.png png
+import res//test//quetzal//quetzalpng.png png
 blur
 sepia
 createlayer three
 createlayer four
 current three
-import res//test//quetzal//quetzal.ppm ppm
+import res//test//quetzal//quetzalppm.ppm ppm
 current four
 createcheckerboard 160 40 black white
 removelayer four
