@@ -64,8 +64,7 @@ public class PPM extends ImageFileFormat {
     try {
       sc = new Scanner(new FileInputStream(ImageUtil.requireNonNull(filename)));
     } catch (FileNotFoundException e) {
-      System.out.println("File " + filename + " not found!");
-      return null;
+      throw new IllegalArgumentException("File " + filename + " not found!");
     }
 
     StringBuilder sb = new StringBuilder();

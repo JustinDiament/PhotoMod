@@ -21,12 +21,12 @@ abstract class ImageFileFormat implements ImageFile {
   @Override
   public Image importFile(String filename) throws IllegalArgumentException {
     ImageUtil.requireNonNull(filename);
-    BufferedImage img = null;
+    BufferedImage img;
     try {
       img = ImageIO.read(new File(filename));
     }
     catch (IOException e) {
-      System.out.println("File " + filename + " not found!");
+     throw new IllegalArgumentException("File " + filename + " not found!");
     }
     ImageUtil.requireNonNull(img);
 
