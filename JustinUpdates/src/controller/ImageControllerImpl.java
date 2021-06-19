@@ -55,7 +55,7 @@ public class ImageControllerImpl implements ImageController {
 
     this.model = ImageUtil.requireNonNull(model);
     this.rd = ImageUtil.requireNonNull(rd);
-    this.view = new ImageTextViewImpl(ImageUtil.requireNonNull(ap));
+    this.view = new ImageTextViewImpl(ap);
   }
 
   /**
@@ -73,7 +73,7 @@ public class ImageControllerImpl implements ImageController {
       throws IllegalArgumentException {
 
     this.model = ImageUtil.requireNonNull(model);
-    this.view = new ImageTextViewImpl(ImageUtil.requireNonNull(ap));
+    this.view = new ImageTextViewImpl(ap);
 
     try {
       this.rd = new FileReader(ImageUtil.requireNonNull(fileName));
@@ -150,7 +150,7 @@ public class ImageControllerImpl implements ImageController {
       if (commandToRun != null) {
         try {
           commandToRun.execute(scanner, this.model);
-        } catch (IllegalArgumentException | IllegalStateException e) {
+        } catch (IllegalStateException | IllegalArgumentException e) {
           this.renderMessage("Command failed to execute. Reason: " + e.getMessage());
         }
       } else {

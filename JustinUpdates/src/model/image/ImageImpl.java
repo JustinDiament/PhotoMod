@@ -26,8 +26,10 @@ public class ImageImpl implements Image {
    * Copy constructor for ImageImpl that creates a deep copy of the given Image.
    *
    * @param img the Image to be copied and saved
+   * @throws IllegalArgumentException if the given image is null
    */
   public ImageImpl(Image img) {
+    ImageUtil.requireNonNull(img);
     List<List<Pixel>> copy = new ArrayList<>();
     for (int i = 0; i < img.getWidth(); i++) {
       List<Pixel> row = new ArrayList<>();
