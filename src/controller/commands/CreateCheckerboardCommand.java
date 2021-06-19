@@ -15,7 +15,7 @@ import model.image.programmatic.CreateCheckerboard;
 public class CreateCheckerboardCommand implements Command {
 
   @Override
-  public void execute(Scanner scanner, ImageLayerModel model) {
+  public void execute(Scanner scanner, ImageLayerModel model) throws IllegalArgumentException {
     ImageUtil.requireNonNull(scanner);
     ImageUtil.requireNonNull(model);
 

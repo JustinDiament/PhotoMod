@@ -35,8 +35,7 @@ public class PPM extends ImageFileFormat {
 
     int width = sc.nextInt();
     int height = sc.nextInt();
-    sc.nextInt(); // int maxValue
-    // System.out.printf("Width: %d\nHeight: %d\nMaximum RGB value: %d%n", width, height, maxValue);
+    sc.nextInt(); // read in the max RGB value but do nothing with it
 
     List<List<Pixel>> pixels = new ArrayList<>();
     for (int i = 0; i < height; i++) {

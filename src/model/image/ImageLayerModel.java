@@ -45,7 +45,7 @@ public interface ImageLayerModel extends ImageProcessingModel {
   Layer getCurrentLayer() throws IllegalStateException;
 
   /**
-   * Sets the visibility of the current layer to the specified value
+   * Sets the visibility of the current layer to the specified value.
    *
    * @param visibility the value to set the current layer's visibility to: true for visible, false
    *                   for invisible

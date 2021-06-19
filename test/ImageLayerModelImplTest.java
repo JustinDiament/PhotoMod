@@ -99,6 +99,7 @@ public class ImageLayerModelImplTest {
   @Test
   public void testSetCurrentLayerValidIndexNegativeOne() {
     this.m.setCurrentLayer(-1);
+    assertEquals(-1, this.m.getCurrentLayerIndex());
   }
 
   @Test(expected = IllegalArgumentException.class)

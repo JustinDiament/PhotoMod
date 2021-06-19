@@ -132,6 +132,11 @@ that demonstrate all the working features of this image processing application. 
 also contains _class_diagram.png_, which as image of a class diagram showing the names of classes
 and interfaces, method signatures, and inheritance relationships in our program.
 
+### Citations
+
+All images are owned by Nathan Gong and authorized for use in this project. The _res/test/_
+subdirectory contains sample files that are used for code testing purposes only.
+
 ## Assignment 5
 
 ### Design

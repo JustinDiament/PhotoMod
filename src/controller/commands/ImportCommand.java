@@ -15,7 +15,7 @@ import model.image.ImageLayerModel;
 public class ImportCommand extends FileCommand {
 
   @Override
-  public void execute(Scanner scanner, ImageLayerModel model) {
+  public void execute(Scanner scanner, ImageLayerModel model) throws IllegalArgumentException {
     ImageUtil.requireNonNull(scanner);
     ImageUtil.requireNonNull(model);
 
@@ -45,14 +45,10 @@ public class ImportCommand extends FileCommand {
           throw new IllegalArgumentException("File " + filename + " not found!");
         }
 
-        int currentLayer = model.getCurrentLayerIndex();
         while (sc.hasNext()) {
           String path = sc.next();
           String ext = sc.next();
           String filepath = path.substring(path.lastIndexOf("/") + 1, path.indexOf("."));
-//          if (currentLayer == -1) {
-//            currentLayer = 0;
-//          }
           model.addLayer(filepath);
           model.setCurrentLayer(model.getLayerImages().size() - 1);
           Image img = super.importImage(path, ext);

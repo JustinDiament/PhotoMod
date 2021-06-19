@@ -1,13 +1,5 @@
 package model.operation;
 
-import java.util.ArrayList;
-import java.util.List;
-import model.ImageUtil;
-import model.image.Image;
-import model.image.ImageImpl;
-import model.image.Pixel;
-import model.image.PixelImpl;
-
 /**
  * Function object to perform the "Monochrome" operation on an Image. The given Image's RGB color
  * values are modified to make the overall image appear monochrome/grayscale, with each individual

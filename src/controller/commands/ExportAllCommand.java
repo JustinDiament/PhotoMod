@@ -18,7 +18,7 @@ import model.image.ImageLayerModel;
 public class ExportAllCommand extends FileCommand {
 
   @Override
-  public void execute(Scanner scanner, ImageLayerModel model) {
+  public void execute(Scanner scanner, ImageLayerModel model) throws IllegalArgumentException {
     ImageUtil.requireNonNull(scanner);
     ImageUtil.requireNonNull(model);
 

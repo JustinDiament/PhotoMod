@@ -65,7 +65,14 @@ Example Format: **command name** _[additional arguments]_: description, conditio
 
 ## Running the Application
 
+The _res/_ directory will be submitted as a zip file _res.zip_ within the root _/_ directory. In
+order for the JAR file or any of the test classes within the _test/_ directory to run
+successfully, **THE CONTENTS OF _res.zip_ MUST BE EXTRACTED AND PLACED IN A _res/_ DIRECTORY LOCATED
+IN THE ROOT _/_ DIRECTORY.**
+
 A JAR file, ImageProcessing.jar, can be found in the _res/_ directory. A user may run this file by
-navigating to this directory within a command terminal and entering `java -jar ImageProcessing.jar`,
-then following the printed instructions to either run one of the example script files,
-_res/ScriptOne.txt_ and _res/ScriptTwo.txt_, or enter commands via the command line.
+moving it from the _res/_ directory to the root _/_ directory, then navigating to this directory
+within a command terminal and entering `java -jar ImageProcessing.jar`, then following the printed
+instructions to either run one of the example script files, _res/ScriptOne.txt_ and
+_res/ScriptTwo.txt_, or enter commands via the command line. **NOTE THAT ATTEMPTING TO RUN EITHER OF
+THE EXAMPLE SCRIPT FILES WILL FAIL IF THE JAR FILE IS NOT IN THE ROOT DIRECTORY.**

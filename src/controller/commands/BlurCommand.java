@@ -8,7 +8,7 @@ import model.operation.Operations;
 public class BlurCommand extends OperationCommand {
 
   @Override
-  protected Operations getOperationName() throws IllegalArgumentException {
+  protected Operations getOperationName() {
     return Operations.BLUR;
   }
 }

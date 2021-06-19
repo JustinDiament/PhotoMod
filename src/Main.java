@@ -15,11 +15,11 @@ public class Main {
    * @param args the command line arguments passed to the main method
    */
   public static void main(String[] args) {
+
     System.out.println("Supported commands:\nblur\nsharpen\nsepia\nmonochrome\ncurrent\ncreatelayer"
         + "\nremovelayer\nvisibility\ncreatecheckerboard\nimport\nexportall\nexport\n");
-
-    System.out.println(
-        "Enter '1' to run ScriptOne.txt, '2' to run ScriptTwo.txt, '3' to run from the command line, or '0' to quit");
+    System.out.println("Enter '1' to run ScriptOne.txt, '2' to run ScriptTwo.txt, '3' to run from "
+        + "the command line, or '0' to quit");
     ImageController controller = null;
     ImageLayerModel model = new ImageLayerModelImpl();
     Scanner sc = new Scanner(System.in);
@@ -43,6 +43,7 @@ public class Main {
           break;
       }
     }
+
     controller.run();
   }
 }

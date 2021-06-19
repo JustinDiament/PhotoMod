@@ -10,6 +10,9 @@ import model.image.ImageLayerModelImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test class for the ImageControllerImpl class.
+ */
 public class ImageControllerImplTest {
 
   private ImageLayerModel model;
