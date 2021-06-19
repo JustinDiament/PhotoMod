@@ -1,21 +1,7 @@
 package model.image;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import model.ImageUtil;
-import model.image.file.ImageFile;
-import model.image.file.JPEG;
-import model.image.file.PNG;
 import model.image.layer.Layer;
 import model.image.layer.LayerImpl;
 import model.image.programmatic.ProgrammaticCreator;
@@ -80,8 +66,7 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   public Layer getCurrentLayer() throws IllegalStateException {
     try {
       this.isValidLayer(this.currentLayer);
-    }
-    catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       throw new IllegalStateException("Current layer index is invalid");
     }
     return this.layers.get(this.currentLayer);
@@ -95,10 +80,19 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   @Override
   public List<String> getLayerNames() {
     List<String> layerNames = new ArrayList<>();
-    for (Layer layer : layers) {
+    for (Layer layer : this.layers) {
       layerNames.add(layer.getName());
     }
     return layerNames;
+  }
+
+  @Override
+  public List<Image> getLayerImages() {
+    List<Image> layerImages = new ArrayList<>();
+    for (Layer layer : this.layers) {
+      layerImages.add(new ImageImpl(layer.getImage()));
+    }
+    return layerImages;
   }
 
   @Override
@@ -127,99 +121,18 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
   @Override
-  public Image importImage(String filename, String extension) throws IllegalArgumentException {
-    // initialize local variables
-    ImageUtil.requireNonNull(filename);
-    ImageUtil.requireNonNull(extension);
-
-    // check if the provided filename is for a single or multi-layered image
-    if (!extension.equals("txt")) {
-      Image img = super.importImage(filename, extension);
-      this.setCurrentLayerImage(img);
-      this.verifyLayerDimensions(img);
-      return img;
-    }
-
-    // import the image files listed in the text file as ordered layers
-    Scanner sc;
-    try {
-      sc = new Scanner(new FileInputStream(ImageUtil.requireNonNull(filename)));
-    } catch (FileNotFoundException e) {
-      throw new IllegalArgumentException("File " + filename + " not found!");
-    }
-
-    while (sc.hasNext()) {
-      String path = sc.next();
-      String ext = sc.next();
-      String filepath = path.substring(0, path.indexOf("."));
-      this.addLayer(filepath);
-      this.setCurrentLayer(this.currentLayer == -1 ? 0 : this.currentLayer);
-      Image img = super.importImage(path, ext);
-      this.setCurrentLayerImage(img);
-      this.verifyLayerDimensions(img);
-      this.currentLayer++;
-    }
-    return this.layers.get(this.layers.size() - 1).getImage();
-  }
-
-  @Override
-  public void exportImage(String filename, String extension, Image img) throws IllegalArgumentException {
-    try {
-      // initialize local variables
-      ImageUtil.requireNonNull(filename);
-      ImageUtil.requireNonNull(extension);
-      StringBuilder sb = new StringBuilder();
-      String lineSeparator = System.lineSeparator();
-
-      // create a directory to store all files
-      File txt = new File(filename + ".txt");
-      if (!txt.getParentFile().mkdir() && Files
-          .notExists(Path.of(String.valueOf(txt.getParentFile())))) {
-        throw new IllegalArgumentException("Unable to create a directory for the layered image");
-      }
-
-      // create a text file to store the files paths of all images
-      if (!txt.createNewFile() && !Files.exists(Paths.get(filename + ".txt"))) {
-        throw new IOException();
-      }
-      FileWriter txtWriter = new FileWriter(txt.getPath());
-
-      // export all layers as separate images and write their paths to the text file
-      for (Layer l : this.layers) {
-        String imagePath = filename + l.getName() + "." + extension;
-        super.exportImage(imagePath, extension, l.getImage());
-        sb.append(imagePath).append(" ").append(extension).append(lineSeparator);
-      }
-
-      txtWriter.write(sb.toString());
-      txtWriter.close();
-    } catch (NullPointerException | IOException e) {
-      throw new IllegalArgumentException("Unable to create a text file");
-    }
-  }
-
-  @Override
-  public void exportTopImage(String filename, String extension) throws IllegalArgumentException {
-    ImageUtil.requireNonNull(filename);
-    ImageUtil.requireNonNull(extension);
-
+  public Image getTopImage() throws IllegalArgumentException {
     for (int i = this.layers.size() - 1; i >= 0; i--) {
       Layer l = this.layers.get(i);
       if (l.getVisibility()) {
-        super.exportImage(filename, extension, l.getImage());
-        return;
+        return new ImageImpl(l.getImage());
       }
     }
     throw new IllegalArgumentException("No layers are visible");
   }
 
-  /**
-   * Checks that the given image shares the same dimensions as the rest of the layers.
-   *
-   * @param img the image to check the dimensions of
-   * @throws IllegalArgumentException if the given image has different dimensions
-   */
-  private void verifyLayerDimensions(Image img) throws IllegalArgumentException {
+  @Override
+  public void verifyLayerDimensions(Image img) throws IllegalArgumentException {
     if (this.layers.size() == 0) {
       return;
     }
@@ -229,15 +142,6 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
         throw new IllegalArgumentException("Layers in the model have differing dimensions");
       }
     }
-  }
-
-  @Override
-  protected Map<String, ImageFile> getFiles() {
-    Map<String, ImageFile> files = super.getFiles();
-    files.put("jpeg", new JPEG());
-    files.put("jpg", new JPEG());
-    files.put("png", new PNG());
-    return files;
   }
 
   @Override
@@ -283,5 +187,10 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   @Override
   public boolean getCurrentLayerVisibility() throws IllegalStateException {
     return this.getCurrentLayer().getVisibility();
+  }
+
+  @Override
+  public int getCurrentLayerIndex() {
+    return this.currentLayer;
   }
 }

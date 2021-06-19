@@ -7,11 +7,24 @@ import model.image.layer.Layer;
 import model.image.programmatic.ProgrammaticCreator;
 import model.operation.Operations;
 
+/**
+ * A mock model for testing purposes only. Writes information about actions that modify the Image
+ * being edited by the actual model's Image modification program to a StringBuilder to confirm
+ * that information is being correctly parsed in the controller and passed to the model. All actual
+ * Image modification is delegated to an instance of ImageLayerModelImpl, an actual proper
+ * implementation of the ImageLayerModel interface.
+ */
 public class ImageLayerMockModel implements ImageLayerModel {
 
   private final StringBuilder log;
   private final ImageLayerModel delegate;
 
+  /**
+   * Constructs a ImageLayerMockModel object with a StringBuilder to record information about
+   * the information the model receives given.
+   *
+   * @param log a StringBuilder object to record information about the the data the model receives
+   */
   ImageLayerMockModel(StringBuilder log) {
     this.log = log;
     this.delegate = new ImageLayerModelImpl();
@@ -37,71 +50,85 @@ public class ImageLayerMockModel implements ImageLayerModel {
 
   @Override
   public Layer getCurrentLayer() throws IllegalArgumentException {
-    log.append("Current layer searched for\n");
-    return null;
+    return delegate.getCurrentLayer();
   }
 
   @Override
   public void setCurrentLayerVisibility(boolean visibility) throws IllegalArgumentException {
+    log.append("Current layer changed to this visibility level: ").append(visibility).append("\n");
+    delegate.setCurrentLayerVisibility(visibility);
   }
 
   @Override
   public List<String> getLayerNames() {
+    return delegate.getLayerNames();
+  }
+
+  @Override
+  public List<Image> getLayerImages() {
+    // todo
     return null;
   }
 
   @Override
   public void removeLayer(int index) throws IllegalArgumentException {
-  }
-
-  @Override
-  public void exportTopImage(String filename, String extension) throws IllegalArgumentException {
+    log.append("Removed layer at this index: ").append(index).append("\n");
+    delegate.removeLayer(index);
   }
 
   @Override
   public Pixel getPixelInCurrentLayerAt(int x, int y)
       throws IllegalArgumentException, IllegalStateException {
-    return null;
+    return delegate.getPixelInCurrentLayerAt(x, y);
   }
 
   @Override
   public List<List<Pixel>> getCurrentLayerImagePixels() throws IllegalStateException {
-    return null;
+    return delegate.getCurrentLayerImagePixels();
   }
 
   @Override
   public Image getCurrentLayerImage() throws IllegalStateException {
-    return null;
+    return delegate.getCurrentLayerImage();
   }
 
   @Override
   public String getCurrentLayerName() {
-    return null;
+    return delegate.getCurrentLayerName();
   }
 
   @Override
   public boolean getCurrentLayerVisibility() {
-    return false;
+    return delegate.getCurrentLayerVisibility();
+  }
+
+  @Override
+  public void verifyLayerDimensions(Image img) throws IllegalArgumentException {
+    // todo
+  }
+
+  @Override
+  public int getCurrentLayerIndex() {
+    // todo
+    return 0;
+  }
+
+  @Override
+  public Image getTopImage() throws IllegalArgumentException {
+    // todo
+    return null;
   }
 
   @Override
   public Image applyOperation(Image img, Operations o) throws IllegalArgumentException {
-    return null;
+    log.append("Applied this type of operation to the current layer: ").append(o).append("\n");
+    return delegate.applyOperation(img, o);
   }
 
   @Override
   public Image createProgrammaticImage(ProgrammaticCreator creator)
       throws IllegalArgumentException {
-    return null;
-  }
-
-  @Override
-  public Image importImage(String filename, String extension) throws IllegalArgumentException {
-    return null;
-  }
-
-  @Override
-  public void exportImage(String filename, String extension, Image img)
-      throws IllegalArgumentException {
+    log.append("Created programmatic image of this type: ").append(creator.getClass()).append("\n");
+    return delegate.createProgrammaticImage(creator);
   }
 }

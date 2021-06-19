@@ -137,6 +137,25 @@ public class OperationCommandTest {
     sharpen.execute(new Scanner("stuff"), null);
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void testOperationWhenLayerIsBad() {
+    ImageLayerModel badModel = new ImageLayerModelImpl();
+    badModel.addLayer("one");
+
+    MonochromeCommand monochrome = new MonochromeCommand();
+    monochrome.execute(new Scanner(""), badModel);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testOperationWhenLayerHasNoImage() {
+    ImageLayerModel badModel = new ImageLayerModelImpl();
+    badModel.addLayer("one");
+    badModel.setCurrentLayer(0);
+
+    MonochromeCommand monochrome = new MonochromeCommand();
+    monochrome.execute(new Scanner(""), badModel);
+  }
+
   @Test
   public void testMonochromeCommandCompletesMonochrome() {
     MonochromeCommand monochrome = new MonochromeCommand();

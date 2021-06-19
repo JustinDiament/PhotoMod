@@ -7,22 +7,23 @@ import model.image.ImageLayerModel;
 /**
  * Function object to export the current layer of an Image when the export operation is requested.
  */
-public class ExportCommand implements Command {
+public class ExportCommand extends FileCommand {
 
   @Override
   public void execute(Scanner scanner, ImageLayerModel model) {
     ImageUtil.requireNonNull(scanner);
     ImageUtil.requireNonNull(model);
 
-    String fileName = "";
+    String filename = "";
 
     if (scanner.hasNext()) {
-      fileName = scanner.next();
+      filename = scanner.next();
     }
 
     if (scanner.hasNext()) {
       try {
-        model.exportTopImage(fileName, scanner.next().toLowerCase());
+        String extension = scanner.next().toLowerCase();
+        this.exportImage(filename, extension, model.getTopImage());
       } catch (IllegalArgumentException e) {
         throw new IllegalArgumentException("Failed to export file.");
       }

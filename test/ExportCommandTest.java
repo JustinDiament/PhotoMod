@@ -2,6 +2,7 @@ import static org.junit.Assert.assertTrue;
 
 import controller.commands.Command;
 import controller.commands.ExportCommand;
+import controller.commands.ImportCommand;
 import java.util.Scanner;
 import model.image.ImageLayerModel;
 import model.image.ImageLayerModelImpl;
@@ -52,7 +53,8 @@ public class ExportCommandTest {
   public void testExportTopmostVisibleLayer() {
     this.m.addLayer("");
     this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
+    Command i = new ImportCommand();
+    i.execute(new Scanner("res\\test\\layer\\test.jpg jpg"), this.m);
     assertTrue(this.m.getCurrentLayer().getVisibility());
     this.s = new Scanner("res\\test\\layer\\test.jpg jpg");
     this.c.execute(this.s, this.m);

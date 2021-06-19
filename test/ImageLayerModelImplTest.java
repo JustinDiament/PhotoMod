@@ -25,6 +25,7 @@ public class ImageLayerModelImplTest {
 
   private ImageLayerModel m;
   private Image i1;
+  private Image i2;
 
   /**
    * Initialize variables for testing.
@@ -34,6 +35,8 @@ public class ImageLayerModelImplTest {
     this.m = new ImageLayerModelImpl();
     this.i1 = new ImageImpl(Collections.singletonList(
         Collections.singletonList(new PixelImpl(0, 0, 0))));
+    this.i2 = new ImageImpl(Collections.singletonList(
+        Collections.singletonList(new PixelImpl(10, 10, 10))));
   }
 
   @Test
@@ -571,104 +574,10 @@ public class ImageLayerModelImplTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testExportTopImageNullFile() {
-    this.m.exportTopImage(null, "jpg");
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testExportTopImageInvalidFile() {
-    this.m.exportTopImage("", "jpg");
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testExportTopImageNoVisibleLayers() {
-    this.m.exportTopImage("res\\test\\layer\\test.jpg", "jpg");
-  }
-
-  @Test
-  public void testExportTopImage() {
-    this.m.addLayer("");
-    this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
-    assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.m.exportTopImage("res\\test\\layer\\test.jpg", "jpg");
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testExportNullFile() {
-    this.m.exportImage(null, "jpg", null);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testExportInvalidFile() {
-    this.m.exportImage("", "jpg", null);
-  }
-
-  @Test
-  public void testExport() {
-    this.m.addLayer("");
-    this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
-    assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.m.addLayer("2");
-    this.m.setCurrentLayer(1);
-    this.m.importImage("res\\test\\layer\\test2.jpg", "jpg");
-    assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.m.exportImage("res\\test\\layer\\test", "jpg", null);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testImportNullFile() {
-    this.m.importImage(null, "jpg");
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testImportInvalidFile() {
-    this.m.importImage(".", "jpg");
-  }
-
-  @Test
-  public void importSingleImage() {
-    this.m.addLayer("first");
-    this.m.setCurrentLayer(0);
-    this.m.importImage("res\\test\\layer\\test.jpg", "jpg");
-    assertTrue(this.m.getCurrentLayer().getVisibility());
-    assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
-    assertEquals(1, this.m.getCurrentLayer().getImage().getWidth());
-    assertEquals("first", this.m.getCurrentLayer().getName());
-  }
-
-  @Test
-  public void testImportLayeredImage() {
-    this.m.importImage("res\\test\\layer\\test.txt", "txt");
-    assertEquals(2, this.m.getLayerNames().size());
-    this.m.setCurrentLayer(0);
-    assertTrue(this.m.getCurrentLayer().getVisibility());
-    assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
-    assertEquals(1, this.m.getCurrentLayer().getImage().getWidth());
-    assertEquals("res\\test\\layer\\test", this.m.getCurrentLayer().getName());
-    this.m.setCurrentLayer(1);
-    assertTrue(this.m.getCurrentLayer().getVisibility());
-    assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
-    assertEquals(1, this.m.getCurrentLayer().getImage().getWidth());
-    assertEquals("res\\test\\layer\\test2", this.m.getCurrentLayer().getName());
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testImportLayeredImageInvalidDimensions() {
-    this.m.addLayer("first");
-    this.m.setCurrentLayer(0);
-    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test.jpg", "jpg"));
-    this.m.addLayer("second");
-    this.m.setCurrentLayer(1);
-    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test_bad.jpg", "jpg"));
-  }
-
-  @Test(expected = IllegalArgumentException.class)
   public void testGetPixelInCurrentLayerAtXIsInvalid() {
     this.m.addLayer("first");
     this.m.setCurrentLayer(0);
-    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test.jpg", "jpg"));
+    this.m.setCurrentLayerImage(this.i2);
 
     this.m.getPixelInCurrentLayerAt(1, 0);
   }
@@ -677,7 +586,7 @@ public class ImageLayerModelImplTest {
   public void testGetPixelInCurrentLayerAtYIsInvalid() {
     this.m.addLayer("first");
     this.m.setCurrentLayer(0);
-    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test.jpg", "jpg"));
+    this.m.setCurrentLayerImage(this.i2);
 
     this.m.getPixelInCurrentLayerAt(0, 1);
   }
@@ -694,7 +603,7 @@ public class ImageLayerModelImplTest {
   public void testGetPixelInCurrentLayerAtGetsPixelCorrectly() {
     this.m.addLayer("first");
     this.m.setCurrentLayer(0);
-    this.m.setCurrentLayerImage(this.m.importImage("res\\test\\layer\\test.jpg", "jpg"));
+    this.m.setCurrentLayerImage(this.i2);
 
     assertEquals(10, this.m.getPixelInCurrentLayerAt(0, 0).getRed());
     assertEquals(10, this.m.getPixelInCurrentLayerAt(0, 0).getGreen());
@@ -825,5 +734,62 @@ public class ImageLayerModelImplTest {
     this.m.addLayer("first");
     this.m.addLayer("second");
     this.m.getPixelInCurrentLayerAt(0, 0);
+  }
+
+  @Test
+  public void testGetLayerImagesNoLayers() {
+    Image[] images = {};
+    assertArrayEquals(images, this.m.getLayerImages().toArray(new Image[0]));
+  }
+
+  @Test
+  public void testGetLayerImages() {
+    this.m.addLayer("");
+    this.m.setCurrentLayer(0);
+    this.m.setCurrentLayerImage(this.i1);
+    List<Image> i = this.m.getLayerImages();
+    assertEquals(1, i.get(0).getHeight());
+    assertEquals(1, i.get(0).getHeight());
+    assertEquals(0, i.get(0).getPixelAt(0, 0).getRed());
+    assertEquals(0, i.get(0).getPixelAt(0, 0).getGreen());
+    assertEquals(0, i.get(0).getPixelAt(0, 0).getBlue());
+  }
+
+  @Test
+  public void testVerifyLayerDimensionsNull() {
+    this.m.addLayer("");
+    this.m.setCurrentLayer(0);
+    this.m.verifyLayerDimensions(null);
+    assertEquals("", this.m.getCurrentLayer().getName());
+  }
+
+  @Test
+  public void testVerifyLayerDimensions() {
+    this.m.addLayer("first");
+    this.m.setCurrentLayer(0);
+    this.m.setCurrentLayerImage(this.i1);
+    this.m.verifyLayerDimensions(this.i1);
+    assertEquals(1, this.m.getCurrentLayerImage().getHeight());
+    assertEquals(1, this.m.getCurrentLayerImage().getWidth());
+    this.m.addLayer("second");
+    this.m.setCurrentLayer(1);
+    this.m.setCurrentLayerImage(this.i2);
+    this.m.verifyLayerDimensions(this.i2);
+    assertEquals(1, this.m.getCurrentLayerImage().getHeight());
+    assertEquals(1, this.m.getCurrentLayerImage().getWidth());
+  }
+
+  @Test
+  public void testGetCurrentLayerIndex() {
+    assertEquals(-1, this.m.getCurrentLayerIndex());
+    this.m.addLayer("");
+    assertEquals(-1, this.m.getCurrentLayerIndex());
+    this.m.setCurrentLayer(0);
+    assertEquals(0, this.m.getCurrentLayerIndex());
+    this.m.setCurrentLayer(-1);
+    assertEquals(-1, this.m.getCurrentLayerIndex());
+    this.m.addLayer("");
+    this.m.setCurrentLayer(1);
+    assertEquals(1, this.m.getCurrentLayerIndex());
   }
 }

@@ -61,22 +61,19 @@ public interface ImageLayerModel extends ImageProcessingModel {
   List<String> getLayerNames();
 
   /**
+   * Generates a list of images stored by all of the layers.
+   *
+   * @return a list of image deep copies from the model
+   */
+  List<Image> getLayerImages();
+
+  /**
    * Removes the specified layer from the list of layers.
    *
    * @param index the index of the layer to be removed
    * @throws IllegalArgumentException if the given index is invalid
    */
   void removeLayer(int index) throws IllegalArgumentException;
-
-  /**
-   * Exports the topmost visible layer in the model as an image file.
-   *
-   * @param filename the file path to export the topmost image to
-   * @param extension the extension of the file type to export
-   * @throws IllegalArgumentException if the file is unable to be exported or there are no visible
-   *                                  layers in the model
-   */
-  void exportTopImage(String filename, String extension) throws IllegalArgumentException;
 
   /**
    * Returns the Pixel in the current layer at the given location.
@@ -119,10 +116,34 @@ public interface ImageLayerModel extends ImageProcessingModel {
   String getCurrentLayerName() throws IllegalStateException;
 
   /**
-   * Is the current layer visible?
+   * Checks if the current layer is visible.
    *
    * @return the current layer's visibility status (true if it is visible, false if it is not)
    * @throws IllegalStateException if the current layer is invalid
    */
   boolean getCurrentLayerVisibility() throws IllegalStateException;
+
+  /**
+   * Checks that the given image shares the same dimensions as the rest of the layers.
+   *
+   * @param img the image to check the dimensions of
+   * @throws IllegalArgumentException if the given image has different dimensions
+   */
+  void verifyLayerDimensions(Image img) throws IllegalArgumentException;
+
+
+  /**
+   * Returns the index of the current layer.
+   *
+   * @return the current layer's index
+   */
+  int getCurrentLayerIndex();
+
+  /**
+   * Returns the image stored in the topmost visible layer.
+   *
+   * @return a deep copy of the topmost visible image
+   * @throws IllegalArgumentException if no layers are visible
+   */
+  Image getTopImage() throws IllegalArgumentException;
 }

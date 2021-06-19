@@ -6,7 +6,7 @@ import model.image.ImageLayerModel;
 import model.operation.Operations;
 
 /**
- * Abstract class the facilitates the execution of filter operations such as blur, sharpen, sepia,
+ * Abstract class that facilitates the execution of filter operations such as blur, sharpen, sepia,
  * and monochrome when one of these operations is requested.
  */
 abstract class OperationCommand implements Command {
