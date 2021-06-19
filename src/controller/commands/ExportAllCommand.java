@@ -53,8 +53,12 @@ public class ExportAllCommand extends FileCommand {
         List<Image> images = model.getLayerImages();
 
         for (int i = 0; i < names.size(); i++) {
+          Image img = images.get(i);
+          if (img == null) {
+            continue;
+          }
           String imagePath = filename + names.get(i) + "." + extension;
-          this.exportImage(imagePath, extension, images.get(i));
+          this.exportImage(imagePath, extension, img);
           sb.append(imagePath).append(" ").append(extension).append(lineSeparator);
         }
 

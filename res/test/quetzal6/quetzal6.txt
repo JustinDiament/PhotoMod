@@ -1,0 +1,5 @@
+res//test//quetzal6//quetzal6quetzaljpg.jpg jpg
+res//test//quetzal6//quetzal6quetzalpng.jpg jpg
+res//test//quetzal6//quetzal6quetzalppm.jpg jpg
+res//test//quetzal6//quetzal6one.jpg jpg
+res//test//quetzal6//quetzal6two.jpg jpg

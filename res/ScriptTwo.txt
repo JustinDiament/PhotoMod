@@ -1,16 +1,17 @@
+import res//test//quetzal//quetzal.txt txt
 createlayer one
 current one
-import res//test//quetzal//quetzal.png png
+import res//test//quetzal//quetzalpng.png png
 createlayer two
 createlayer three
 current three
-import res//test//quetzal//quetzal.ppm ppm
+import res//test//quetzal//quetzalppm.ppm ppm
 current one
 sharpen
 sepia
 visibility invisible
 current two
-import res//test//quetzal//quetzal.jpg jpg
+import res//test//quetzal//quetzaljpg.jpg jpg
 visibility invisible
 monochrome
 export res//test//quetzal//quetzal3.jpg jpg
@@ -26,14 +27,13 @@ export res//test//quetzal//quetzal3.ppm ppm
 current two
 createcheckerboard 300 100 blue green
 export res//test//quetzal//quetzal33.ppm ppm
-exportall res//test//quetzal5 png
+exportall res//test//quetzal5//quetzal5 png
 sharpen
 sepia
 current one
 createcheckerboard 250 10 red yellow
-exportall res//test//quetzal6 jpg
+exportall res//test//quetzal6//quetzal6 jpg
 monochrome
 blur
-exportall res//test//quetzal7 ppm
-import res//test//quetzal7.txt
+exportall res//test//quetzal7//queztal7 ppm
 quit

@@ -1,0 +1,5 @@
+res//test//quetzal7//queztal7quetzaljpg.ppm ppm
+res//test//quetzal7//queztal7quetzalpng.ppm ppm
+res//test//quetzal7//queztal7quetzalppm.ppm ppm
+res//test//quetzal7//queztal7one.ppm ppm
+res//test//quetzal7//queztal7two.ppm ppm

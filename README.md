@@ -125,10 +125,12 @@ those listed under the Assignment 5 > Design section. All parts of the program a
     - MonochromeOperation: A class that applies the sepia color transformation on an image
     - SepiaOperation: A class that applies the monochrome/greyscale color transformation on an image
 
-### Scripts
+### Additional Deliverables
 
 The _res/_ directory contains two examples of script files, _ScriptOne.txt_ and _ScriptTwo.txt_,
-that demonstrate all the working features of this image processing application.
+that demonstrate all the working features of this image processing application. The _res/_ directory
+also contains _class_diagram.png_, which as image of a class diagram showing the names of classes
+and interfaces, method signatures, and inheritance relationships in our program.
 
 ## Assignment 5
 

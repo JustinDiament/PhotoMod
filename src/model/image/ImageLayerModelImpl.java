@@ -90,7 +90,13 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   public List<Image> getLayerImages() {
     List<Image> layerImages = new ArrayList<>();
     for (Layer layer : this.layers) {
-      layerImages.add(new ImageImpl(layer.getImage()));
+      Image i;
+      if (layer.getImage() == null) {
+        i = null;
+      } else {
+        i = new ImageImpl(layer.getImage());
+      }
+      layerImages.add(i);
     }
     return layerImages;
   }

@@ -1,0 +1,3 @@
+res//test//quetzal//quetzaljpg.jpg jpg
+res//test//quetzal//quetzalpng.png png
+res//test//quetzal//quetzalppm.ppm ppm
