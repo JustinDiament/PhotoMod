@@ -130,7 +130,9 @@ those listed under the Assignment 5 > Design section. All parts of the program a
 The _res/_ directory contains two examples of script files, _ScriptOne.txt_ and _ScriptTwo.txt_,
 that demonstrate all the working features of this image processing application. The _res/_ directory
 also contains _class_diagram.png_, which as image of a class diagram showing the names of classes
-and interfaces, method signatures, and inheritance relationships in our program.
+and interfaces, method signatures, and inheritance relationships in our program. Finally, the
+_res/_ directory contains _ImageProcessing.jar_, which can be executed to run the application. Refer
+to USEME.md for instructions on how to run this file.
 
 ### Citations
 
