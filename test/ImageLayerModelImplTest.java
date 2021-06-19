@@ -481,13 +481,13 @@ public class ImageLayerModelImplTest {
     assertEquals(217, i.getPixelAt(0, 0).getGreen());
     assertEquals(169, i.getPixelAt(0, 0).getBlue());
 
-    assertEquals(100, i.getPixelAt(0, 1).getRed());
-    assertEquals(88, i.getPixelAt(0, 1).getGreen());
-    assertEquals(69, i.getPixelAt(0, 1).getBlue());
+    assertEquals(254, i.getPixelAt(0, 1).getRed());
+    assertEquals(226, i.getPixelAt(0, 1).getGreen());
+    assertEquals(176, i.getPixelAt(0, 1).getBlue());
 
-    assertEquals(100, i.getPixelAt(1, 0).getRed());
-    assertEquals(88, i.getPixelAt(1, 0).getGreen());
-    assertEquals(69, i.getPixelAt(1, 0).getBlue());
+    assertEquals(254, i.getPixelAt(1, 0).getRed());
+    assertEquals(226, i.getPixelAt(1, 0).getGreen());
+    assertEquals(176, i.getPixelAt(1, 0).getBlue());
 
     assertEquals(244, i.getPixelAt(1, 1).getRed());
     assertEquals(217, i.getPixelAt(1, 1).getGreen());
@@ -497,13 +497,13 @@ public class ImageLayerModelImplTest {
     assertEquals(217, this.m.getCurrentLayerImage().getPixelAt(0, 0).getGreen());
     assertEquals(169, this.m.getCurrentLayerImage().getPixelAt(0, 0).getBlue());
 
-    assertEquals(100, this.m.getCurrentLayerImage().getPixelAt(0, 1).getRed());
-    assertEquals(88, this.m.getCurrentLayerImage().getPixelAt(0, 1).getGreen());
-    assertEquals(69, this.m.getCurrentLayerImage().getPixelAt(0, 1).getBlue());
+    assertEquals(254, this.m.getCurrentLayerImage().getPixelAt(0, 1).getRed());
+    assertEquals(226, this.m.getCurrentLayerImage().getPixelAt(0, 1).getGreen());
+    assertEquals(176, this.m.getCurrentLayerImage().getPixelAt(0, 1).getBlue());
 
-    assertEquals(100, this.m.getCurrentLayerImage().getPixelAt(1, 0).getRed());
-    assertEquals(88, this.m.getCurrentLayerImage().getPixelAt(1, 0).getGreen());
-    assertEquals(69, this.m.getCurrentLayerImage().getPixelAt(1, 0).getBlue());
+    assertEquals(254, this.m.getCurrentLayerImage().getPixelAt(1, 0).getRed());
+    assertEquals(226, this.m.getCurrentLayerImage().getPixelAt(1, 0).getGreen());
+    assertEquals(176, this.m.getCurrentLayerImage().getPixelAt(1, 0).getBlue());
 
     assertEquals(244, this.m.getCurrentLayerImage().getPixelAt(1, 1).getRed());
     assertEquals(217, this.m.getCurrentLayerImage().getPixelAt(1, 1).getGreen());

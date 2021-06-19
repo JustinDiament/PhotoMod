@@ -1,0 +1,3 @@
+res//test//layer3//quetzal3one.png png
+res//test//layer3//quetzal3two.png png
+res//test//layer3//quetzal3three.png png

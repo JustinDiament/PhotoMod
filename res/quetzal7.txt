@@ -1,2 +1,0 @@
-res//quetzal7one.ppm ppm
-res//quetzal7two.ppm ppm

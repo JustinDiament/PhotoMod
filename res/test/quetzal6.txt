@@ -1,0 +1,2 @@
+res//test//quetzal6one.jpg jpg
+res//test//quetzal6two.jpg jpg

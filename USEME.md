@@ -24,13 +24,14 @@ Example Format: **command name** _[additional arguments]_: description, conditio
     1. A layer must already be created that has the given name
 6. **createlayer** _[layer_name]_: adds a new layer to the top of the layers with the given name
     1. A layer must not already exist with the same name
+    2. Newly created layers have a null image and are visible by default
 7. **removelayer** _[layer_name]_: removes the layer with the given name from the image
     1. A layer must already be created that has the given name
 8. **visibility** _[visibility]_: sets the visibility of the current layer
     1. A layer must already be created and selected as the current layer
     2. _visibility_ must be either "visible" or "invisible"
-9. **createcheckerboard** _[size num_squares color_1 color_2]_: sets the image of the current
-   layer to a programmatically generated checkerboard
+9. **createcheckerboard** _[size num_squares color_1 color_2]_: sets the image of the current layer
+   to a programmatically generated checkerboard
     1. _size_ must be a positive integer
     2. _num_squares_ must be a positive integer
     3. _color_1_ must be a valid color supported by Java's Color library, as a lowercase single word
@@ -62,3 +63,9 @@ Example Format: **command name** _[additional arguments]_: description, conditio
     3. A visible layer must exist within the image
 13. **quit**: immediately stops running the application when entered
 
+## Running the Application
+
+A JAR file, ImageProcessing.jar, can be found in the _res/_ directory. A user may run this file by
+navigating to this directory within a command terminal and entering `java -jar ImageProcessing.jar`,
+then following the printed instructions to either run one of the example script files,
+_res/ScriptOne.txt_ and _res/ScriptTwo.txt_, or enter commands via the command line.
