@@ -9,10 +9,10 @@ import model.operation.Operations;
 
 /**
  * A mock model for testing purposes only. Writes information about actions that modify the Image
- * being edited by the actual model's Image modification program to a StringBuilder to confirm
- * that information is being correctly parsed in the controller and passed to the model. All actual
- * Image modification is delegated to an instance of ImageLayerModelImpl, an actual proper
- * implementation of the ImageLayerModel interface.
+ * being edited by the actual model's Image modification program to a StringBuilder to confirm that
+ * information is being correctly parsed in the controller and passed to the model. All actual Image
+ * modification is delegated to an instance of ImageLayerModelImpl, an actual proper implementation
+ * of the ImageLayerModel interface.
  */
 public class ImageLayerMockModel implements ImageLayerModel {
 
@@ -20,8 +20,8 @@ public class ImageLayerMockModel implements ImageLayerModel {
   private final ImageLayerModel delegate;
 
   /**
-   * Constructs a ImageLayerMockModel object with a StringBuilder to record information about
-   * the information the model receives given.
+   * Constructs a ImageLayerMockModel object with a StringBuilder to record information about the
+   * information the model receives given.
    *
    * @param log a StringBuilder object to record information about the the data the model receives
    */
@@ -66,8 +66,8 @@ public class ImageLayerMockModel implements ImageLayerModel {
 
   @Override
   public List<Image> getLayerImages() {
-    // todo
-    return null;
+    log.append("Multi-layer export occurring").append("\n");
+    return delegate.getLayerImages();
   }
 
   @Override
@@ -104,19 +104,18 @@ public class ImageLayerMockModel implements ImageLayerModel {
 
   @Override
   public void verifyLayerDimensions(Image img) throws IllegalArgumentException {
-    // todo
+    this.delegate.verifyLayerDimensions(img);
   }
 
   @Override
   public int getCurrentLayerIndex() {
-    // todo
-    return 0;
+    return this.delegate.getCurrentLayerIndex();
   }
 
   @Override
   public Image getTopImage() throws IllegalArgumentException {
-    // todo
-    return null;
+    this.log.append("Export occurring\n");
+    return this.delegate.getTopImage();
   }
 
   @Override

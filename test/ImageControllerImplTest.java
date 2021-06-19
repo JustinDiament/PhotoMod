@@ -34,7 +34,7 @@ public class ImageControllerImplTest {
   @Test(expected = IllegalArgumentException.class)
   public void imageControllerImplConstructorTwoModelCannotBeNull() {
     new ImageControllerImpl(null,
-        "/Users/Justin/Documents/GitHub/image-processing/res/test/scripts/ScriptOne.txt",
+        "res//test//layer//test18.jpg",
         new StringBuilder());
   }
 
@@ -55,7 +55,7 @@ public class ImageControllerImplTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void imageControllerImplConstructorTwoFileNameNotFound() {
-    new ImageControllerImpl(this.model, "res\\test\\scripts\\ScriptThree.txt", new StringBuilder());
+    new ImageControllerImpl(this.model, "res//test//layer//test9.jpg", new StringBuilder());
   }
 
   @Test
@@ -154,7 +154,8 @@ public class ImageControllerImplTest {
     this.controller.run();
 
     assertEquals(
-        "Command failed to execute. Reason: No layer with the specified name to change to exists.\n",
+        "Command failed to execute. Reason: No layer with the specified name to change to "
+            + "exists.\n",
         this.ap.toString());
   }
 
@@ -215,7 +216,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
         + "Current layer changed to layer with this index: 0\n"
-        + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+        + "Created programmatic image of this type: class model.image.programmatic."
+        + "CreateCheckerboard\n"
         + "Applied this type of operation to the current layer: BLUR\n", this.mockAp.toString());
   }
 
@@ -287,9 +289,9 @@ public class ImageControllerImplTest {
 
     this.controller.run();
 
-    assertEquals(244, this.model.getPixelInCurrentLayerAt(0, 0).getRed());
-    assertEquals(217, this.model.getPixelInCurrentLayerAt(0, 0).getGreen());
-    assertEquals(169, this.model.getPixelInCurrentLayerAt(0, 0).getBlue());
+    assertEquals(48, this.model.getPixelInCurrentLayerAt(0, 0).getRed());
+    assertEquals(42, this.model.getPixelInCurrentLayerAt(0, 0).getGreen());
+    assertEquals(33, this.model.getPixelInCurrentLayerAt(0, 0).getBlue());
 
     assertEquals(0, this.model.getPixelInCurrentLayerAt(0, 1).getRed());
     assertEquals(0, this.model.getPixelInCurrentLayerAt(0, 1).getGreen());
@@ -299,9 +301,9 @@ public class ImageControllerImplTest {
     assertEquals(0, this.model.getPixelInCurrentLayerAt(1, 0).getGreen());
     assertEquals(0, this.model.getPixelInCurrentLayerAt(1, 0).getBlue());
 
-    assertEquals(244, this.model.getPixelInCurrentLayerAt(1, 1).getRed());
-    assertEquals(217, this.model.getPixelInCurrentLayerAt(1, 1).getGreen());
-    assertEquals(169, this.model.getPixelInCurrentLayerAt(1, 1).getBlue());
+    assertEquals(48, this.model.getPixelInCurrentLayerAt(1, 1).getRed());
+    assertEquals(42, this.model.getPixelInCurrentLayerAt(1, 1).getGreen());
+    assertEquals(33, this.model.getPixelInCurrentLayerAt(1, 1).getBlue());
   }
 
   @Test
@@ -318,7 +320,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
         + "Current layer changed to layer with this index: 0\n"
-        + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+        + "Created programmatic image of this type: class model.image.programmatic."
+        + "CreateCheckerboard\n"
         + "Applied this type of operation to the current layer: SEPIA\n", this.mockAp.toString());
   }
 
@@ -365,7 +368,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
             + "Current layer changed to layer with this index: 0\n"
-            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n"
             + "Applied this type of operation to the current layer: MONOCHROME\n",
         this.mockAp.toString());
   }
@@ -413,7 +417,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
         + "Current layer changed to layer with this index: 0\n"
-        + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+        + "Created programmatic image of this type: class model.image.programmatic."
+        + "CreateCheckerboard\n"
         + "Applied this type of operation to the current layer: SHARPEN\n", this.mockAp.toString());
   }
 
@@ -613,7 +618,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
             + "Current layer changed to layer with this index: 0\n"
-            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n",
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n",
         this.mockAp.toString());
   }
 
@@ -688,7 +694,7 @@ public class ImageControllerImplTest {
         new StringReader(""
             + "createlayer one "
             + "current one "
-            + "import res\\test\\layer\\test.jpg jpg"),
+            + "import res//test//layer//test.jpg jpg"),
         this.ap);
 
     this.controller.run();
@@ -704,7 +710,7 @@ public class ImageControllerImplTest {
         new StringReader(""
             + "createlayer one "
             + "current one "
-            + "import res\\test\\layer\\test.jpg jpg"),
+            + "import res//test//layer//test.jpg jpg"),
         this.ap);
 
     this.controller.run();
@@ -721,7 +727,7 @@ public class ImageControllerImplTest {
         new StringReader(""
             + "createlayer one "
             + "current one "
-            + "import res\\test\\layer\\test.jpg "),
+            + "import res//test//layer//test.jpg "),
         this.ap);
 
     this.controller.run();
@@ -737,12 +743,13 @@ public class ImageControllerImplTest {
         new StringReader(""
             + "createlayer one "
             + "current one "
-            + "import res\\test\\layer\\test111.jpg jpg"),
+            + "import res//test//layer//test111.jpg jpg"),
         this.ap);
 
     this.controller.run();
 
-    assertEquals("Command failed to execute. Reason: Failed to import file.\n", this.ap.toString());
+    assertEquals("Command failed to execute. Reason: Failed to import file.\n",
+        this.ap.toString());
   }
 
   @Test
@@ -788,9 +795,9 @@ public class ImageControllerImplTest {
         new StringReader(""
             + "createlayer one "
             + "current one "
-            + "import res\\test\\layer\\test.jpg jpg "
+            + "import res//test//layer//test.jpg jpg "
             + "blur "
-            + "export res\\test\\layer\\test3.jpg jpg"),
+            + "export res//test//test3.jpg jpg"),
         this.ap);
 
     this.controller.run();
@@ -799,7 +806,8 @@ public class ImageControllerImplTest {
         "New layer created with this name: one\n"
             + "Current layer changed to layer with this index: 0\n"
             + "Current layer image set\n"
-            + "Applied this type of operation to the current layer: BLUR\n",
+            + "Applied this type of operation to the current layer: BLUR\n"
+            + "Export occurring\n",
         this.mockAp.toString());
   }
 
@@ -810,12 +818,12 @@ public class ImageControllerImplTest {
             + "createlayer one "
             + "createlayer two "
             + "current one "
-            + "import res\\test\\layer\\test.jpg jpg "
+            + "import res//test//layer//test.jpg jpg "
             + "sharpen "
             + "current two "
-            + "import res\\test\\layer\\test.jpg jpg "
+            + "import res//test//layer//test.jpg jpg "
             + "blur "
-            + "exportAll res\\test\\layer\\test4.txt jpg"),
+            + "exportAll res//test//layer2//test4 jpg"),
         this.ap);
 
     this.controller.run();
@@ -828,7 +836,8 @@ public class ImageControllerImplTest {
             + "Applied this type of operation to the current layer: SHARPEN\n"
             + "Current layer changed to layer with this index: 1\n"
             + "Current layer image set\n"
-            + "Applied this type of operation to the current layer: BLUR\n",
+            + "Applied this type of operation to the current layer: BLUR\n"
+            + "Multi-layer export occurring\n",
         this.mockAp.toString());
   }
 
@@ -840,11 +849,11 @@ public class ImageControllerImplTest {
             + "createlayer two "
             + "current one "
             + "current bad "
-            + "import res\\test\\layer\\test.jpg jpg "
+            + "import res//test//layer//test.jpg jpg "
             + "sharpen "
             + "bad "
             + "current two "
-            + "import res\\test\\layer\\test.jpg jpg "
+            + "import res//test//layer//test.jpg jpg "
             + "blur "),
         this.ap);
 
@@ -862,8 +871,114 @@ public class ImageControllerImplTest {
         this.mockAp.toString());
 
     assertEquals(
-        "Command failed to execute. Reason: No layer with the specified name to change to exists.\n"
+        "Command failed to execute. Reason: No layer with the specified name to change "
+            + "to exists.\n"
             + "Provided command is invalid or not supported.\n",
+        this.ap.toString());
+  }
+
+  @Test
+  public void testScriptOne() {
+    this.controller = new ImageControllerImpl(this.mockModel,
+        "res//ScriptOne.txt",
+        this.ap);
+
+    this.controller.run();
+
+    assertEquals(
+        "New layer created with this name: one\n"
+            + "New layer created with this name: two\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Current layer image set\n"
+            + "Applied this type of operation to the current layer: SHARPEN\n"
+            + "Current layer changed to layer with this index: 1\n"
+            + "Current layer image set\n"
+            + "Applied this type of operation to the current layer: BLUR\n"
+            + "Applied this type of operation to the current layer: SEPIA\n"
+            + "New layer created with this name: three\n"
+            + "New layer created with this name: four\n"
+            + "Current layer changed to layer with this index: 2\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 3\n"
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n"
+            + "Removed layer at this index: 3\n"
+            + "Current layer changed to layer with this index: -1\n"
+            + "Current layer changed to layer with this index: 2\n"
+            + "Current layer changed to this visibility level: false\n"
+            + "Export occurring\n"
+            + "Current layer changed to this visibility level: true\n"
+            + "Export occurring\n"
+            + "Export occurring\n"
+            + "Applied this type of operation to the current layer: SHARPEN\n"
+            + "Applied this type of operation to the current layer: MONOCHROME\n"
+            + "Multi-layer export occurring\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Applied this type of operation to the current layer: SHARPEN\n"
+            + "Multi-layer export occurring\n"
+            + "Applied this type of operation to the current layer: SEPIA\n"
+            + "Multi-layer export occurring\n",
+        this.mockAp.toString());
+
+    assertEquals(
+        "Image processing has been quit.\n",
+        this.ap.toString());
+  }
+
+
+  @Test
+  public void testScriptTwo() {
+    this.controller = new ImageControllerImpl(this.mockModel,
+        "res//ScriptTwo.txt",
+        this.ap);
+
+    this.controller.run();
+
+    assertEquals(
+        "New layer created with this name: one\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Current layer image set\n"
+            + "New layer created with this name: two\n"
+            + "New layer created with this name: three\n"
+            + "Current layer changed to layer with this index: 2\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Applied this type of operation to the current layer: SHARPEN\n"
+            + "Applied this type of operation to the current layer: SEPIA\n"
+            + "Current layer changed to this visibility level: false\n"
+            + "Current layer changed to layer with this index: 1\n"
+            + "Current layer image set\n"
+            + "Current layer changed to this visibility level: false\n"
+            + "Applied this type of operation to the current layer: MONOCHROME\n"
+            + "Export occurring\n"
+            + "Current layer changed to this visibility level: true\n"
+            + "Current layer changed to layer with this index: 2\n"
+            + "Current layer changed to this visibility level: true\n"
+            + "Export occurring\n"
+            + "Removed layer at this index: 2\n"
+            + "Current layer changed to layer with this index: -1\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Export occurring\n"
+            + "Applied this type of operation to the current layer: BLUR\n"
+            + "Export occurring\n"
+            + "Current layer changed to layer with this index: 1\n"
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n"
+            + "Export occurring\n"
+            + "Multi-layer export occurring\n"
+            + "Applied this type of operation to the current layer: SHARPEN\n"
+            + "Applied this type of operation to the current layer: SEPIA\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n"
+            + "Multi-layer export occurring\n"
+            + "Applied this type of operation to the current layer: MONOCHROME\n"
+            + "Applied this type of operation to the current layer: BLUR\n"
+            + "Multi-layer export occurring\n",
+        this.mockAp.toString());
+
+    assertEquals(
+        "",
         this.ap.toString());
   }
 }

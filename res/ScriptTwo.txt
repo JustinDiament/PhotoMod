@@ -1,0 +1,37 @@
+createlayer one
+current one
+import res//quetzal//quetzal.png png
+createlayer two
+createlayer three
+current three
+import res//quetzal//quetzal.ppm ppm
+current one
+sharpen
+sepia
+visibility invisible
+current two
+import res//quetzal//quetzal.jpg jpg
+visibility invisible
+monochrome
+export res//quetzal//quetzal3.jpg jpg
+visibility visible
+current three
+visibility visible
+export res//quetzal//quetzal33.jpg jpg
+removelayer three
+current one
+export res//quetzal//quetzal3.png png
+blur
+export res//quetzal//quetzal3.ppm ppm
+current two
+createcheckerboard 300 100 blue green
+export res//quetzal//quetzal33.ppm ppm
+exportall res//quetzal5 png
+sharpen
+sepia
+current one
+createcheckerboard 250 10 red yellow
+exportall res//quetzal6 jpg
+monochrome
+blur
+exportall res//quetzal7 ppm

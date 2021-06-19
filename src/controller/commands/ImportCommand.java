@@ -54,11 +54,10 @@ public class ImportCommand extends FileCommand {
             currentLayer = 0;
           }
           model.addLayer(filepath);
-          model.setCurrentLayer(currentLayer);
+          model.setCurrentLayer(currentLayer++);
           Image img = super.importImage(path, ext);
           model.setCurrentLayerImage(img);
           model.verifyLayerDimensions(img);
-          model.setCurrentLayer(currentLayer++);
         }
       } catch (IllegalArgumentException e) {
         throw new IllegalArgumentException("Failed to import file.");
