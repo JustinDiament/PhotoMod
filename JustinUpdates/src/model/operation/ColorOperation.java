@@ -9,13 +9,13 @@ import model.image.Pixel;
 import model.image.PixelImpl;
 
 /**
- * Represents an image operation that modifies the overall color of an Image by modifying each
- * Pixel by similar factors in its red, green, and blue channels. Examples of such operations are
- * applying a monochrome or sepia appearance to an Image.
+ * Represents an image operation that modifies the overall color of an Image by modifying each Pixel
+ * by similar factors in its red, green, and blue channels. Examples of such operations are applying
+ * a monochrome or sepia appearance to an Image.
  * <p>
- *   New class created to abstract the operations of MonochromeOperation and SepiaOperation.
- *   These two classes still function 100% identically to their original use, just utilize some
- *   formerly duplicate code shared here.
+ * New class created to abstract the operations of MonochromeOperation and SepiaOperation. These two
+ * classes still function 100% identically to their original use, just utilize some formerly
+ * duplicate code shared here.
  * </p>
  */
 public abstract class ColorOperation implements ImageOperation {

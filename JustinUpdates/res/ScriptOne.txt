@@ -16,16 +16,16 @@ createcheckerboard 160 40 black white
 removelayer four
 current three
 visibility invisible
-export res//quetzal//quetzal2.jpg jpg
+export res//test//quetzal//quetzal2.jpg jpg
 visibility visible
-export res//quetzal//quetzal2.png png
-export res//quetzal//quetzal2.ppm ppm
+export res//test//quetzal//quetzal2.png png
+export res//test//quetzal//quetzal2.ppm ppm
 sharpen
 monochrome
-exportall res//quetzal2 jpg
+exportall res//test//layer3//quetzal2 jpg
 current one
 sharpen
-exportall res//quetzal3 png
+exportall res//test//layer3//quetzal3 png
 sepia
-exportall res//quetzal4 ppm
+exportall res//test//layer3//quetzal4 ppm
 quit

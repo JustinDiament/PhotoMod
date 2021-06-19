@@ -55,7 +55,7 @@ public class ImageControllerImplTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void imageControllerImplConstructorTwoFileNameNotFound() {
-    new ImageControllerImpl(this.model, "res//test//layer//test.jpg", new StringBuilder());
+    new ImageControllerImpl(this.model, "res//test//layer//test9.jpg", new StringBuilder());
   }
 
   @Test
@@ -154,7 +154,8 @@ public class ImageControllerImplTest {
     this.controller.run();
 
     assertEquals(
-        "Command failed to execute. Reason: No layer with the specified name to change to exists.\n",
+        "Command failed to execute. Reason: No layer with the specified name to change to "
+            + "exists.\n",
         this.ap.toString());
   }
 
@@ -215,7 +216,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
         + "Current layer changed to layer with this index: 0\n"
-        + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+        + "Created programmatic image of this type: class model.image.programmatic."
+        + "CreateCheckerboard\n"
         + "Applied this type of operation to the current layer: BLUR\n", this.mockAp.toString());
   }
 
@@ -318,7 +320,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
         + "Current layer changed to layer with this index: 0\n"
-        + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+        + "Created programmatic image of this type: class model.image.programmatic."
+        + "CreateCheckerboard\n"
         + "Applied this type of operation to the current layer: SEPIA\n", this.mockAp.toString());
   }
 
@@ -365,7 +368,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
             + "Current layer changed to layer with this index: 0\n"
-            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n"
             + "Applied this type of operation to the current layer: MONOCHROME\n",
         this.mockAp.toString());
   }
@@ -413,7 +417,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
         + "Current layer changed to layer with this index: 0\n"
-        + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+        + "Created programmatic image of this type: class model.image.programmatic."
+        + "CreateCheckerboard\n"
         + "Applied this type of operation to the current layer: SHARPEN\n", this.mockAp.toString());
   }
 
@@ -613,7 +618,8 @@ public class ImageControllerImplTest {
 
     assertEquals("New layer created with this name: one\n"
             + "Current layer changed to layer with this index: 0\n"
-            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n",
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n",
         this.mockAp.toString());
   }
 
@@ -742,7 +748,8 @@ public class ImageControllerImplTest {
 
     this.controller.run();
 
-    assertEquals("Command failed to execute. Reason: Failed to import file.\n", this.ap.toString());
+    assertEquals("Command failed to execute. Reason: Failed to import file.\n",
+        this.ap.toString());
   }
 
   @Test
@@ -829,7 +836,8 @@ public class ImageControllerImplTest {
             + "Applied this type of operation to the current layer: SHARPEN\n"
             + "Current layer changed to layer with this index: 1\n"
             + "Current layer image set\n"
-            + "Applied this type of operation to the current layer: BLUR\n",
+            + "Applied this type of operation to the current layer: BLUR\n"
+            + "Multi-layer export occurring\n",
         this.mockAp.toString());
   }
 
@@ -863,7 +871,8 @@ public class ImageControllerImplTest {
         this.mockAp.toString());
 
     assertEquals(
-        "Command failed to execute. Reason: No layer with the specified name to change to exists.\n"
+        "Command failed to execute. Reason: No layer with the specified name to change "
+            + "to exists.\n"
             + "Provided command is invalid or not supported.\n",
         this.ap.toString());
   }
@@ -891,7 +900,8 @@ public class ImageControllerImplTest {
             + "Current layer changed to layer with this index: 2\n"
             + "Current layer image set\n"
             + "Current layer changed to layer with this index: 3\n"
-            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n"
             + "Removed layer at this index: 3\n"
             + "Current layer changed to layer with this index: -1\n"
             + "Current layer changed to layer with this index: 2\n"
@@ -902,9 +912,12 @@ public class ImageControllerImplTest {
             + "Export occurring\n"
             + "Applied this type of operation to the current layer: SHARPEN\n"
             + "Applied this type of operation to the current layer: MONOCHROME\n"
+            + "Multi-layer export occurring\n"
             + "Current layer changed to layer with this index: 0\n"
             + "Applied this type of operation to the current layer: SHARPEN\n"
-            + "Applied this type of operation to the current layer: SEPIA\n",
+            + "Multi-layer export occurring\n"
+            + "Applied this type of operation to the current layer: SEPIA\n"
+            + "Multi-layer export occurring\n",
         this.mockAp.toString());
 
     assertEquals(
@@ -949,13 +962,19 @@ public class ImageControllerImplTest {
             + "Applied this type of operation to the current layer: BLUR\n"
             + "Export occurring\n"
             + "Current layer changed to layer with this index: 1\n"
-            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n"
+            + "Export occurring\n"
+            + "Multi-layer export occurring\n"
             + "Applied this type of operation to the current layer: SHARPEN\n"
             + "Applied this type of operation to the current layer: SEPIA\n"
             + "Current layer changed to layer with this index: 0\n"
-            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+            + "Created programmatic image of this type: class model.image.programmatic."
+            + "CreateCheckerboard\n"
+            + "Multi-layer export occurring\n"
             + "Applied this type of operation to the current layer: MONOCHROME\n"
-            + "Applied this type of operation to the current layer: BLUR\n",
+            + "Applied this type of operation to the current layer: BLUR\n"
+            + "Multi-layer export occurring\n",
         this.mockAp.toString());
 
     assertEquals(

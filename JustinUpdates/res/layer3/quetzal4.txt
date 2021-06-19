@@ -1,0 +1,3 @@
+res//layer3//quetzal4one.ppm ppm
+res//layer3//quetzal4two.ppm ppm
+res//layer3//quetzal4three.ppm ppm

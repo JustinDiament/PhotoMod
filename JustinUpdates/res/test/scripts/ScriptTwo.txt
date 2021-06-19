@@ -1,0 +1,36 @@
+createlayer first
+current first
+createcheckerboard 300 100 blue green
+createlayer two
+createlayer three
+current three
+createcheckerboard 250 10 red yellow
+current one
+sharpen
+sepia
+visibility invisible
+current two
+import [image1].jpg
+visibility invisible
+monochrome
+export [layerone.jpg] jpg
+visibility visible
+current three
+visibility visible
+export [layerthree.jpg] jpg
+removelayer three
+current one
+export [layertwo.png] png
+blur
+export [layertwo.ppm] ppm
+current three
+import [image2].png
+exportall [entireimageaspng] png
+sharpen
+sepia
+current two
+import [image3].png
+exportall [entireimageasjpg] jpg
+monochrome
+blur
+exportall [entireimageasppm] ppm

@@ -17,21 +17,23 @@ export res//quetzal//quetzal3.jpg jpg
 visibility visible
 current three
 visibility visible
-export res//quetzal//quetzal33.jpg jpg
+export res//test//quetzal//quetzal33.jpg jpg
 removelayer three
 current one
-export res//quetzal//quetzal3.png png
+export res//test//quetzal//quetzal3.png png
 blur
-export res//quetzal//quetzal3.ppm ppm
+export res//test//quetzal//quetzal3.ppm ppm
 current two
 createcheckerboard 300 100 blue green
 export res//quetzal//quetzal33.ppm ppm
-exportall res//quetzal5 png
+exportall res//test//quetzal5 png
 sharpen
 sepia
 current one
 createcheckerboard 250 10 red yellow
-exportall res//quetzal6 jpg
+exportall res//test//quetzal6 jpg
 monochrome
 blur
-exportall res//quetzal7 ppm
+exportall res//test//quetzal7 ppm
+import res//test//quetzal7.txt
+quit
