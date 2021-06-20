@@ -24,9 +24,8 @@ abstract class ImageFileFormat implements ImageFile {
     BufferedImage img;
     try {
       img = ImageIO.read(new File(filename));
-    }
-    catch (IOException e) {
-     throw new IllegalArgumentException("File " + filename + " not found!");
+    } catch (IOException e) {
+      throw new IllegalArgumentException("File " + filename + " not found!");
     }
     ImageUtil.requireNonNull(img);
 
@@ -59,8 +58,7 @@ abstract class ImageFileFormat implements ImageFile {
 
     try {
       ImageIO.write(image, this.getExtension(), new File(filename));
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       throw new IllegalArgumentException(
           String.format("Failed to export the image as a %s file", this.getExtension()));
     }

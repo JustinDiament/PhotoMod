@@ -63,8 +63,8 @@ Example Format: **command name** _[additional arguments]_: description, conditio
     5. A layer must already be created and selected as the current layer
 10. **import** _[filepath extension]_: imports the image file at the given file path to the current
     layer  
-    _Example: import res//test//layer//test.jpg jpg_
-    _Example: import res//test//layer//test.txt txt_
+    _Example: import res//test//layer//test.jpg jpg_  
+    _Example: import res//test//layer//test.txt txt_  
     1. _filepath_ must be a valid absolute or relative file path
     2. _filepath_ must point to a file of a supported image file type or text file
         1. If _filepath_ points to a text file, the text file must be in the correct format for a
