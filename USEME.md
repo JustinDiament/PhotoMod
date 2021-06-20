@@ -21,7 +21,11 @@ EXAMPLE SCRIPT FILES WILL FAIL IF THE JAR FILE IS NOT IN THE ROOT DIRECTORY.**
 
 The following batch script commands are supported by this image processing application.
 
-Example Format: **command name** _[additional arguments]_: description, conditions
+###### Command Template:
+
+**command name** _[additional arguments]_: description  
+_Example_  
+Conditions
 
 1. **blur**: blurs the current layer of the image  
    _Example: blur_
@@ -45,10 +49,12 @@ Example Format: **command name** _[additional arguments]_: description, conditio
 6. **createlayer** _[layer_name]_: adds a new layer to the top of the layers with the given name  
    _Example: createlayer layerOne_
     1. A layer must not already exist with the same name
-    2. Newly created layers have a null image and are visible by default
+    2. Newly created layers have no image and are visible by default
 7. **removelayer** _[layer_name]_: removes the layer with the given name from the image  
    _Example: removelayer layerOne_
     1. A layer must already be created that has the given name
+    2. After a layer is removed successfully, no layer will be selected, and the current layer will
+       need to be set
 8. **visibility** _[visibility]_: sets the visibility of the current layer  
    _Example: visibility invisible_
     1. A layer must already be created and selected as the current layer
@@ -64,7 +70,7 @@ Example Format: **command name** _[additional arguments]_: description, conditio
 10. **import** _[filepath extension]_: imports the image file at the given file path to the current
     layer  
     _Example: import res//test//layer//test.jpg jpg_  
-    _Example: import res//test//layer//test.txt txt_  
+    _Example: import res//test//layer//test.txt txt_
     1. _filepath_ must be a valid absolute or relative file path
     2. _filepath_ must point to a file of a supported image file type or text file
         1. If _filepath_ points to a text file, the text file must be in the correct format for a
@@ -91,7 +97,7 @@ Example Format: **command name** _[additional arguments]_: description, conditio
     3. A visible layer must exist within the image
 13. **quit**: immediately stops running the application when entered  
     _Example: quit_
-    
+
 ## Supported Colors
 
 The following colors are supported by the program to be used to create images programmatically.
