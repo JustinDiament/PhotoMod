@@ -11,6 +11,11 @@ import model.operation.Operations;
  */
 abstract class OperationCommand implements Command {
 
+  /**
+   * Retrieves the Operation specific to the image processing operation command.
+   *
+   * @return the Operation enum corresponding to the operation command
+   */
   protected abstract Operations getOperationName();
 
   @Override

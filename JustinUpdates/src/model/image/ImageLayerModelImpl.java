@@ -16,8 +16,8 @@ import model.operation.Operations;
  */
 public class ImageLayerModelImpl extends ImageProcessingModelImpl implements ImageLayerModel {
 
-  private final List<Layer> layers;
-  private int currentLayer;
+  protected final List<Layer> layers;
+  protected int currentLayer;
 
   /**
    * Constructs a layered image processing model that is able to handle image files and perform
@@ -56,7 +56,7 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
    * @param index the index to check for validity
    * @throws IllegalArgumentException if the index falls outside the bounds of the list of layers
    */
-  private void isValidLayer(int index) throws IllegalArgumentException {
+  protected void isValidLayer(int index) throws IllegalArgumentException {
     if (index < 0 || index >= layers.size()) {
       throw new IllegalArgumentException("Layer index is invalid");
     }
@@ -90,7 +90,13 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   public List<Image> getLayerImages() {
     List<Image> layerImages = new ArrayList<>();
     for (Layer layer : this.layers) {
-      layerImages.add(new ImageImpl(layer.getImage()));
+      Image i;
+      if (layer.getImage() == null) {
+        i = null;
+      } else {
+        i = new ImageImpl(layer.getImage());
+      }
+      layerImages.add(i);
     }
     return layerImages;
   }

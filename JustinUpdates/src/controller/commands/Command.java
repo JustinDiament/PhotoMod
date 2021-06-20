@@ -15,6 +15,7 @@ public interface Command {
    * @param scanner the Scanner object to read data to configure the command's execution parameters
    * @param model   the ImageLayerModel object that controls the execution of commands and the
    *                Images being modified
+   * @throws IllegalArgumentException if the command fails to execute successfully
    */
-  void execute(Scanner scanner, ImageLayerModel model);
+  void execute(Scanner scanner, ImageLayerModel model) throws IllegalArgumentException;
 }

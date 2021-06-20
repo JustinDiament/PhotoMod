@@ -10,6 +10,8 @@ public interface ImageController {
 
   /**
    * Run the controller and begin reading commands to control the Image modification program.
+   *
+   * @throws IllegalStateException if the controller is unable to render messages via the view
    */
-  void run();
+  void run() throws IllegalStateException;
 }

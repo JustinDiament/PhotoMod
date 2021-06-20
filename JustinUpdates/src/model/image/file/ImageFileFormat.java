@@ -71,7 +71,7 @@ abstract class ImageFileFormat implements ImageFile {
    *
    * @return the extension of the specific image file format
    */
-  abstract protected String getExtension();
+  protected abstract String getExtension();
 
   /**
    * Creates an Image with the given matrix of Pixels transposed.

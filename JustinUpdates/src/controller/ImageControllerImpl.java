@@ -134,7 +134,7 @@ public class ImageControllerImpl implements ImageController {
   }
 
   @Override
-  public void run() {
+  public void run() throws IllegalStateException {
     Scanner scanner = new Scanner(this.rd);
     Map<String, Command> possibleCommands = this.getCommands();
 
