@@ -2,6 +2,7 @@ package controller.commands;
 
 import java.util.Scanner;
 import model.ImageUtil;
+import model.image.Image;
 import model.image.ImageLayerModel;
 import model.operation.ImageOperation;
 import model.operation.MosaicOperation;
@@ -26,6 +27,14 @@ public class MosaicCommand implements Command {
     }
 
     ImageOperation mosaic = new MosaicOperation(seeds);
-    model.setCurrentLayerImage(mosaic.apply(model.getCurrentLayerImage()));
+
+    Image img;
+    try {
+      img = model.getCurrentLayerImage();
+    } catch (IllegalStateException e) {
+      throw new IllegalArgumentException(e.getMessage());
+    }
+
+    model.setCurrentLayerImage(mosaic.apply(img));
   }
 }

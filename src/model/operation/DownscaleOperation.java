@@ -55,8 +55,8 @@ public class DownscaleOperation implements ImageOperation {
     for (int i = 0; i < newWidth; i++) {
       List<Pixel> row = new ArrayList<>();
       for (int j = 0; j < newHeight; j++) {
-        double locationX = ((double) (i * oldWidth)) / (double) (newWidth);
-        double locationY = ((double) (j * oldHeight)) / (double) (newHeight);
+        double locationX = ((double) (i * oldWidth)) / (newWidth);
+        double locationY = ((double) (j * oldHeight)) / (newHeight);
 
         if (Math.floor(locationX) == Math.ceil(locationX) ||
             (Math.floor(locationY) == Math.ceil(locationY))) {
