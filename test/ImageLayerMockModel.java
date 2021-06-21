@@ -32,11 +32,6 @@ public class ImageLayerMockModel implements ImageLayerModel {
   }
 
   @Override
-  public void applyOperation(ImageOperation operation) {
-    // todo
-  }
-
-  @Override
   public void addLayer(String name) throws IllegalArgumentException {
     log.append("New layer created with this name: ").append(name).append("\n");
     delegate.addLayer(name);
