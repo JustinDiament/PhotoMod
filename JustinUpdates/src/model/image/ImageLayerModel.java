@@ -2,6 +2,7 @@ package model.image;
 
 import java.util.List;
 import model.image.layer.Layer;
+import model.operation.ImageOperation;
 
 /**
  * Represents the model of an Image modification program. The model processes Images, modifies them
@@ -10,6 +11,9 @@ import model.image.layer.Layer;
  * layers, as well as import multi-layered images and export multi-layered or single images.
  */
 public interface ImageLayerModel extends ImageProcessingModel {
+
+  // todo: docstring, document this change
+  void applyOperation(ImageOperation operation);
 
   /**
    * Adds a new layer to the top of the list of layers with a default null Image and set to
@@ -130,7 +134,6 @@ public interface ImageLayerModel extends ImageProcessingModel {
    * @throws IllegalArgumentException if the given image has different dimensions
    */
   void verifyLayerDimensions(Image img) throws IllegalArgumentException;
-
 
   /**
    * Returns the index of the current layer.

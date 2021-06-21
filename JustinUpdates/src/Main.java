@@ -1,8 +1,11 @@
 import controller.ImageController;
 import controller.ImageControllerImpl;
+import java.io.StringReader;
 import java.util.Scanner;
 import model.image.ImageLayerModel;
 import model.image.ImageLayerModelImpl;
+import model.image.file.JPEG;
+import model.operation.DownscaleOperation;
 
 /**
  * Main class used to run the image processing application.
@@ -37,6 +40,18 @@ public class Main {
           break;
         case 3:
           controller = new ImageControllerImpl(model);
+          break;
+        case 4:
+          ImageLayerModel m = new ImageLayerModelImpl();
+          // controller = new ImageControllerImpl(m, new StringReader(""), System.out);
+          JPEG jpg = new JPEG();
+          m.addLayer("one");
+          m.setCurrentLayer(0);
+          m.setCurrentLayerImage(jpg.importFile("res//test//quetzal//quetzaljpg.jpg"));
+          m.applyOperation(new DownscaleOperation(0.5, 0.8));
+          // m.applyOperation(new SepiaOperation());
+          controller = new ImageControllerImpl(m, new StringReader("export res//test//quetzal//quetzaljpg2.jpg jpg quit"), System.out);
+
           break;
         default:
           System.out.println("Please enter a valid number");

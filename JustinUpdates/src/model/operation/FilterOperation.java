@@ -17,7 +17,7 @@ public abstract class FilterOperation implements ImageOperation {
   protected final double[][] kernel;
 
   /**
-   * Create a filter operation containing a kernel to be used for its specific filter operation.
+   * Creates a filter operation containing a kernel to be used for its specific filter operation.
    *
    * @throws IllegalStateException if the kernel does not have odd dimensions
    */

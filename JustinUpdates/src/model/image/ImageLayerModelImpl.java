@@ -5,6 +5,7 @@ import java.util.List;
 import model.image.layer.Layer;
 import model.image.layer.LayerImpl;
 import model.image.programmatic.ProgrammaticCreator;
+import model.operation.ImageOperation;
 import model.operation.Operations;
 
 /**
@@ -16,8 +17,8 @@ import model.operation.Operations;
  */
 public class ImageLayerModelImpl extends ImageProcessingModelImpl implements ImageLayerModel {
 
-  protected final List<Layer> layers;
-  protected int currentLayer;
+  private final List<Layer> layers;
+  private int currentLayer;
 
   /**
    * Constructs a layered image processing model that is able to handle image files and perform
@@ -26,6 +27,14 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   public ImageLayerModelImpl() {
     this.layers = new ArrayList<>();
     this.currentLayer = -1;
+  }
+
+  @Override
+  public void applyOperation(ImageOperation operation) {
+    // todo: test this method
+    Image newImage = operation.apply(this.getCurrentLayerImage());
+    layers.set(this.currentLayer, new LayerImpl(newImage, this.getCurrentLayer().getName(),
+        this.getCurrentLayer().getVisibility()));
   }
 
   @Override
@@ -56,7 +65,7 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
    * @param index the index to check for validity
    * @throws IllegalArgumentException if the index falls outside the bounds of the list of layers
    */
-  protected void isValidLayer(int index) throws IllegalArgumentException {
+  private void isValidLayer(int index) throws IllegalArgumentException {
     if (index < 0 || index >= layers.size()) {
       throw new IllegalArgumentException("Layer index is invalid");
     }
