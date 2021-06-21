@@ -5,6 +5,7 @@ import model.image.ImageLayerModelImpl;
 import model.image.Pixel;
 import model.image.layer.Layer;
 import model.image.programmatic.ProgrammaticCreator;
+import model.operation.ImageOperation;
 import model.operation.Operations;
 
 /**
@@ -28,6 +29,11 @@ public class ImageLayerMockModel implements ImageLayerModel {
   ImageLayerMockModel(StringBuilder log) {
     this.log = log;
     this.delegate = new ImageLayerModelImpl();
+  }
+
+  @Override
+  public void applyOperation(ImageOperation operation) {
+    // todo
   }
 
   @Override
