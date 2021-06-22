@@ -5,7 +5,6 @@ import java.util.List;
 import model.image.layer.Layer;
 import model.image.layer.LayerImpl;
 import model.image.programmatic.ProgrammaticCreator;
-import model.operation.ImageOperation;
 import model.operation.Operations;
 
 /**
@@ -27,14 +26,6 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   public ImageLayerModelImpl() {
     this.layers = new ArrayList<>();
     this.currentLayer = -1;
-  }
-
-  @Override
-  public void applyOperation(ImageOperation operation) {
-    // todo: test this method
-    Image newImage = operation.apply(this.getCurrentLayerImage());
-    layers.set(this.currentLayer, new LayerImpl(newImage, this.getCurrentLayer().getName(),
-        this.getCurrentLayer().getVisibility()));
   }
 
   @Override
