@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -57,44 +56,38 @@ public class ImageViewImpl extends JFrame {
   private final JComboBox<String> layerNamesDropdown;
 
   private final JCheckBox visibilityCheckBox; // check to toggle invisible
-
-
-
-
-
-
+  private final JTextField visibilityTextField;
 
 
   public ImageViewImpl() {
     super();
-    setTitle("Swing features");
-    setSize(500, 500);
+    setTitle("Image Processor");
+    setSize(900, 500);
+
+    setFocusable(true);
+    requestFocus();
 
     mainPanel = new JPanel();
-    //for elements to be arranged vertically within this panel
     mainPanel.setLayout(new GridLayout(1, 2));
-//    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-    //scroll bars around this main panel
     mainScrollPane = new JScrollPane(mainPanel);
     add(mainScrollPane);
 
-    //show an image with a scrollbar
     JPanel imagePanel = new JPanel();
-    //a border around the panel with a caption
     imagePanel.setBorder(BorderFactory.createTitledBorder("Currently viewing layer:"));
     imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
-    //imagePanel.setMaximumSize(null);
     mainPanel.add(imagePanel);
 
     JLabel label = new JLabel();
     JScrollPane scrollPane = new JScrollPane(label);
     PNG png = new PNG();
-    Image i = png.importFile("res//mosaic//popeyes_original.png");
-    label.setIcon(new ImageIcon(ImageUtil.convertImage(i)));
+    Image img = png.importFile("res//mosaic//popeyes_original.png");
+    label.setIcon(new ImageIcon(ImageUtil.convertImage(img)));
+    label.setHorizontalAlignment(SwingConstants.CENTER);
     scrollPane.setPreferredSize(new Dimension(100, 200));
     imagePanel.add(scrollPane);
 
     JPanel buttonPanel = new JPanel();
+    buttonPanel.setBorder(BorderFactory.createTitledBorder("Currently selected layer:"));
     buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 
     this.mainPanel.add(buttonPanel);
@@ -102,8 +95,7 @@ public class ImageViewImpl extends JFrame {
     JPanel operationPanel = new JPanel();
     this.blurButton = new JButton("Blur");
     this.monochromeButton = new JButton("Monochrome");
-    this.monochromeButton.setPreferredSize(new Dimension(150, 20));
-//    this.monochromeButton.setMargin(new Insets(1, 0, 1, 0));
+    this.monochromeButton.setPreferredSize(new Dimension(115, 26));
     this.sepiaButton = new JButton("Sepia");
     this.sharpenButton = new JButton("Sharpen");
     operationPanel.add(this.blurButton);
@@ -113,38 +105,84 @@ public class ImageViewImpl extends JFrame {
 
     buttonPanel.add(operationPanel);
 
-
     JPanel operationTextPanel = new JPanel();
+    operationTextPanel.setLayout(new BoxLayout(operationTextPanel, BoxLayout.PAGE_AXIS));
     JPanel downscalePanel = new JPanel();
     this.downscaleButton = new JButton("Downscale");
-    this.downscaleXTextField = new JTextField(30);
-    this.downscaleYTextField = new JTextField(30);
+    this.downscaleXTextField = new JTextField(5);
+    this.downscaleYTextField = new JTextField(5);
+    downscalePanel.add(this.downscaleButton);
+    downscalePanel.add(this.downscaleXTextField);
+    downscalePanel.add(this.downscaleYTextField);
+    operationTextPanel.add(downscalePanel);
 
+    JPanel mosaicPanel = new JPanel();
     this.mosaicButton = new JButton("Mosaic");
-    this.mosaicSeedTextField = new JTextField(30);
+    this.mosaicSeedTextField = new JTextField(5);
+    mosaicPanel.add(this.mosaicButton);
+    mosaicPanel.add(this.mosaicSeedTextField);
+    operationTextPanel.add(mosaicPanel);
 
+    JPanel checkerboardPanel = new JPanel();
     this.createCheckerboardButton = new JButton("Checkerboard");
-    this.checkerboardSizeTextField = new JTextField(30);
-    this.checkerboardSquaresTextField = new JTextField(30);
+    this.checkerboardSizeTextField = new JTextField(5);
+    this.checkerboardSquaresTextField = new JTextField(5);
     this.checkerboardColorOneDropdown = new JComboBox<>();
     this.checkerboardColorTwoDropdown = new JComboBox<>();
 
+    String[] colors = {"red", "orange", "yellow", "green", "cyan", "blue", "magenta", "white",
+        "gray", "black"};
+    for (String color : colors) {
+      this.checkerboardColorOneDropdown.addItem(color);
+      this.checkerboardColorTwoDropdown.addItem(color);
+    }
 
+    checkerboardPanel.add(this.createCheckerboardButton);
+    checkerboardPanel.add(this.checkerboardSizeTextField);
+    checkerboardPanel.add(this.checkerboardSquaresTextField);
+    checkerboardPanel.add(this.checkerboardColorOneDropdown);
+    checkerboardPanel.add(this.checkerboardColorTwoDropdown);
+    operationTextPanel.add(checkerboardPanel);
 
+    buttonPanel.add(operationTextPanel);
+
+    JPanel filePanel = new JPanel();
     this.importButton = new JButton("Import");
     this.exportButton = new JButton("Export Topmost Visible Layer");
     this.exportAllButton = new JButton("Export All Layers");
+    filePanel.add(this.importButton);
+    filePanel.add(this.exportButton);
+    filePanel.add(this.exportAllButton);
 
+    buttonPanel.add(filePanel);
+
+    JPanel operationLayerPanel = new JPanel();
+    operationLayerPanel.setLayout(new BoxLayout(operationLayerPanel, BoxLayout.PAGE_AXIS));
+
+    JPanel createLayerPanel = new JPanel();
     this.createLayerButton = new JButton("Create Layer");
-    this.createLayerTextField = new JTextField(30);
+    this.createLayerTextField = new JTextField(10);
+    createLayerPanel.add(this.createLayerButton);
+    createLayerPanel.add(this.createLayerTextField);
+    operationLayerPanel.add(createLayerPanel);
 
+    JPanel layerNamePanel = new JPanel();
     this.setCurrentLayerButton = new JButton("Set Current Layer");
     this.removeLayerButton = new JButton("Remove Layer");
     this.layerNamesDropdown = new JComboBox<>();
+    layerNamePanel.add(this.setCurrentLayerButton);
+    layerNamePanel.add(this.removeLayerButton);
+    layerNamePanel.add(this.layerNamesDropdown);
+    operationLayerPanel.add(layerNamePanel);
 
+    JPanel visibilityPanel = new JPanel();
     this.visibilityCheckBox = new JCheckBox();
+    this.visibilityTextField = new JTextField("Make Invisible");
+    visibilityPanel.add(this.visibilityCheckBox);
+    visibilityPanel.add(this.visibilityTextField);
+    operationLayerPanel.add(visibilityPanel);
 
-
+    buttonPanel.add(operationLayerPanel);
   }
 
   public static void main(String[] args) {
@@ -155,4 +193,3 @@ public class ImageViewImpl extends JFrame {
     frame.setVisible(true);
   }
 }
-

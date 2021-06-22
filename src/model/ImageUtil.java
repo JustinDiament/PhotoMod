@@ -32,7 +32,6 @@ public class ImageUtil {
    * @return the converted BufferedImage object
    * @throws IllegalArgumentException if the given Image is null
    */
-  // todo: test
   public static BufferedImage convertImage(Image img) throws IllegalArgumentException {
     ImageUtil.requireNonNull(img);
     BufferedImage image = new BufferedImage(img.getWidth(), img.getHeight(),
