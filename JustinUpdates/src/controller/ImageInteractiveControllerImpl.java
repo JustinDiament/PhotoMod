@@ -12,10 +12,11 @@ import controller.commands.MosaicCommand;
 import controller.commands.RemoveLayerCommand;
 import controller.commands.VisibilityCommand;
 import java.util.Scanner;
-import javax.swing.text.html.ImageView;
 import model.ImageUtil;
 import model.image.ImageLayerModel;
+import model.image.ImageLayerModelImpl;
 import view.FeaturesImpl;
+import view.ImageViewImpl;
 
 /**
  * Represents an implementation of a controller for an interactive Image modification graphical user
@@ -27,7 +28,8 @@ import view.FeaturesImpl;
 public class ImageInteractiveControllerImpl implements ImageInteractiveController {
 
   private final ImageLayerModel model;
-  private final ImageView view;
+  // todo: rename all occurrences with view interface type once that is defined
+  private final ImageViewImpl view;
 
   /**
    * Constructs a ImageInteractiveControllerImpl object that can modify the given model and modify
@@ -36,9 +38,9 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
    * @param model the model that the controller will modify based on executed commands
    * @param view  the view that the model will modify to reflect changes it creates and request
    *              information from to execute its commands
-   * @throws IllegalArgumentException
+   * @throws IllegalArgumentException if the given model or view are null
    */
-  public ImageInteractiveControllerImpl(ImageLayerModel model, ImageView view)
+  public ImageInteractiveControllerImpl(ImageLayerModel model, ImageViewImpl view)
       throws IllegalArgumentException {
     this.model = ImageUtil.requireNonNull(model);
     this.view = ImageUtil.requireNonNull(view);
@@ -46,25 +48,40 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     this.view.addViewEventListener(new FeaturesImpl(this));
   }
 
+  public static void main(String[] args) {
+    System.out.println(null + " ");
+    ImageViewImpl v = new ImageViewImpl();
+    ImageInteractiveController cont = new ImageInteractiveControllerImpl(new ImageLayerModelImpl(),
+        v);
+    cont.run();
+  }
+
+  @Override
+  public void run() {
+  }
+
   /**
    * Attempts to execute the given Command function object using the given parameters. If the
-   * command was successfully executed, returns true to indicate this. If it was not, returns
-   * false.
+   * command was successfully executed, returns true to indicate this. If it was not, renders the
+   * error message to the view and returns false.
    *
    * @param scannerData the data that will be fed to the command to determine its execution
    *                    parameters
    * @param command     the command that will attempt to be executes
    * @return true if the command was successfully executed (does not throw an error) or false if the
    * command fails
+   * @throws IllegalArgumentException if the given scanner data or command are null
    */
-  private boolean executeCommand(String scannerData, Command command) {
+  private boolean executeCommand(String scannerData, Command command)
+      throws IllegalArgumentException {
+    ImageUtil.requireNonNull(scannerData);
+    ImageUtil.requireNonNull(command);
+
     try {
       command.execute(new Scanner(scannerData), this.model);
       return true;
     } catch (IllegalArgumentException | IllegalStateException e) {
-      // if the user's attempt to complete an action in the GUI cannot be completed due to an
-      // invalid state or invalid user input, nothing should occur
-      // todo: possibly add some kind of error popup or error ticker on the bottom of the gui?
+      this.view.renderErrorMessage(e.getMessage());
       return false;
     }
   }
@@ -76,21 +93,14 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   private void renderTopmostVisibleLayer() {
     try {
       this.view.renderImage(this.model.getTopImage());
-
-      // this.view.changeVisibleLayerText("None");
-      // no way to do this?
     } catch (IllegalArgumentException e) {
-      // todo: if no layers are visible, make the view render an image with no pixels since there's
-      // todo: nothing to show? or handle this another way
-      //this.view.renderImage(new ImageImpl())
-      // this.view.changeVisibleLayerText("None");
-      // no way to do this?
-
+      this.view.renderImage(null);
     }
   }
 
   @Override
   public void operationCommandExecute(Command operationCommand) {
+    ImageUtil.requireNonNull(operationCommand);
     if (this.executeCommand("", operationCommand)) {
       this.renderTopmostVisibleLayer();
     }
@@ -99,33 +109,28 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   @Override
   public void downscaleExecute() {
 
-    int xScale;
-    int yScale;
+    int xScale = -1;
+    int yScale = -1;
 
     try {
       // handles empty xScale or yScale boxes
       xScale = Integer.parseInt(this.view.getXScale()); //getXScale returns a String
       yScale = Integer.parseInt(this.view.getYScale()); //getYScale returns a String
-    } catch (NumberFormatException e) {
-      return;
+    } catch (NumberFormatException ignored) {
     }
 
-    double xScaleOutOfOne = (double) xScale / 100;
-    double yScaleOutOfOne = (double) yScale / 100;
-
-    if (this.executeCommand(xScaleOutOfOne + " " + yScaleOutOfOne, new DownscaleCommand())) {
+    if (this.executeCommand(xScale + " " + yScale, new DownscaleCommand())) {
       this.renderTopmostVisibleLayer();
     }
   }
 
   @Override
   public void mosaicExecute() {
-    int seeds;
+    int seeds = -1;
 
     try {
       seeds = Integer.parseInt(this.view.getSeeds()); //getSeeds returns a String
-    } catch (NumberFormatException e) {
-      return;
+    } catch (NumberFormatException ignored) {
     }
 
     if (this.executeCommand(Integer.toString(seeds), new MosaicCommand())) {
@@ -149,7 +154,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
    *
    * @param path the filepath of the Image whose extension type will be returned
    * @return the extension type of the Image at the given filepath, or null if the filepath lacks an
-   * extension.
+   * extension
    */
   private String getExtension(String path) {
 
@@ -161,51 +166,59 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     }
   }
 
+  @Override
   public void importExecute() {
-    String path = this.view.getFilePath();
+    String path = this.view.getFilePathImport();
 
-    String extension = this.getExtension(path);
+//    String extension = this.getExtension(path);
+    //String extension = this.view.getExportAllFileType();
+    String extension = "png";
 
-    if (extension == null) {
+    if (extension == null || path == null) {
       return;
     }
 
-    this.executeCommand(path + " " + extension, new ImportCommand());
+    if (this.executeCommand(path + " " + extension, new ImportCommand())) {
+      this.renderTopmostVisibleLayer();
+    }
   }
 
+  @Override
   public void exportLayerExecute() {
-    String path = this.view.getFilePath();
+    String path = this.view.getFilePathExport();
 
-    String extension = this.getExtension(path);
+//    String extension = this.getExtension(path);
+    String extension = this.view.getExportAllFileType();
 
-    if (extension == null) {
+    if (extension == null ) {
       return;
     }
 
     this.executeCommand(path + " " + extension, new ExportCommand());
   }
 
+  @Override
   public void exportAllExecute() {
-    String path = this.view.getFilePath();
+    String path = this.view.getFilePathExport();
 
     String extension = this.view.getExportAllFileType();
 
     this.executeCommand(path + " " + extension, new ExportAllCommand());
   }
 
+  @Override
   public void createCheckerboardExecute() {
     String colorOne = this.view.getColorOne();
     String colorTwo = this.view.getColorTwo();
 
-    int size;
-    int numSquares;
+    int size = -1;
+    int numSquares = -1;
 
     try {
       // handles empty size or numSquares boxes
-      size = Integer.parseInt(this.view.getSize()); // getSize returns a String
-      numSquares = Integer.parseInt(this.view.getNumSqures()); // getNumSquares returns a String
-    } catch (NumberFormatException e) {
-      return;
+      size = Integer.parseInt(this.view.getCheckerboardSize()); // getSize returns a String
+      numSquares = Integer.parseInt(this.view.getNumSquares()); // getNumSquares returns a String
+    } catch (NumberFormatException ignored) {
     }
 
     if (this.executeCommand(size + " " + numSquares + " " + colorOne + " " + colorTwo,
@@ -214,16 +227,28 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     }
   }
 
+  @Override
   public void visibilityExecute() {
-    if (this.view.getVisibilityState()) {
-      this.executeCommand("visible", new VisibilityCommand());
-    } else {
+    boolean currentLayerVisibility;
+
+    try {
+      currentLayerVisibility = this.model.getCurrentLayerVisibility();
+    } catch (IllegalStateException e) {
+      this.view.renderErrorMessage(e.getMessage());
+      return;
+    }
+
+    if (currentLayerVisibility) {
+      // todo: optional text label to display visibility of current layer
       this.executeCommand("invisible", new VisibilityCommand());
+    } else {
+      this.executeCommand("visible", new VisibilityCommand());
     }
 
     this.renderTopmostVisibleLayer();
   }
 
+  @Override
   public void currentLayerExecute() {
     String newCurrentLayer = this.view.getSelectedLayer();
 
@@ -232,11 +257,13 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     }
   }
 
+  @Override
   public void removeLayerExecute() {
     String layerToRemove = this.view.getSelectedLayer();
 
     if (this.executeCommand(layerToRemove, new RemoveLayerCommand())) {
       this.view.changeCurrentLayerText("None");
+      this.view.removeLayerName(layerToRemove);
       this.renderTopmostVisibleLayer();
     }
   }

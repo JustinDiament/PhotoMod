@@ -8,7 +8,8 @@ import model.operation.ImageOperation;
 
 /**
  * Function object to perform the "Downscale" operation and downscale the Images of all layers in
- * the overall image to given percents of their original horizontal and vertical size.
+ * the overall image to given percents (between 1 and 100 inclusive) of their original horizontal
+ * and vertical size.
  */
 public class DownscaleCommand implements Command {
 
@@ -38,7 +39,8 @@ public class DownscaleCommand implements Command {
     }
 
     int currentLayer = model.getCurrentLayerIndex();
-    ImageOperation downscale = new DownscaleOperation(xScale, yScale);
+    ImageOperation downscale = new DownscaleOperation(((double) xScale) / 100,
+        ((double) yScale) / 100);
 
     for (int i = 0; i < model.getLayerNames().size(); i++) {
       model.setCurrentLayer(i);
