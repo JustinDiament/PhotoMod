@@ -29,7 +29,6 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   private final ImageLayerModel model;
   // todo: rename all occurrences with view interface type once that is defined
-  //  previously attempting to import ImageView from JavaFX
   private final ImageViewImpl view;
 
   /**
@@ -52,7 +51,11 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   public static void main(String[] args) {
     ImageViewImpl v = new ImageViewImpl();
     ImageInteractiveController cont = new ImageInteractiveControllerImpl(new ImageLayerModelImpl(), v);
-    v.run();
+    cont.run();
+  }
+
+  @Override
+  public void run() {
   }
 
   /**
@@ -85,16 +88,8 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   private void renderTopmostVisibleLayer() {
     try {
       this.view.renderImage(this.model.getTopImage());
-
-      // this.view.changeVisibleLayerText("None");
-      // no way to do this?
     } catch (IllegalArgumentException e) {
-      // todo: if no layers are visible, make the view render an image with no pixels since there's
-      // todo: nothing to show? or handle this another way
-      //this.view.renderImage(new ImageImpl())
-      // this.view.changeVisibleLayerText("None");
-      // no way to do this?
-
+      this.view.renderImage(null);
     }
   }
 
@@ -170,10 +165,12 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     }
   }
 
+  @Override
   public void importExecute() {
     String path = this.view.getFilePath();
 
-    String extension = this.getExtension(path);
+//    String extension = this.getExtension(path);
+    String extension = this.view.getExportAllFileType();
 
     if (extension == null) {
       return;
@@ -182,10 +179,12 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     this.executeCommand(path + " " + extension, new ImportCommand());
   }
 
+  @Override
   public void exportLayerExecute() {
     String path = this.view.getFilePath();
 
-    String extension = this.getExtension(path);
+//    String extension = this.getExtension(path);
+    String extension = this.view.getExportAllFileType();
 
     if (extension == null) {
       return;
@@ -194,6 +193,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     this.executeCommand(path + " " + extension, new ExportCommand());
   }
 
+  @Override
   public void exportAllExecute() {
     String path = this.view.getFilePath();
 
@@ -202,6 +202,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     this.executeCommand(path + " " + extension, new ExportAllCommand());
   }
 
+  @Override
   public void createCheckerboardExecute() {
     String colorOne = this.view.getColorOne();
     String colorTwo = this.view.getColorTwo();
@@ -223,16 +224,20 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     }
   }
 
+  @Override
   public void visibilityExecute() {
-    if (this.view.getVisibilityState()) {
-      this.executeCommand("visible", new VisibilityCommand());
-    } else {
+    if (this.model.getCurrentLayerVisibility()) {
+//    if (this.view.getVisibilityState()) {
+      // todo: optional text label to display visibility of current layer
       this.executeCommand("invisible", new VisibilityCommand());
+    } else {
+      this.executeCommand("visible", new VisibilityCommand());
     }
 
     this.renderTopmostVisibleLayer();
   }
 
+  @Override
   public void currentLayerExecute() {
     String newCurrentLayer = this.view.getSelectedLayer();
 
@@ -241,11 +246,13 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     }
   }
 
+  @Override
   public void removeLayerExecute() {
     String layerToRemove = this.view.getSelectedLayer();
 
     if (this.executeCommand(layerToRemove, new RemoveLayerCommand())) {
       this.view.changeCurrentLayerText("None");
+      this.view.removeLayerName(layerToRemove);
       this.renderTopmostVisibleLayer();
     }
   }

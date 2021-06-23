@@ -1,7 +1,6 @@
 package controller;
 
 import controller.commands.Command;
-
 /**
  * Represents a controller for an interactive Image modification graphical user interface. Executes
  * various commands to modify, import, export, and create Images based on methods called by a
@@ -9,7 +8,7 @@ import controller.commands.Command;
  * commands from the view and modifies them to reflect * changes to the model and other changes by
  * the controller.
  */
-public interface ImageInteractiveController {
+public interface ImageInteractiveController extends ImageController {
 
   /**
    * Modifies the current layer to apply the given type of filter or color operation and updates the

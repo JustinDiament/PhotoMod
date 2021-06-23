@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,6 +17,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -70,8 +74,11 @@ public class ImageViewImpl extends JFrame {
   private final JButton removeLayerButton;
   private final JComboBox<String> layerNamesDropdown;
 
-  private final JCheckBox visibilityCheckBox; // check to toggle invisible
-  private final JTextField visibilityTextField;
+  //private final JCheckBox visibilityCheckBox; // check to toggle invisible
+  //private final JTextField visibilityTextField;
+
+  private final JButton visibilityButton;
+  //private final JButton invisibilityButton;
 
   private final JPanel buttonPanel;
 
@@ -79,9 +86,6 @@ public class ImageViewImpl extends JFrame {
   private String currentLayerName;
   private String filepath;
 
-  // todo: pull features interface changes, add list of features as field of the class,
-  //  initialized as empty list, emit method for every event that calls the corresponding handle
-  //  method in the features, method to add new listeners
 
 
   public ImageViewImpl() {
@@ -89,11 +93,15 @@ public class ImageViewImpl extends JFrame {
 
     this.features = new ArrayList<>();
 
+    ImageViewImpl.setDefaultLookAndFeelDecorated(false);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setVisible(true);
+
     // todo: clean up constructor to create/add to panels in helper methods
     //  depending on how this is implemented, consider making the components local variables
 
     setTitle("Image Processor");
-    setSize(900, 500);
+    setSize(900, 600);
 
     setFocusable(true);
     requestFocus();
@@ -104,17 +112,67 @@ public class ImageViewImpl extends JFrame {
     add(mainScrollPane);
 
     imagePanel = new JPanel();
-    // todo: currently visible layer name is not exposed by model, maybe leave this titled
-    //  border out
-//    imagePanel.setBorder(BorderFactory.createTitledBorder("Currently viewing layer:"));
     imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
     mainPanel.add(imagePanel);
 
     imageLabel = new JLabel();
     imageScrollPane = new JScrollPane(imageLabel);
+    imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    imageScrollPane.setPreferredSize(new Dimension(500, 500));
     imagePanel.add(imageScrollPane);
 
-    PNG png = new PNG();
+
+    // todo: all of this, plus popup input dialogs
+    JMenuBar menuBar = new JMenuBar();
+    setJMenuBar(menuBar);
+
+    JMenu fileMenu = new JMenu("File");
+    JMenuItem importMenuItem = new JMenuItem("Import");
+//    importMenuItem.addActionListener();
+    JMenuItem exportMenuItem = new JMenuItem("Export");
+    JMenuItem exportAllMenuItem = new JMenuItem("Export All");
+    fileMenu.add(importMenuItem);
+    fileMenu.add(exportMenuItem);
+    fileMenu.add(exportAllMenuItem);
+    menuBar.add(fileMenu);
+
+    JMenu filterMenu = new JMenu("Filter");
+    JMenuItem blurMenuItem = new JMenuItem("Blur");
+    JMenuItem sharpenMenuItem = new JMenuItem("Sharpen");
+    JMenuItem sepiaMenuItem = new JMenuItem("Sepia");
+    JMenuItem monochromeMenuItem = new JMenuItem("Monochrome");
+    JMenuItem downscaleMenuItem = new JMenuItem("Downscale");
+    JMenuItem mosaicMenuItem = new JMenuItem("Mosaic");
+    // todo: should checkerboard go in this menu? maybe own 'image' menu?
+    JMenuItem checkerboardMenuItem = new JMenuItem("Checkerboard");
+    filterMenu.add(blurMenuItem);
+    filterMenu.add(sharpenMenuItem);
+    filterMenu.add(sepiaMenuItem);
+    filterMenu.add(monochromeMenuItem);
+    filterMenu.add(downscaleMenuItem);
+    filterMenu.add(mosaicMenuItem);
+    filterMenu.add(checkerboardMenuItem);
+    menuBar.add(filterMenu);
+
+    JMenu layerMenu = new JMenu("Layer");
+    JMenuItem createLayerMenuItem = new JMenuItem("Create");
+    JMenuItem currentLayerMenuItem = new JMenuItem("Current");
+    JMenuItem removeLayerMenuItem = new JMenuItem("Remove");
+    JMenuItem visibleLayerMenuItem = new JMenuItem("Visible");
+    layerMenu.add(createLayerMenuItem);
+    layerMenu.add(currentLayerMenuItem);
+    layerMenu.add(removeLayerMenuItem);
+    layerMenu.add(visibleLayerMenuItem);
+    menuBar.add(layerMenu);
+
+
+
+
+
+
+
+
+//    PNG png = new PNG();
 //    this.renderImage(png.importFile("res//mosaic//popeyes_original.png"));
 
 //    JPanel imagePanel = new JPanel();
@@ -139,7 +197,6 @@ public class ImageViewImpl extends JFrame {
 
     this.mainPanel.add(this.buttonPanel);
 
-    // todo: add action commands for each button that call features methods when pressed
     // button.addActionListener + anonymous class
 //    new ActionListener() {
 //
@@ -148,8 +205,6 @@ public class ImageViewImpl extends JFrame {
 //          for feature in features, feature.method();
 //      }
 //    }
-
-    // todo: add borderlayout titles to all of these mini panels in the buttonpanel
 
     JPanel operationPanel = new JPanel();
     this.blurButton = new JButton("Blur");
@@ -177,6 +232,7 @@ public class ImageViewImpl extends JFrame {
         feature.handleSharpenEvent();
       }
     });
+    operationPanel.setBorder(BorderFactory.createTitledBorder("Filter"));
     operationPanel.add(this.blurButton);
     operationPanel.add(this.monochromeButton);
     operationPanel.add(this.sepiaButton);
@@ -186,6 +242,7 @@ public class ImageViewImpl extends JFrame {
 
     JPanel operationTextPanel = new JPanel();
     operationTextPanel.setLayout(new BoxLayout(operationTextPanel, BoxLayout.PAGE_AXIS));
+    operationTextPanel.setBorder(BorderFactory.createTitledBorder("More Operations?"));
     JPanel downscalePanel = new JPanel();
     this.downscaleButton = new JButton("Downscale");
     this.downscaleButton.addActionListener(e -> {
@@ -193,6 +250,7 @@ public class ImageViewImpl extends JFrame {
         feature.handleDownscaleEvent();
       }
     });
+    // todo: downscale seems to not work
     this.downscaleXTextField = new JTextField(5);
     this.downscaleYTextField = new JTextField(5);
     downscalePanel.add(this.downscaleButton);
@@ -210,6 +268,8 @@ public class ImageViewImpl extends JFrame {
       }
     });
     this.mosaicSeedTextField = new JTextField(5);
+
+
     mosaicPanel.add(this.mosaicButton);
     mosaicPanel.add(new JLabel("seeds:"));
     mosaicPanel.add(this.mosaicSeedTextField);
@@ -244,6 +304,7 @@ public class ImageViewImpl extends JFrame {
     buttonPanel.add(operationTextPanel);
 
     JPanel filePanel = new JPanel();
+    filePanel.setBorder(BorderFactory.createTitledBorder("File"));
     this.importButton = new JButton("Import");
     this.importButton.addActionListener(e -> {
       for (Features feature : features) {
@@ -272,7 +333,6 @@ public class ImageViewImpl extends JFrame {
     filePanel.add(this.exportAllButton);
     filePanel.add(this.exportAllDropDown);
 
-    // todo: make this popup when button is pressed
 //    JFileChooser fileChooser = new JFileChooser(".");
 //    FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Image or Text Files",
 //        "jpg", "jpeg", "png", "ppm", "txt");
@@ -286,6 +346,7 @@ public class ImageViewImpl extends JFrame {
     buttonPanel.add(filePanel);
 
     JPanel operationLayerPanel = new JPanel();
+    operationLayerPanel.setBorder(BorderFactory.createTitledBorder("Layer Operation"));
     operationLayerPanel.setLayout(new BoxLayout(operationLayerPanel, BoxLayout.PAGE_AXIS));
 
     JPanel createLayerPanel = new JPanel();
@@ -319,16 +380,23 @@ public class ImageViewImpl extends JFrame {
     operationLayerPanel.add(layerNamePanel);
 
     JPanel visibilityPanel = new JPanel();
-    this.visibilityCheckBox = new JCheckBox();
-    this.visibilityCheckBox.addActionListener(e -> {
-      for (Features feature : features) {
+    this.visibilityButton = new JButton("Visibility");
+    this.visibilityButton.addActionListener(e -> {
+      for (Features feature: features) {
         feature.handleVisibility();
       }
     });
-    this.visibilityTextField = new JTextField("Make Invisible");
-    // todo: consider making this two buttons so don't have to reset checkbox when switching layers
-    visibilityPanel.add(this.visibilityCheckBox);
-    visibilityPanel.add(this.visibilityTextField);
+//    this.invisibilityButton = new JButton("Invisible");
+//    this.visibilityCheckBox = new JCheckBox();
+//    this.visibilityCheckBox.addActionListener(e -> {
+//      for (Features feature : features) {
+//        feature.handleVisibility();
+//      }
+//    });
+//    this.visibilityTextField = new JTextField("Make Invisible");
+//    visibilityPanel.add(this.visibilityCheckBox);
+//    visibilityPanel.add(this.visibilityTextField);
+    visibilityPanel.add(visibilityButton);
     operationLayerPanel.add(visibilityPanel);
 
     buttonPanel.add(operationLayerPanel);
@@ -336,6 +404,7 @@ public class ImageViewImpl extends JFrame {
 //    this.renderImage(null);
 //    this.renderImage(png.importFile("res//mosaic//popeyes_1000_seeds.png"));
 
+    this.pack();
   }
 
 
@@ -344,31 +413,16 @@ public class ImageViewImpl extends JFrame {
   }
 
   public void renderImage(Image img) {
-//    imagePanel.removeAll();
-//    imagePanel.revalidate();
-//    imagePanel.repaint();
-    ;
-
-//    imageLabel.removeAll();
-//    imageLabel.revalidate();
-//    imageLabel.repaint();
-//    JLabel label = new JLabel();
-
-//    if (imageScrollPane != null) {
-//
-//      imageScrollPane.removeAll();
-//      imageScrollPane.revalidate();
-//      imageScrollPane.repaint();
-//    }
-
     ImageIcon icon = null;
     if (img != null) {
       icon = new ImageIcon(ImageUtil.convertImage(img));
     }
 
     imageLabel.setIcon(icon);
-    imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-    imageScrollPane.setPreferredSize(new Dimension(100, 200));
+  }
+
+  public void setMosaicText(String s) {
+    this.mosaicSeedTextField.setText(s);
   }
 
 
@@ -418,20 +472,15 @@ public class ImageViewImpl extends JFrame {
     fileChooser.setFileFilter(extensionFilter);
     if (fileChooser.showOpenDialog(ImageViewImpl.this) == JFileChooser.APPROVE_OPTION) {
       File file = fileChooser.getSelectedFile();
-      return file.getAbsolutePath();
+      return file.getPath();
     } else {
-      // todo: check for null path in controller
+      // todo: check for null path in controller (seems to never be reaching this case?)
       return null;
     }
   }
 
   public String getExportAllFileType() {
     return (String) this.exportAllDropDown.getSelectedItem();
-  }
-
-  public boolean getVisibilityState() {
-    // todo: this is BACKWARDS from how it is implemented in the controller
-    return this.visibilityCheckBox.isSelected();
   }
 
   public String getSelectedLayer() {
@@ -444,25 +493,7 @@ public class ImageViewImpl extends JFrame {
         BorderFactory.createTitledBorder("Currently selected layer: " + layerName));
   }
 
-  // todo: unused?
   public void removeLayerName(String layerName) {
     this.layerNamesDropdown.removeItem(layerName);
-  }
-
-  public void run() {
-    // todo: move this to constructor eventually
-    ImageViewImpl.setDefaultLookAndFeelDecorated(false);
-    ImageViewImpl frame = new ImageViewImpl();
-
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setVisible(true);
-  }
-
-  public static void main(String[] args) {
-    ImageViewImpl.setDefaultLookAndFeelDecorated(false);
-    ImageViewImpl frame = new ImageViewImpl();
-
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setVisible(true);
   }
 }
