@@ -1,6 +1,7 @@
 package controller.commands;
 
 import java.util.Scanner;
+import model.image.Image;
 import model.image.ImageLayerModel;
 import model.operation.DownscaleOperation;
 import model.operation.ImageOperation;
@@ -41,7 +42,15 @@ public class DownscaleCommand implements Command {
 
     for (int i = 0; i < model.getLayerNames().size(); i++) {
       model.setCurrentLayer(i);
-      model.setCurrentLayerImage(downscale.apply(model.getCurrentLayerImage()));
+
+      Image img;
+      try {
+        img = model.getCurrentLayerImage();
+      } catch (IllegalStateException e) {
+        continue;
+      }
+
+      model.setCurrentLayerImage(downscale.apply(img));
     }
 
     model.setCurrentLayer(currentLayer);

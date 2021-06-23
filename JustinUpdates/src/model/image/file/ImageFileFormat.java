@@ -43,18 +43,9 @@ abstract class ImageFileFormat implements ImageFile {
 
   @Override
   public void exportFile(String filename, Image img) throws IllegalArgumentException {
-    ImageUtil.requireNonNull(img);
     ImageUtil.requireNonNull(filename);
-    BufferedImage image = new BufferedImage(img.getWidth(), img.getHeight(),
-        BufferedImage.TYPE_INT_RGB);
-
-    for (int i = 0; i < img.getHeight(); i++) {
-      for (int j = 0; j < img.getWidth(); j++) {
-        Pixel p = img.getPixelAt(j, i);
-        Color c = new Color(p.getRed(), p.getGreen(), p.getBlue());
-        image.setRGB(j, i, c.getRGB());
-      }
-    }
+    ImageUtil.requireNonNull(img);
+    BufferedImage image = ImageUtil.convertImage(img);
 
     try {
       ImageIO.write(image, this.getExtension(), new File(filename));
