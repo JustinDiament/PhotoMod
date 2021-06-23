@@ -2,9 +2,6 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.MenuBar;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -20,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -27,9 +24,9 @@ import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.ImageUtil;
 import model.image.Image;
-import model.image.file.PNG;
 
 // todo: make this implement interface
+//  do this last after all public methods have been finalized
 public class ImageViewImpl extends JFrame {
 
   private final List<Features> features;
@@ -87,7 +84,6 @@ public class ImageViewImpl extends JFrame {
   private String filepath;
 
 
-
   public ImageViewImpl() {
     super();
 
@@ -121,7 +117,6 @@ public class ImageViewImpl extends JFrame {
     imageScrollPane.setPreferredSize(new Dimension(500, 500));
     imagePanel.add(imageScrollPane);
 
-
     // todo: all of this, plus popup input dialogs
     JMenuBar menuBar = new JMenuBar();
     setJMenuBar(menuBar);
@@ -143,15 +138,12 @@ public class ImageViewImpl extends JFrame {
     JMenuItem monochromeMenuItem = new JMenuItem("Monochrome");
     JMenuItem downscaleMenuItem = new JMenuItem("Downscale");
     JMenuItem mosaicMenuItem = new JMenuItem("Mosaic");
-    // todo: should checkerboard go in this menu? maybe own 'image' menu?
-    JMenuItem checkerboardMenuItem = new JMenuItem("Checkerboard");
     filterMenu.add(blurMenuItem);
     filterMenu.add(sharpenMenuItem);
     filterMenu.add(sepiaMenuItem);
     filterMenu.add(monochromeMenuItem);
     filterMenu.add(downscaleMenuItem);
     filterMenu.add(mosaicMenuItem);
-    filterMenu.add(checkerboardMenuItem);
     menuBar.add(filterMenu);
 
     JMenu layerMenu = new JMenu("Layer");
@@ -165,11 +157,10 @@ public class ImageViewImpl extends JFrame {
     layerMenu.add(visibleLayerMenuItem);
     menuBar.add(layerMenu);
 
-
-
-
-
-
+    JMenu imageMenu = new JMenu("Image");
+    JMenuItem checkerboardMenuItem = new JMenuItem("Checkerboard");
+    imageMenu.add(checkerboardMenuItem);
+    menuBar.add(imageMenu);
 
 
 //    PNG png = new PNG();
@@ -242,6 +233,7 @@ public class ImageViewImpl extends JFrame {
 
     JPanel operationTextPanel = new JPanel();
     operationTextPanel.setLayout(new BoxLayout(operationTextPanel, BoxLayout.PAGE_AXIS));
+    // todo: rename this. consider reorganizing contents/order of all submenus to match menubar
     operationTextPanel.setBorder(BorderFactory.createTitledBorder("More Operations?"));
     JPanel downscalePanel = new JPanel();
     this.downscaleButton = new JButton("Downscale");
@@ -268,7 +260,6 @@ public class ImageViewImpl extends JFrame {
       }
     });
     this.mosaicSeedTextField = new JTextField(5);
-
 
     mosaicPanel.add(this.mosaicButton);
     mosaicPanel.add(new JLabel("seeds:"));
@@ -382,7 +373,7 @@ public class ImageViewImpl extends JFrame {
     JPanel visibilityPanel = new JPanel();
     this.visibilityButton = new JButton("Visibility");
     this.visibilityButton.addActionListener(e -> {
-      for (Features feature: features) {
+      for (Features feature : features) {
         feature.handleVisibility();
       }
     });
@@ -401,8 +392,6 @@ public class ImageViewImpl extends JFrame {
 
     buttonPanel.add(operationLayerPanel);
 
-//    this.renderImage(null);
-//    this.renderImage(png.importFile("res//mosaic//popeyes_1000_seeds.png"));
 
     this.pack();
   }
@@ -421,13 +410,6 @@ public class ImageViewImpl extends JFrame {
     imageLabel.setIcon(icon);
   }
 
-  public void setMosaicText(String s) {
-    this.mosaicSeedTextField.setText(s);
-  }
-
-
-  // todo: catch nullpointerexceptions for all text fields, unless we convert to dropdown menus in
-  //  which case this isn't necessary
   public String getXScale() {
     return this.downscaleXTextField.getText();
   }
@@ -474,7 +456,6 @@ public class ImageViewImpl extends JFrame {
       File file = fileChooser.getSelectedFile();
       return file.getPath();
     } else {
-      // todo: check for null path in controller (seems to never be reaching this case?)
       return null;
     }
   }
@@ -484,16 +465,23 @@ public class ImageViewImpl extends JFrame {
   }
 
   public String getSelectedLayer() {
-    return (String) this.layerNamesDropdown.getSelectedItem();
+    String layerName = (String) this.layerNamesDropdown.getSelectedItem();
+    return (layerName == null) ? "" : layerName;
   }
 
-  public void changeCurrentLayerText(String layerName) {
+  public void changeCurrentLayerText(String layerName) throws IllegalArgumentException {
     ImageUtil.requireNonNull(layerName);
     this.buttonPanel.setBorder(
         BorderFactory.createTitledBorder("Currently selected layer: " + layerName));
   }
 
-  public void removeLayerName(String layerName) {
+  public void removeLayerName(String layerName) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(layerName);
     this.layerNamesDropdown.removeItem(layerName);
+  }
+
+  public void renderErrorMessage(String str) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(str);
+    JOptionPane.showMessageDialog(this, str, "Error", JOptionPane.ERROR_MESSAGE);
   }
 }

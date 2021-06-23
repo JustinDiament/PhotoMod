@@ -50,7 +50,8 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   public static void main(String[] args) {
     ImageViewImpl v = new ImageViewImpl();
-    ImageInteractiveController cont = new ImageInteractiveControllerImpl(new ImageLayerModelImpl(), v);
+    ImageInteractiveController cont = new ImageInteractiveControllerImpl(new ImageLayerModelImpl(),
+        v);
     cont.run();
   }
 
@@ -60,23 +61,26 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   /**
    * Attempts to execute the given Command function object using the given parameters. If the
-   * command was successfully executed, returns true to indicate this. If it was not, returns
-   * false.
+   * command was successfully executed, returns true to indicate this. If it was not, renders the
+   * error message to the view and returns false.
    *
    * @param scannerData the data that will be fed to the command to determine its execution
    *                    parameters
    * @param command     the command that will attempt to be executes
    * @return true if the command was successfully executed (does not throw an error) or false if the
    * command fails
+   * @throws IllegalArgumentException if the given scanner data or command are null
    */
-  private boolean executeCommand(String scannerData, Command command) {
+  private boolean executeCommand(String scannerData, Command command)
+      throws IllegalArgumentException {
+    ImageUtil.requireNonNull(scannerData);
+    ImageUtil.requireNonNull(command);
+
     try {
       command.execute(new Scanner(scannerData), this.model);
       return true;
     } catch (IllegalArgumentException | IllegalStateException e) {
-      // if the user's attempt to complete an action in the GUI cannot be completed due to an
-      // invalid state or invalid user input, nothing should occur
-      // todo: possibly add some kind of error popup or error ticker on the bottom of the gui?
+      this.view.renderErrorMessage(e.getMessage());
       return false;
     }
   }
@@ -95,6 +99,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   @Override
   public void operationCommandExecute(Command operationCommand) {
+    ImageUtil.requireNonNull(operationCommand);
     if (this.executeCommand("", operationCommand)) {
       this.renderTopmostVisibleLayer();
     }
@@ -103,15 +108,14 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   @Override
   public void downscaleExecute() {
 
-    int xScale;
-    int yScale;
+    int xScale = -1;
+    int yScale = -1;
 
     try {
       // handles empty xScale or yScale boxes
       xScale = Integer.parseInt(this.view.getXScale()); //getXScale returns a String
       yScale = Integer.parseInt(this.view.getYScale()); //getYScale returns a String
-    } catch (NumberFormatException e) {
-      return;
+    } catch (NumberFormatException ignored) {
     }
 
     double xScaleOutOfOne = (double) xScale / 100;
@@ -124,12 +128,11 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   @Override
   public void mosaicExecute() {
-    int seeds;
+    int seeds = -1;
 
     try {
       seeds = Integer.parseInt(this.view.getSeeds()); //getSeeds returns a String
-    } catch (NumberFormatException e) {
-      return;
+    } catch (NumberFormatException ignored) {
     }
 
     if (this.executeCommand(Integer.toString(seeds), new MosaicCommand())) {
@@ -207,15 +210,14 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     String colorOne = this.view.getColorOne();
     String colorTwo = this.view.getColorTwo();
 
-    int size;
-    int numSquares;
+    int size = -1;
+    int numSquares = -1;
 
     try {
       // handles empty size or numSquares boxes
       size = Integer.parseInt(this.view.getCheckerboardSize()); // getSize returns a String
       numSquares = Integer.parseInt(this.view.getNumSquares()); // getNumSquares returns a String
-    } catch (NumberFormatException e) {
-      return;
+    } catch (NumberFormatException ignored) {
     }
 
     if (this.executeCommand(size + " " + numSquares + " " + colorOne + " " + colorTwo,
@@ -226,8 +228,16 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   @Override
   public void visibilityExecute() {
-    if (this.model.getCurrentLayerVisibility()) {
-//    if (this.view.getVisibilityState()) {
+    boolean currentLayerVisibility;
+
+    try {
+      currentLayerVisibility = this.model.getCurrentLayerVisibility();
+    } catch (IllegalStateException e) {
+      this.view.renderErrorMessage(e.getMessage());
+      return;
+    }
+
+    if (currentLayerVisibility) {
       // todo: optional text label to display visibility of current layer
       this.executeCommand("invisible", new VisibilityCommand());
     } else {

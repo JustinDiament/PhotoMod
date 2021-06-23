@@ -5,10 +5,12 @@ import controller.commands.ChangeCurrentLayerCommand;
 import controller.commands.Command;
 import controller.commands.CreateCheckerboardCommand;
 import controller.commands.CreateLayerCommand;
+import controller.commands.DownscaleCommand;
 import controller.commands.ExportAllCommand;
 import controller.commands.ExportCommand;
 import controller.commands.ImportCommand;
 import controller.commands.MonochromeCommand;
+import controller.commands.MosaicCommand;
 import controller.commands.RemoveLayerCommand;
 import controller.commands.SepiaCommand;
 import controller.commands.SharpenCommand;
@@ -115,7 +117,13 @@ public class ImageControllerImpl implements ImageController {
     commands.put("import", new ImportCommand());
     commands.put("exportall", new ExportAllCommand());
     commands.put("export", new ExportCommand());
-
+    // MODIFICATION: added support for the following two commands in this controller implementation.
+    // In the current state of the program, this protected method is only being used within this
+    // class, and the addition of these two new commands to the hashmap does not break any existing
+    // code. Additionally, the old version (without the two commands) and the new version (with the
+    // two commands) do not need to co-exist; the new version is a minor update to the old version
+    commands.put("downscale", new DownscaleCommand());
+    commands.put("mosaic", new MosaicCommand());
     return commands;
   }
 

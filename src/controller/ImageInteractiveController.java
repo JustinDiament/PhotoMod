@@ -15,8 +15,9 @@ public interface ImageInteractiveController extends ImageController {
    * view's Image if necessary.
    *
    * @param operationCommand the command to apply to the current layer's Image
+   * @throws IllegalArgumentException if the given command is null
    */
-  void operationCommandExecute(Command operationCommand);
+  void operationCommandExecute(Command operationCommand) throws IllegalArgumentException;
 
   /**
    * Modifies the model's entire Image to apply the downscale operation (decreases the Image's
