@@ -69,7 +69,8 @@ public class ImageViewImpl extends JFrame {
   // these two buttons use the same dropdown
   private final JButton setCurrentLayerButton;
   private final JButton removeLayerButton;
-  private final JComboBox<String> layerNamesDropdown;
+  private final JComboBox<String> currentLayerNamesDropdown;
+  private final JComboBox<String> removeLayerNamesDropdown;
 
   //private final JCheckBox visibilityCheckBox; // check to toggle invisible
   //private final JTextField visibilityTextField;
@@ -133,11 +134,63 @@ public class ImageViewImpl extends JFrame {
 
     JMenu filterMenu = new JMenu("Filter");
     JMenuItem blurMenuItem = new JMenuItem("Blur");
+    blurMenuItem.addActionListener(e -> {
+      for (Features feature : features) {
+        feature.handleBlurEvent();
+      }
+    });
     JMenuItem sharpenMenuItem = new JMenuItem("Sharpen");
+    sharpenMenuItem.addActionListener(e -> {
+      for (Features feature : features) {
+        feature.handleSharpenEvent();
+      }
+    });
     JMenuItem sepiaMenuItem = new JMenuItem("Sepia");
+    sepiaMenuItem.addActionListener(e -> {
+      for (Features feature : features) {
+        feature.handleSepiaEvent();
+      }
+    });
     JMenuItem monochromeMenuItem = new JMenuItem("Monochrome");
+    monochromeMenuItem.addActionListener(e -> {
+      for (Features feature : features) {
+        feature.handleMonochromeEvent();
+      }
+    });
+    JPanel downscaleMenuPanel = new JPanel();
+    this.downscaleXTextField = new JTextField(5);
+    this.downscaleYTextField = new JTextField(5);
+//    JTextField downscaleXScaleTextField = new JTextField(5);
+//    JTextField downscaleYScaleTextField = new JTextField(5);
+    downscaleMenuPanel.add(new JLabel("X Scale (1-100%):"));
+    downscaleMenuPanel.add(this.downscaleXTextField);
+    downscaleMenuPanel.add(new JLabel("Y Scale (1-100%):"));
+    downscaleMenuPanel.add(this.downscaleYTextField);
     JMenuItem downscaleMenuItem = new JMenuItem("Downscale");
+    downscaleMenuItem.addActionListener(e -> {
+      int result = JOptionPane
+          .showConfirmDialog(this, downscaleMenuPanel, "Downscale", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleDownscaleEvent();
+        }
+      }
+    });
+    JPanel mosaicMenuPanel = new JPanel();
+    this.mosaicSeedTextField = new JTextField(5);
+    mosaicMenuPanel.add(new JLabel("Seeds:"));
+    mosaicMenuPanel.add(this.mosaicSeedTextField);
     JMenuItem mosaicMenuItem = new JMenuItem("Mosaic");
+    mosaicMenuItem.addActionListener(e -> {
+      int result = JOptionPane
+          .showConfirmDialog(this, mosaicMenuPanel, "Mosaic", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleMosaicEvent();
+        }
+      }
+    });
+
     filterMenu.add(blurMenuItem);
     filterMenu.add(sharpenMenuItem);
     filterMenu.add(sepiaMenuItem);
@@ -147,10 +200,60 @@ public class ImageViewImpl extends JFrame {
     menuBar.add(filterMenu);
 
     JMenu layerMenu = new JMenu("Layer");
+
+    JPanel createLayerMenuPanel = new JPanel();
+    this.createLayerTextField = new JTextField(10);
+    createLayerMenuPanel.add(new JLabel("Name:"));
+    createLayerMenuPanel.add(this.createLayerTextField);
     JMenuItem createLayerMenuItem = new JMenuItem("Create");
+    createLayerMenuItem.addActionListener(e -> {
+      int result = JOptionPane
+          .showConfirmDialog(this, createLayerMenuPanel, "Create Layer", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleAddLayerEvent();
+        }
+      }
+    });
+
+    JPanel currentLayerMenuPanel = new JPanel();
+    this.currentLayerNamesDropdown = new JComboBox<>();
+    currentLayerMenuPanel.add(new JLabel("Layers:"));
+    currentLayerMenuPanel.add(this.currentLayerNamesDropdown);
     JMenuItem currentLayerMenuItem = new JMenuItem("Current");
+    currentLayerMenuItem.addActionListener(e -> {
+      int result = JOptionPane
+          .showConfirmDialog(this, currentLayerMenuPanel, "Set Current Layer", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleCurrentLayerEvent();
+        }
+      }
+    });
+
+
+    JPanel removeLayerMenuPanel = new JPanel();
+    this.removeLayerNamesDropdown = new JComboBox<>();
+    removeLayerMenuPanel.add(new JLabel("Layers:"));
+    removeLayerMenuPanel.add(this.removeLayerNamesDropdown);
     JMenuItem removeLayerMenuItem = new JMenuItem("Remove");
+    removeLayerMenuItem.addActionListener(e -> {
+      int result = JOptionPane
+          .showConfirmDialog(this, removeLayerMenuPanel, "Remove Layer", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleRemoveLayerEvent();
+        }
+      }
+    });
+
     JMenuItem visibleLayerMenuItem = new JMenuItem("Visible");
+    visibleLayerMenuItem.addActionListener(e -> {
+      for (Features feature : features) {
+        feature.handleVisibility();
+      }
+    });
+
     layerMenu.add(createLayerMenuItem);
     layerMenu.add(currentLayerMenuItem);
     layerMenu.add(removeLayerMenuItem);
@@ -158,10 +261,55 @@ public class ImageViewImpl extends JFrame {
     menuBar.add(layerMenu);
 
     JMenu imageMenu = new JMenu("Image");
+    JPanel checkerboardMenuPanel = new JPanel();
+    this.checkerboardSizeTextField = new JTextField(5);
+    this.checkerboardSquaresTextField = new JTextField(5);
+    this.checkerboardColorOneDropdown = new JComboBox<>();
+    this.checkerboardColorTwoDropdown = new JComboBox<>();
+    String[] colors = {"red", "orange", "yellow", "green", "cyan", "blue", "magenta", "white",
+        "gray", "black"};
+    for (String color : colors) {
+      this.checkerboardColorOneDropdown.addItem(color);
+      this.checkerboardColorTwoDropdown.addItem(color);
+    }
+    checkerboardMenuPanel.add(new JLabel("Size:"));
+    checkerboardMenuPanel.add(this.checkerboardSizeTextField);
+    checkerboardMenuPanel.add(new JLabel("Number of Squares:"));
+    checkerboardMenuPanel.add(this.checkerboardSquaresTextField);
+    checkerboardMenuPanel.add(new JLabel("Color 1:"));
+    checkerboardMenuPanel.add(this.checkerboardColorOneDropdown);
+    checkerboardMenuPanel.add(new JLabel("Color 2:"));
+    checkerboardMenuPanel.add(this.checkerboardColorTwoDropdown);
     JMenuItem checkerboardMenuItem = new JMenuItem("Checkerboard");
+    checkerboardMenuItem.addActionListener(e -> {
+      // todo: move these to private helpers for reuse between menu and buttons
+      int result = JOptionPane
+          .showConfirmDialog(this, checkerboardMenuPanel, "Checkerboard", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleCreateCheckerboard();
+        }
+      }
+    });
+
     imageMenu.add(checkerboardMenuItem);
     menuBar.add(imageMenu);
 
+
+//    JPanel mosaicMenuPanel = new JPanel();
+//    this.mosaicSeedTextField = new JTextField(5);
+//    mosaicMenuPanel.add(new JLabel("Seeds:"));
+//    mosaicMenuPanel.add(this.mosaicSeedTextField);
+//    JMenuItem mosaicMenuItem = new JMenuItem("Mosaic");
+//    mosaicMenuItem.addActionListener(e -> {
+//      int result = JOptionPane
+//          .showConfirmDialog(this, mosaicMenuPanel, "Mosaic", JOptionPane.OK_CANCEL_OPTION);
+//      if (result == JOptionPane.OK_OPTION) {
+//        for (Features feature : features) {
+//          feature.handleMosaicEvent();
+//        }
+//      }
+//    });
 
 //    PNG png = new PNG();
 //    this.renderImage(png.importFile("res//mosaic//popeyes_original.png"));
@@ -243,13 +391,15 @@ public class ImageViewImpl extends JFrame {
       }
     });
     // todo: downscale seems to not work
-    this.downscaleXTextField = new JTextField(5);
-    this.downscaleYTextField = new JTextField(5);
+
+    // todo: no more inputs in buttonpanel, only buttons
+//    this.downscaleXTextField = new JTextField(5);
+//    this.downscaleYTextField = new JTextField(5);
     downscalePanel.add(this.downscaleButton);
-    downscalePanel.add(new JLabel("x-scale (1-100%):"));
-    downscalePanel.add(this.downscaleXTextField);
-    downscalePanel.add(new JLabel("y-scale (1-100%):"));
-    downscalePanel.add(this.downscaleYTextField);
+//    downscalePanel.add(new JLabel("x-scale (1-100%):"));
+//    downscalePanel.add(this.downscaleXTextField);
+//    downscalePanel.add(new JLabel("y-scale (1-100%):"));
+//    downscalePanel.add(this.downscaleYTextField);
     operationTextPanel.add(downscalePanel);
 
     JPanel mosaicPanel = new JPanel();
@@ -259,11 +409,11 @@ public class ImageViewImpl extends JFrame {
         feature.handleMosaicEvent();
       }
     });
-    this.mosaicSeedTextField = new JTextField(5);
+//    this.mosaicSeedTextField = new JTextField(5);
 
     mosaicPanel.add(this.mosaicButton);
-    mosaicPanel.add(new JLabel("seeds:"));
-    mosaicPanel.add(this.mosaicSeedTextField);
+//    mosaicPanel.add(new JLabel("seeds:"));
+//    mosaicPanel.add(this.mosaicSeedTextField);
     operationTextPanel.add(mosaicPanel);
 
     JPanel checkerboardPanel = new JPanel();
@@ -273,23 +423,23 @@ public class ImageViewImpl extends JFrame {
         feature.handleCreateCheckerboard();
       }
     });
-    this.checkerboardSizeTextField = new JTextField(5);
-    this.checkerboardSquaresTextField = new JTextField(5);
-    this.checkerboardColorOneDropdown = new JComboBox<>();
-    this.checkerboardColorTwoDropdown = new JComboBox<>();
+//    this.checkerboardSizeTextField = new JTextField(5);
+//    this.checkerboardSquaresTextField = new JTextField(5);
+//    this.checkerboardColorOneDropdown = new JComboBox<>();
+//    this.checkerboardColorTwoDropdown = new JComboBox<>();
 
-    String[] colors = {"red", "orange", "yellow", "green", "cyan", "blue", "magenta", "white",
-        "gray", "black"};
-    for (String color : colors) {
-      this.checkerboardColorOneDropdown.addItem(color);
-      this.checkerboardColorTwoDropdown.addItem(color);
-    }
+//    String[] colors = {"red", "orange", "yellow", "green", "cyan", "blue", "magenta", "white",
+//        "gray", "black"};
+//    for (String color : colors) {
+//      this.checkerboardColorOneDropdown.addItem(color);
+//      this.checkerboardColorTwoDropdown.addItem(color);
+//    }
 
     checkerboardPanel.add(this.createCheckerboardButton);
-    checkerboardPanel.add(this.checkerboardSizeTextField);
-    checkerboardPanel.add(this.checkerboardSquaresTextField);
-    checkerboardPanel.add(this.checkerboardColorOneDropdown);
-    checkerboardPanel.add(this.checkerboardColorTwoDropdown);
+//    checkerboardPanel.add(this.checkerboardSizeTextField);
+//    checkerboardPanel.add(this.checkerboardSquaresTextField);
+//    checkerboardPanel.add(this.checkerboardColorOneDropdown);
+//    checkerboardPanel.add(this.checkerboardColorTwoDropdown);
     operationTextPanel.add(checkerboardPanel);
 
     buttonPanel.add(operationTextPanel);
@@ -347,9 +497,9 @@ public class ImageViewImpl extends JFrame {
         feature.handleAddLayerEvent();
       }
     });
-    this.createLayerTextField = new JTextField(10);
+//    this.createLayerTextField = new JTextField(10);
     createLayerPanel.add(this.createLayerButton);
-    createLayerPanel.add(this.createLayerTextField);
+//    createLayerPanel.add(this.createLayerTextField);
     operationLayerPanel.add(createLayerPanel);
     JPanel layerNamePanel = new JPanel();
     this.setCurrentLayerButton = new JButton("Set Current Layer");
@@ -364,10 +514,10 @@ public class ImageViewImpl extends JFrame {
         feature.handleRemoveLayerEvent();
       }
     });
-    this.layerNamesDropdown = new JComboBox<>();
+//    this.layerNamesDropdown = new JComboBox<>();
     layerNamePanel.add(this.setCurrentLayerButton);
     layerNamePanel.add(this.removeLayerButton);
-    layerNamePanel.add(this.layerNamesDropdown);
+//    layerNamePanel.add(this.layerNamesDropdown);
     operationLayerPanel.add(layerNamePanel);
 
     JPanel visibilityPanel = new JPanel();
@@ -391,7 +541,6 @@ public class ImageViewImpl extends JFrame {
     operationLayerPanel.add(visibilityPanel);
 
     buttonPanel.add(operationLayerPanel);
-
 
     this.pack();
   }
@@ -443,18 +592,32 @@ public class ImageViewImpl extends JFrame {
   }
 
   public void addNewLayerToDropdown(String layerName) throws IllegalArgumentException {
-    this.layerNamesDropdown.addItem(ImageUtil.requireNonNull(layerName));
+    ImageUtil.requireNonNull(layerName);
+    this.currentLayerNamesDropdown.addItem(layerName);
+    this.removeLayerNamesDropdown.addItem(layerName);
   }
 
-  public String getFilePath() {
-    // todo: input: fileChooser.showOpenDialog(ImageViewImpl.this) or fileChooser.showSaveDialog(ImageViewImpl.this)
+  public String getImportFilePath() {
     JFileChooser fileChooser = new JFileChooser(".");
     FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Image or Text Files",
         "jpg", "jpeg", "png", "ppm", "txt");
     fileChooser.setFileFilter(extensionFilter);
     if (fileChooser.showOpenDialog(ImageViewImpl.this) == JFileChooser.APPROVE_OPTION) {
       File file = fileChooser.getSelectedFile();
-      return file.getPath();
+      return file.getAbsolutePath();
+    } else {
+      return null;
+    }
+  }
+
+  public String getExportFilePath() {
+    JFileChooser fileChooser = new JFileChooser(".");
+    FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Image or Text Files",
+        "jpg", "jpeg", "png", "ppm", "txt");
+    fileChooser.setFileFilter(extensionFilter);
+    if (fileChooser.showSaveDialog(ImageViewImpl.this) == JFileChooser.APPROVE_OPTION) {
+      File file = fileChooser.getSelectedFile();
+      return file.getAbsolutePath();
     } else {
       return null;
     }
@@ -464,8 +627,13 @@ public class ImageViewImpl extends JFrame {
     return (String) this.exportAllDropDown.getSelectedItem();
   }
 
-  public String getSelectedLayer() {
-    String layerName = (String) this.layerNamesDropdown.getSelectedItem();
+  public String getSelectedCurrentLayer() {
+    String layerName = (String) this.currentLayerNamesDropdown.getSelectedItem();
+    return (layerName == null) ? "" : layerName;
+  }
+
+  public String getSelectedRemoveLayer() {
+    String layerName = (String) this.removeLayerNamesDropdown.getSelectedItem();
     return (layerName == null) ? "" : layerName;
   }
 
@@ -477,7 +645,8 @@ public class ImageViewImpl extends JFrame {
 
   public void removeLayerName(String layerName) throws IllegalArgumentException {
     ImageUtil.requireNonNull(layerName);
-    this.layerNamesDropdown.removeItem(layerName);
+    this.currentLayerNamesDropdown.removeItem(layerName);
+    this.removeLayerNamesDropdown.removeItem(layerName);
   }
 
   public void renderErrorMessage(String str) throws IllegalArgumentException {

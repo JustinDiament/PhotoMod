@@ -118,10 +118,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     } catch (NumberFormatException ignored) {
     }
 
-    double xScaleOutOfOne = (double) xScale / 100;
-    double yScaleOutOfOne = (double) yScale / 100;
-
-    if (this.executeCommand(xScaleOutOfOne + " " + yScaleOutOfOne, new DownscaleCommand())) {
+    if (this.executeCommand(xScale + " " + yScale, new DownscaleCommand())) {
       this.renderTopmostVisibleLayer();
     }
   }
@@ -151,45 +148,34 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     }
   }
 
-  /**
-   * Produces the Image extension type (such as ppm, jpg, or png) from a given Image filepath.
-   *
-   * @param path the filepath of the Image whose extension type will be returned
-   * @return the extension type of the Image at the given filepath, or null if the filepath lacks an
-   * extension
-   */
-  private String getExtension(String path) {
-
-    int i = path.lastIndexOf('.');
-    if (i > 0) {
-      return path.substring(i + 1);
-    } else {
-      return null;
-    }
-  }
-
   @Override
   public void importExecute() {
-    String path = this.view.getFilePath();
+    String path = this.view.getImportFilePath();
 
 //    String extension = this.getExtension(path);
-    String extension = this.view.getExportAllFileType();
+//    String extension = this.view.getExportAllFileType();
+    String extension = "png";
+    // todo: new import method
 
-    if (extension == null) {
+    if (extension == null || path == null) {
       return;
     }
 
-    this.executeCommand(path + " " + extension, new ImportCommand());
+    if (this.executeCommand(path + " " + extension, new ImportCommand())) {
+      this.renderTopmostVisibleLayer();
+    }
   }
 
   @Override
   public void exportLayerExecute() {
-    String path = this.view.getFilePath();
+    String path = this.view.getExportFilePath();
 
 //    String extension = this.getExtension(path);
-    String extension = this.view.getExportAllFileType();
+//    String extension = this.view.getExportAllFileType();
+    String extension = "png";
+    // todo: new export method
 
-    if (extension == null) {
+    if (extension == null || path == null) {
       return;
     }
 
@@ -198,9 +184,14 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   @Override
   public void exportAllExecute() {
-    String path = this.view.getFilePath();
+    String path = this.view.getExportFilePath();
 
     String extension = this.view.getExportAllFileType();
+    // todo: new export all method
+
+    if (extension == null || path == null) {
+      return;
+    }
 
     this.executeCommand(path + " " + extension, new ExportAllCommand());
   }
@@ -249,7 +240,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   @Override
   public void currentLayerExecute() {
-    String newCurrentLayer = this.view.getSelectedLayer();
+    String newCurrentLayer = this.view.getSelectedCurrentLayer();
 
     if (this.executeCommand(newCurrentLayer, new ChangeCurrentLayerCommand())) {
       this.view.changeCurrentLayerText(newCurrentLayer);
@@ -258,7 +249,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   @Override
   public void removeLayerExecute() {
-    String layerToRemove = this.view.getSelectedLayer();
+    String layerToRemove = this.view.getSelectedRemoveLayer();
 
     if (this.executeCommand(layerToRemove, new RemoveLayerCommand())) {
       this.view.changeCurrentLayerText("None");
