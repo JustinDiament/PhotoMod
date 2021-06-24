@@ -52,14 +52,14 @@ public class PNGTest {
   // test that a file that isn't a PNG file cannot be read
   @Test(expected = IllegalArgumentException.class)
   public void testImportNonPNG() {
-    this.i.importFile("res\\test\\test.txt");
+    this.i.importFile("res//test//test.txt");
   }
 
   // test that a valid PNG is imported properly and a corresponding Image object is created
   @Test
   public void testImportPNG() {
     assertNull(this.i1);
-    this.i1 = this.i.importFile("res\\test\\test_good.png");
+    this.i1 = this.i.importFile("res//test//test_good.png");
     assertNotNull(this.i1);
     assertTrue(this.i1 instanceof ImageImpl);
     assertEquals(ImageImpl.class, this.i1.getClass());
@@ -76,16 +76,16 @@ public class PNGTest {
   // test that a null image cannot be written
   @Test(expected = IllegalArgumentException.class)
   public void testExportNullImage() {
-    this.i.exportFile("res\\test\\test_good.png", null);
+    this.i.exportFile("res//test//test_good.png", null);
   }
 
   // test that a valid image is able to be exported properly to a valid file path
   @Test
   public void testExportPNG() {
     assertNotNull(this.i2);
-    this.i.exportFile("res\\test\\test_good.png", this.i2);
+    this.i.exportFile("res//test//test_good.png", this.i2);
     assertNull(this.i1);
-    this.i1 = this.i.importFile("res\\test\\test_good.png");
+    this.i1 = this.i.importFile("res//test//test_good.png");
     assertNotNull(this.i1);
     assertTrue(this.i1 instanceof ImageImpl);
     assertEquals(ImageImpl.class, this.i1.getClass());
@@ -95,14 +95,14 @@ public class PNGTest {
   @Test
   public void testExportPNGOverwrite() {
     assertNotNull(this.i2);
-    this.i.exportFile("res\\test\\test_good.png", this.i2);
+    this.i.exportFile("res//test//test_good.png", this.i2);
     assertNull(this.i1);
-    this.i1 = this.i.importFile("res\\test\\test_good.png");
+    this.i1 = this.i.importFile("res//test//test_good.png");
     assertNotNull(this.i1);
     assertTrue(this.i1 instanceof ImageImpl);
     assertEquals(ImageImpl.class, this.i1.getClass());
-    this.i.exportFile("res\\test\\test_good.png", this.i2);
-    this.i1 = this.i.importFile("res\\test\\test_good.png");
+    this.i.exportFile("res//test//test_good.png", this.i2);
+    this.i1 = this.i.importFile("res//test//test_good.png");
     assertNotNull(this.i1);
     assertTrue(this.i1 instanceof ImageImpl);
     assertEquals(ImageImpl.class, this.i1.getClass());

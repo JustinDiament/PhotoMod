@@ -47,7 +47,7 @@ public class ImportCommandTest {
   public void testImportSingleImage() {
     this.m.addLayer("first");
     this.m.setCurrentLayer(0);
-    this.s = new Scanner("res\\test\\layer\\test.jpg jpg");
+    this.s = new Scanner("res//test//layer//test.jpg jpg");
     this.c.execute(this.s, this.m);
     assertTrue(this.m.getCurrentLayer().getVisibility());
     assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
@@ -57,18 +57,18 @@ public class ImportCommandTest {
 
   @Test
   public void testImportLayeredImage() {
-    this.s = new Scanner("res\\test\\layer\\test.txt txt");
+    this.s = new Scanner("res//test//layer//test.txt txt");
     this.c.execute(this.s, this.m);
     assertEquals(2, this.m.getLayerNames().size());
     this.m.setCurrentLayer(0);
     assertTrue(this.m.getCurrentLayer().getVisibility());
     assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
     assertEquals(1, this.m.getCurrentLayer().getImage().getWidth());
-    assertEquals("res\\test\\layer\\test", this.m.getCurrentLayer().getName());
+    assertEquals("test", this.m.getCurrentLayer().getName());
     this.m.setCurrentLayer(1);
     assertTrue(this.m.getCurrentLayer().getVisibility());
     assertEquals(1, this.m.getCurrentLayer().getImage().getHeight());
     assertEquals(1, this.m.getCurrentLayer().getImage().getWidth());
-    assertEquals("res\\test\\layer\\test2", this.m.getCurrentLayer().getName());
+    assertEquals("test2", this.m.getCurrentLayer().getName());
   }
 }

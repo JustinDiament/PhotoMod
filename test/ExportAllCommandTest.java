@@ -48,13 +48,13 @@ public class ExportAllCommandTest {
     this.m.addLayer("");
     this.m.setCurrentLayer(0);
     Command i = new ImportCommand();
-    i.execute(new Scanner("res\\test\\layer\\test.jpg jpg"), this.m);
+    i.execute(new Scanner("res//test//layer//test.jpg jpg"), this.m);
     assertTrue(this.m.getCurrentLayer().getVisibility());
     this.m.addLayer("2");
     this.m.setCurrentLayer(1);
-    i.execute(new Scanner("res\\test\\layer\\test2.jpg jpg"), this.m);
+    i.execute(new Scanner("res//test//layer//test2.jpg jpg"), this.m);
     assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.s = new Scanner("res\\test\\layer\\test jpg");
+    this.s = new Scanner("res//test//layer//test jpg");
     this.c.execute(this.s, this.m);
   }
 }

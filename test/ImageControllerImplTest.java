@@ -993,4 +993,127 @@ public class ImageControllerImplTest {
         "Image processing has been quit.\n",
         this.ap.toString());
   }
+
+  @Test
+  public void testDownscaleOnMock() {
+    this.controller = new ImageControllerImpl(this.mockModel,
+        new StringReader(""
+            + "createlayer one "
+            + "createlayer two "
+            + "current one "
+            + "import res//test//layer//test.jpg jpg "
+            + "current two "
+            + "import res//test//layer//test.jpg jpg "
+            + "downscale 35 45 "),
+        this.ap);
+
+    this.controller.run();
+
+    assertEquals(
+        "New layer created with this name: one\n"
+            + "New layer created with this name: two\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 1\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 1\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 1\n",
+        this.mockAp.toString());
+  }
+
+  @Test
+  public void testDownscaleCommandViaController() {
+
+    this.controller = new ImageControllerImpl(this.model,
+        new StringReader(""
+            + "createlayer one "
+            + "createlayer two "
+            + "current one "
+            + "import res//test//quetzal//quetzaljpg.jpg jpg "
+            + "current two "
+            + "import res//test//quetzal//quetzaljpg.jpg jpg "),
+        this.ap);
+
+    this.controller.run();
+
+    this.model.setCurrentLayer(0);
+    assertEquals(77, this.model.getCurrentLayerImage().getWidth());
+    assertEquals(102, this.model.getCurrentLayerImage().getHeight());
+
+    this.model.setCurrentLayer(1);
+    assertEquals(77, this.model.getCurrentLayerImage().getWidth());
+    assertEquals(102, this.model.getCurrentLayerImage().getHeight());
+
+    this.controller = new ImageControllerImpl(this.model,
+        new StringReader("downscale 35 45 "),
+        this.ap);
+
+    this.controller.run();
+
+    this.model.setCurrentLayer(0);
+    assertEquals(26, this.model.getCurrentLayerImage().getWidth());
+    assertEquals(45, this.model.getCurrentLayerImage().getHeight());
+
+    this.model.setCurrentLayer(1);
+    assertEquals(26, this.model.getCurrentLayerImage().getWidth());
+    assertEquals(45, this.model.getCurrentLayerImage().getHeight());
+  }
+
+  @Test
+  public void testMosaicOnMock() {
+    this.controller = new ImageControllerImpl(this.mockModel,
+        new StringReader(""
+            + "createlayer one "
+            + "createlayer two "
+            + "current one "
+            + "import res//test//layer//test.jpg jpg "
+            + "current two "
+            + "import res//test//layer//test.jpg jpg "
+            + "mosaic 100 "),
+        this.ap);
+
+    this.controller.run();
+
+    assertEquals(
+        "New layer created with this name: one\n"
+            + "New layer created with this name: two\n"
+            + "Current layer changed to layer with this index: 0\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 1\n"
+            + "Current layer image set\n"
+            + "Current layer image set\n",
+        this.mockAp.toString());
+  }
+
+  @Test
+  public void testMosaicCommandViaController() {
+
+    this.controller = new ImageControllerImpl(this.model,
+        new StringReader(""
+            + "createlayer one "
+            + "createlayer two "
+            + "current one "
+            + "import res//test//quetzal//quetzaljpg.jpg jpg "),
+        this.ap);
+
+    this.controller.run();
+
+    this.model.setCurrentLayer(0);
+    assertEquals(170, this.model.getCurrentLayerImage().getPixelAt(0, 0).getRed());
+    assertEquals(170, this.model.getCurrentLayerImage().getPixelAt(0, 0).getRed());
+    assertEquals(170, this.model.getCurrentLayerImage().getPixelAt(0, 0).getRed());
+
+    this.controller = new ImageControllerImpl(this.model,
+        new StringReader("mosaic 1 "),
+        this.ap);
+
+    this.controller.run();
+
+    assertEquals(168, this.model.getCurrentLayerImage().getPixelAt(0, 0).getRed());
+    assertEquals(168, this.model.getCurrentLayerImage().getPixelAt(0, 0).getRed());
+    assertEquals(168, this.model.getCurrentLayerImage().getPixelAt(0, 0).getRed());
+  }
 }

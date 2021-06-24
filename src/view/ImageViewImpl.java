@@ -125,7 +125,6 @@ public class ImageViewImpl extends JFrame {
     imageScrollPane.setPreferredSize(new Dimension(500, 500));
     imagePanel.add(imageScrollPane);
 
-    // todo: all of this, plus popup input dialogs
     JMenuBar menuBar = new JMenuBar();
     setJMenuBar(menuBar);
 
@@ -431,14 +430,6 @@ public class ImageViewImpl extends JFrame {
 
     this.mainPanel.add(this.buttonPanel);
 
-    // button.addActionListener + anonymous class
-//    new ActionListener() {
-//
-//      @Override
-//      public void actionPerformed(ActionEvent e) {
-//          for feature in features, feature.method();
-//      }
-//    }
 
     JPanel operationPanel = new JPanel();
     this.blurButton = new JButton("Blur");
@@ -486,7 +477,6 @@ public class ImageViewImpl extends JFrame {
       }
     });
 
-    // todo: no more inputs in buttonpanel, only buttons
 //    this.downscaleXTextField = new JTextField(5);
 //    this.downscaleYTextField = new JTextField(5);
     downscalePanel.add(this.downscaleButton);
@@ -579,16 +569,6 @@ public class ImageViewImpl extends JFrame {
     filePanel.add(this.exportAllButton);
     filePanel.add(this.exportAllDropdown);
 
-//    JFileChooser fileChooser = new JFileChooser(".");
-//    FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Image or Text Files",
-//        "jpg", "jpeg", "png", "ppm", "txt");
-//    fileChooser.setFileFilter(extensionFilter);
-//    // todo: may need separate logic for save/load - showOpenDialog vs showSaveDialog, perhaps through class integer field
-//    if (fileChooser.showOpenDialog(ImageViewImpl.this) == JFileChooser.APPROVE_OPTION) {
-//      File file = fileChooser.getSelectedFile();
-//      this.filepath = file.getAbsolutePath();
-//    }
-
     buttonPanel.add(filePanel);
 
     JPanel operationLayerPanel = new JPanel();
@@ -632,16 +612,7 @@ public class ImageViewImpl extends JFrame {
         feature.handleVisibility();
       }
     });
-//    this.invisibilityButton = new JButton("Invisible");
-//    this.visibilityCheckBox = new JCheckBox();
-//    this.visibilityCheckBox.addActionListener(e -> {
-//      for (Features feature : features) {
-//        feature.handleVisibility();
-//      }
-//    });
-//    this.visibilityTextField = new JTextField("Make Invisible");
-//    visibilityPanel.add(this.visibilityCheckBox);
-//    visibilityPanel.add(this.visibilityTextField);
+
     visibilityPanel.add(visibilityButton);
     operationLayerPanel.add(visibilityPanel);
 

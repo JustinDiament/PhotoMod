@@ -36,7 +36,7 @@ public class ImageUtilTest {
   @Test
   public void testConvertImageToBufferedImage() {
     ImageFile png = new PNG();
-    Image i1 = png.importFile("res\\test\\quetzal\\quetzaljpg.jpg");
+    Image i1 = png.importFile("res//test//quetzal//quetzaljpg.jpg");
     assertNotNull(i1);
     assertEquals(ImageImpl.class, i1.getClass());
     BufferedImage i2 = ImageUtil.convertImage(i1);

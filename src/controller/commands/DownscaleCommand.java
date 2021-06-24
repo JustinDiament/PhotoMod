@@ -1,6 +1,7 @@
 package controller.commands;
 
 import java.util.Scanner;
+import model.ImageUtil;
 import model.image.Image;
 import model.image.ImageLayerModel;
 import model.operation.DownscaleOperation;
@@ -15,6 +16,8 @@ public class DownscaleCommand implements Command {
 
   @Override
   public void execute(Scanner scanner, ImageLayerModel model) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(scanner);
+    ImageUtil.requireNonNull(model);
 
     int xScale = 0;
     int yScale;

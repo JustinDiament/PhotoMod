@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNull;
 import java.util.Random;
 import model.image.Image;
 import model.image.file.ImageFile;
-import model.image.file.JPEG;
+import model.image.file.PNG;
 import model.operation.ImageOperation;
 import model.operation.MosaicOperation;
 import org.junit.Before;
@@ -32,8 +32,8 @@ public class MosaicOperationTest {
     this.m1 = new MosaicOperation(100);
     this.r1 = new Random(5);
     this.m2 = new MosaicOperation(100, this.r1);
-    ImageFile jpg = new JPEG();
-    this.i1 = jpg.importFile("res\\test\\quetzal\\quetzalpng.png");
+    ImageFile png = new PNG();
+    this.i1 = png.importFile("res//test//quetzal//quetzalpng.png");
     this.i2 = null;
     this.i3 = null;
   }

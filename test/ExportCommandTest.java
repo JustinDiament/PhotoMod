@@ -45,7 +45,7 @@ public class ExportCommandTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testExportNoVisibleLayers() {
-    this.s = new Scanner("res\\test\\layer\\test.jpg");
+    this.s = new Scanner("res//test//layer//test.jpg");
     this.c.execute(this.s, this.m);
   }
 
@@ -54,9 +54,9 @@ public class ExportCommandTest {
     this.m.addLayer("");
     this.m.setCurrentLayer(0);
     Command i = new ImportCommand();
-    i.execute(new Scanner("res\\test\\layer\\test.jpg jpg"), this.m);
+    i.execute(new Scanner("res//test//layer//test.jpg jpg"), this.m);
     assertTrue(this.m.getCurrentLayer().getVisibility());
-    this.s = new Scanner("res\\test\\layer\\test.jpg jpg");
+    this.s = new Scanner("res//test//layer//test.jpg jpg");
     this.c.execute(this.s, this.m);
   }
 }
