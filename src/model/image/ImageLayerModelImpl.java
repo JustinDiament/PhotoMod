@@ -128,14 +128,25 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
   }
 
   @Override
-  public Image getTopImage() throws IllegalArgumentException {
+  public Image getTopImage() throws IllegalStateException {
     for (int i = this.layers.size() - 1; i >= 0; i--) {
       Layer l = this.layers.get(i);
       if (l.getVisibility()) {
         return new ImageImpl(l.getImage());
       }
     }
-    throw new IllegalArgumentException("No layers are visible");
+    throw new IllegalStateException("No layers are visible");
+  }
+
+  @Override
+  public String getTopName() {
+    for (int i = this.layers.size() - 1; i >= 0; i--) {
+      Layer l = this.layers.get(i);
+      if (l.getVisibility()) {
+        return l.getName();
+      }
+    }
+    return "None";
   }
 
   @Override

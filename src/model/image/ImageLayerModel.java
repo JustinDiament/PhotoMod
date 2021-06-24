@@ -142,7 +142,14 @@ public interface ImageLayerModel extends ImageProcessingModel {
    * Returns the image stored in the topmost visible layer.
    *
    * @return a deep copy of the topmost visible image
-   * @throws IllegalArgumentException if no layers are visible
+   * @throws IllegalStateException if no layers are visible
    */
-  Image getTopImage() throws IllegalArgumentException;
+  Image getTopImage() throws IllegalStateException;
+
+  /**
+   * Returns the name stored in the topmost visible layer.
+   *
+   * @return the name of the topmost visible layer, or None if no layers are visible
+   */
+  String getTopName();
 }

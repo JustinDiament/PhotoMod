@@ -92,7 +92,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   private void renderTopmostVisibleLayer() {
     try {
       this.view.renderImage(this.model.getTopImage());
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException | IllegalStateException e) {
       this.view.renderImage(null);
     }
   }
@@ -144,6 +144,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     // handles empty layerName boxes
     if (this.executeCommand(layerName, new CreateLayerCommand())) {
       this.view.addNewLayerToDropdown(layerName);
+      this.view.changeCurrentVisibleLayerText(this.model.getTopName());
       this.renderTopmostVisibleLayer();
     }
   }
@@ -159,6 +160,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
     if (this.executeCommand(path + " " + extension, new ImportCommand())) {
       this.renderTopmostVisibleLayer();
+      this.view.changeCurrentVisibleLayerText(this.model.getTopName());
     }
   }
 
@@ -204,6 +206,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     if (this.executeCommand(size + " " + numSquares + " " + colorOne + " " + colorTwo,
         new CreateCheckerboardCommand())) {
       this.renderTopmostVisibleLayer();
+      this.view.changeCurrentVisibleLayerText(this.model.getTopName());
     }
   }
 
@@ -219,13 +222,13 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     }
 
     if (currentLayerVisibility) {
-      // todo: optional text label to display visibility of current layer
       this.executeCommand("invisible", new VisibilityCommand());
     } else {
       this.executeCommand("visible", new VisibilityCommand());
     }
 
     this.renderTopmostVisibleLayer();
+    this.view.changeCurrentVisibleLayerText(this.model.getTopName());
   }
 
   @Override
@@ -234,6 +237,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
     if (this.executeCommand(newCurrentLayer, new ChangeCurrentLayerCommand())) {
       this.view.changeCurrentLayerText(newCurrentLayer);
+      this.view.changeCurrentVisibleLayerText(this.model.getTopName());
     }
   }
 
@@ -243,6 +247,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
     if (this.executeCommand(layerToRemove, new RemoveLayerCommand())) {
       this.view.changeCurrentLayerText("None");
+      this.view.changeCurrentVisibleLayerText(this.model.getTopName());
       this.view.removeLayerName(layerToRemove);
       this.renderTopmostVisibleLayer();
     }

@@ -62,9 +62,7 @@ public class ImageViewImpl extends JFrame {
   private final JButton exportButton;
   private final JButton exportAllButton;
 
-  private final JComboBox<String> exportAllDropdown;
-  private final JComboBox<String> exportDropdown;
-  private final JComboBox<String> importDropdown;
+  private final JComboBox<String> extensionDropdown;
 
   private final JButton createLayerButton;
   private final JTextField createLayerTextField;
@@ -111,11 +109,12 @@ public class ImageViewImpl extends JFrame {
     requestFocus();
 
     mainPanel = new JPanel();
-    mainPanel.setLayout(new GridLayout(1, 2));
+//    mainPanel.setLayout(new GridLayout(1, 2));
     mainScrollPane = new JScrollPane(mainPanel);
     add(mainScrollPane);
 
     imagePanel = new JPanel();
+    this.changeCurrentVisibleLayerText("None");
     imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
     mainPanel.add(imagePanel);
 
@@ -254,8 +253,6 @@ public class ImageViewImpl extends JFrame {
     JPanel downscaleMenuPanel = new JPanel();
     this.downscaleXTextField = new JTextField(5);
     this.downscaleYTextField = new JTextField(5);
-//    JTextField downscaleXScaleTextField = new JTextField(5);
-//    JTextField downscaleYScaleTextField = new JTextField(5);
     downscaleMenuPanel.add(new JLabel("X Scale (1-100%):"));
     downscaleMenuPanel.add(this.downscaleXTextField);
     downscaleMenuPanel.add(new JLabel("Y Scale (1-100%):"));
@@ -390,48 +387,18 @@ public class ImageViewImpl extends JFrame {
     menuBar.add(imageMenu);
 
 
-//    JPanel mosaicMenuPanel = new JPanel();
-//    this.mosaicSeedTextField = new JTextField(5);
-//    mosaicMenuPanel.add(new JLabel("Seeds:"));
-//    mosaicMenuPanel.add(this.mosaicSeedTextField);
-//    JMenuItem mosaicMenuItem = new JMenuItem("Mosaic");
-//    mosaicMenuItem.addActionListener(e -> {
-//      int result = JOptionPane
-//          .showConfirmDialog(this, mosaicMenuPanel, "Mosaic", JOptionPane.OK_CANCEL_OPTION);
-//      if (result == JOptionPane.OK_OPTION) {
-//        for (Features feature : features) {
-//          feature.handleMosaicEvent();
-//        }
-//      }
-//    });
-
-//    PNG png = new PNG();
-//    this.renderImage(png.importFile("res//mosaic//popeyes_original.png"));
-
-//    JPanel imagePanel = new JPanel();
-//    imagePanel.setBorder(BorderFactory.createTitledBorder("Currently viewing layer:"));
-//    imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
-//    mainPanel.add(imagePanel);
-//
-//    JLabel label = new JLabel();
-//    JScrollPane scrollPane = new JScrollPane(label);
-//    PNG png = new PNG();
-//    Image img = png.importFile("res//mosaic//popeyes_original.png");
-//    label.setIcon(new ImageIcon(ImageUtil.convertImage(img)));
-//    label.setHorizontalAlignment(SwingConstants.CENTER);
-//    scrollPane.setPreferredSize(new Dimension(100, 200));
-//    imagePanel.add(scrollPane);
 
     this.buttonPanel = new JPanel();
+//    this.buttonPanel.setPreferredSize(new Dimension(400, 500));
+    this.changeCurrentLayerText("None");
 
-    this.buttonPanel.setBorder(
-        BorderFactory.createTitledBorder("Currently selected layer: None"));
     this.buttonPanel.setLayout(new BoxLayout(this.buttonPanel, BoxLayout.PAGE_AXIS));
 
     this.mainPanel.add(this.buttonPanel);
 
 
     JPanel operationPanel = new JPanel();
+    operationPanel.setLayout(new GridLayout(3, 2));
     this.blurButton = new JButton("Blur");
     this.blurButton.addActionListener(e -> {
       for (Features feature : features) {
@@ -439,7 +406,6 @@ public class ImageViewImpl extends JFrame {
       }
     });
     this.monochromeButton = new JButton("Monochrome");
-    this.monochromeButton.setPreferredSize(new Dimension(115, 26));
     this.monochromeButton.addActionListener(e -> {
       for (Features feature : features) {
         feature.handleMonochromeEvent();
@@ -457,166 +423,154 @@ public class ImageViewImpl extends JFrame {
         feature.handleSharpenEvent();
       }
     });
-    operationPanel.setBorder(BorderFactory.createTitledBorder("Filter"));
-    operationPanel.add(this.blurButton);
-    operationPanel.add(this.monochromeButton);
-    operationPanel.add(this.sepiaButton);
-    operationPanel.add(this.sharpenButton);
 
-    buttonPanel.add(operationPanel);
+    this.downscaleButton = new JButton("Downscale");
+    this.downscaleButton.addActionListener(e -> {
+      int result = JOptionPane
+          .showConfirmDialog(this, downscaleMenuPanel, "Downscale", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleDownscaleEvent();
+        }
+      }
+    });
+
+    this.mosaicButton = new JButton("Mosaic");
+    this.mosaicButton.addActionListener(e -> {
+      int result = JOptionPane
+          .showConfirmDialog(this, mosaicMenuPanel, "Mosaic", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleMosaicEvent();
+        }
+      }
+    });
+
+
+    operationPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
+    operationPanel.add(this.blurButton);
+    operationPanel.add(this.sharpenButton);
+    operationPanel.add(this.sepiaButton);
+    operationPanel.add(this.monochromeButton);
+    operationPanel.add(this.downscaleButton);
+    operationPanel.add(this.mosaicButton);
+
 
     JPanel operationTextPanel = new JPanel();
     operationTextPanel.setLayout(new BoxLayout(operationTextPanel, BoxLayout.PAGE_AXIS));
-    // todo: rename this. consider reorganizing contents/order of all submenus to match menubar
-    operationTextPanel.setBorder(BorderFactory.createTitledBorder("More Operations?"));
-    JPanel downscalePanel = new JPanel();
-    this.downscaleButton = new JButton("Downscale");
-    this.downscaleButton.addActionListener(e -> {
-      for (Features feature : features) {
-        feature.handleDownscaleEvent();
-      }
-    });
-
-//    this.downscaleXTextField = new JTextField(5);
-//    this.downscaleYTextField = new JTextField(5);
-    downscalePanel.add(this.downscaleButton);
-//    downscalePanel.add(new JLabel("x-scale (1-100%):"));
-//    downscalePanel.add(this.downscaleXTextField);
-//    downscalePanel.add(new JLabel("y-scale (1-100%):"));
-//    downscalePanel.add(this.downscaleYTextField);
-    operationTextPanel.add(downscalePanel);
-
-    JPanel mosaicPanel = new JPanel();
-    this.mosaicButton = new JButton("Mosaic");
-    this.mosaicButton.addActionListener(e -> {
-      for (Features feature : features) {
-        feature.handleMosaicEvent();
-      }
-    });
-//    this.mosaicSeedTextField = new JTextField(5);
-
-    mosaicPanel.add(this.mosaicButton);
-//    mosaicPanel.add(new JLabel("seeds:"));
-//    mosaicPanel.add(this.mosaicSeedTextField);
-    operationTextPanel.add(mosaicPanel);
+    operationTextPanel.setBorder(BorderFactory.createTitledBorder("Programmatic Images"));
 
     JPanel checkerboardPanel = new JPanel();
     this.createCheckerboardButton = new JButton("Checkerboard");
     this.createCheckerboardButton.addActionListener(e -> {
-      for (Features feature : features) {
-        feature.handleCreateCheckerboard();
+      int result = JOptionPane
+          .showConfirmDialog(this, checkerboardMenuPanel, "Checkerboard", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleCreateCheckerboard();
+        }
       }
     });
-//    this.checkerboardSizeTextField = new JTextField(5);
-//    this.checkerboardSquaresTextField = new JTextField(5);
-//    this.checkerboardColorOneDropdown = new JComboBox<>();
-//    this.checkerboardColorTwoDropdown = new JComboBox<>();
 
-//    String[] colors = {"red", "orange", "yellow", "green", "cyan", "blue", "magenta", "white",
-//        "gray", "black"};
-//    for (String color : colors) {
-//      this.checkerboardColorOneDropdown.addItem(color);
-//      this.checkerboardColorTwoDropdown.addItem(color);
-//    }
 
     checkerboardPanel.add(this.createCheckerboardButton);
-//    checkerboardPanel.add(this.checkerboardSizeTextField);
-//    checkerboardPanel.add(this.checkerboardSquaresTextField);
-//    checkerboardPanel.add(this.checkerboardColorOneDropdown);
-//    checkerboardPanel.add(this.checkerboardColorTwoDropdown);
+
     operationTextPanel.add(checkerboardPanel);
 
-    buttonPanel.add(operationTextPanel);
 
     JPanel filePanel = new JPanel();
-    filePanel.setBorder(BorderFactory.createTitledBorder("File"));
-    this.importButton = new JButton("Import");
+    JPanel fileButtonPanel = new JPanel();
+    fileButtonPanel.setLayout(new GridLayout(3, 1));
+    filePanel.setBorder(BorderFactory.createTitledBorder("File Handling"));
+    this.importButton = new JButton("Import Layer(s)");
     this.importButton.addActionListener(e -> {
+      this.importExtension = this.getFileTypeExtension();
       for (Features feature : features) {
         feature.handleImport();
       }
     });
     this.exportButton = new JButton("Export Topmost Visible Layer");
     this.exportButton.addActionListener(e -> {
+      this.exportExtension = this.getFileTypeExtension();
       for (Features feature : features) {
         feature.handleExportLayer();
       }
     });
     this.exportAllButton = new JButton("Export All Layers");
     this.exportAllButton.addActionListener(e -> {
+      this.exportExtension = this.getFileTypeExtension();
       for (Features feature : features) {
-        feature.handleExportAll();
+        feature.handleExportLayer();
       }
     });
 
-    this.importDropdown = new JComboBox<>();
-    importDropdown.addItem("JPEG");
-    importDropdown.addItem("PNG");
-    importDropdown.addItem("PPM");
-    importDropdown.addItem("TXT");
 
-    this.exportDropdown = new JComboBox<>();
-    exportDropdown.addItem("JPEG");
-    exportDropdown.addItem("PNG");
-    exportDropdown.addItem("PPM");
+    this.extensionDropdown = new JComboBox<>();
+    extensionDropdown.addItem("JPEG");
+    extensionDropdown.addItem("PNG");
+    extensionDropdown.addItem("PPM");
+    extensionDropdown.addItem("TXT");
+    fileButtonPanel.add(this.importButton);
+    fileButtonPanel.add(this.exportButton);
+    fileButtonPanel.add(this.exportAllButton);
 
-    this.exportAllDropdown = new JComboBox<>();
-    exportAllDropdown.addItem("JPEG");
-    exportAllDropdown.addItem("PNG");
-    exportAllDropdown.addItem("PPM");
-    filePanel.add(this.importButton);
-    filePanel.add(this.exportButton);
-    filePanel.add(this.exportAllButton);
-    filePanel.add(this.exportAllDropdown);
+    filePanel.add(fileButtonPanel);
+    filePanel.add(this.extensionDropdown);
 
-    buttonPanel.add(filePanel);
 
     JPanel operationLayerPanel = new JPanel();
-    operationLayerPanel.setBorder(BorderFactory.createTitledBorder("Layer Operation"));
-    operationLayerPanel.setLayout(new BoxLayout(operationLayerPanel, BoxLayout.PAGE_AXIS));
+    operationLayerPanel.setBorder(BorderFactory.createTitledBorder("Layer Operations"));
+    operationLayerPanel.setLayout(new GridLayout(4, 1));
 
-    JPanel createLayerPanel = new JPanel();
     this.createLayerButton = new JButton("Create Layer");
     this.createLayerButton.addActionListener(e -> {
-      for (Features feature : features) {
-        feature.handleAddLayerEvent();
+      int result = JOptionPane
+          .showConfirmDialog(this, createLayerMenuPanel, "Create Layer", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleAddLayerEvent();
+        }
       }
     });
-//    this.createLayerTextField = new JTextField(10);
-    createLayerPanel.add(this.createLayerButton);
-//    createLayerPanel.add(this.createLayerTextField);
-    operationLayerPanel.add(createLayerPanel);
-    JPanel layerNamePanel = new JPanel();
+
     this.setCurrentLayerButton = new JButton("Set Current Layer");
     this.setCurrentLayerButton.addActionListener(e -> {
-      for (Features feature : features) {
-        feature.handleCurrentLayerEvent();
+      int result = JOptionPane
+          .showConfirmDialog(this, currentLayerMenuPanel, "Set Current Layer", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleCurrentLayerEvent();
+        }
       }
     });
+
     this.removeLayerButton = new JButton("Remove Layer");
     this.removeLayerButton.addActionListener(e -> {
-      for (Features feature : features) {
-        feature.handleRemoveLayerEvent();
+      int result = JOptionPane
+          .showConfirmDialog(this, removeLayerMenuPanel, "Remove Layer", JOptionPane.OK_CANCEL_OPTION);
+      if (result == JOptionPane.OK_OPTION) {
+        for (Features feature : features) {
+          feature.handleRemoveLayerEvent();
+        }
       }
     });
-//    this.layerNamesDropdown = new JComboBox<>();
-    layerNamePanel.add(this.setCurrentLayerButton);
-    layerNamePanel.add(this.removeLayerButton);
-//    layerNamePanel.add(this.layerNamesDropdown);
-    operationLayerPanel.add(layerNamePanel);
 
-    JPanel visibilityPanel = new JPanel();
-    this.visibilityButton = new JButton("Visibility");
+    this.visibilityButton = new JButton("Toggle Current Layer Visibility");
     this.visibilityButton.addActionListener(e -> {
       for (Features feature : features) {
         feature.handleVisibility();
       }
     });
 
-    visibilityPanel.add(visibilityButton);
-    operationLayerPanel.add(visibilityPanel);
+    operationLayerPanel.add(this.createLayerButton);
+    operationLayerPanel.add(this.setCurrentLayerButton);
+    operationLayerPanel.add(this.removeLayerButton);
+    operationLayerPanel.add(this.visibilityButton);
 
+    buttonPanel.add(filePanel);
+    buttonPanel.add(operationPanel);
     buttonPanel.add(operationLayerPanel);
+    buttonPanel.add(operationTextPanel);
 
     this.pack();
   }
@@ -699,8 +653,13 @@ public class ImageViewImpl extends JFrame {
     }
   }
 
-  public String getExportAllFileType() {
-    return (String) this.exportAllDropdown.getSelectedItem();
+  public String getFileTypeExtension() {
+    String ext = (String) this.extensionDropdown.getSelectedItem();
+    if (ext != null) {
+      ext = ext.toLowerCase();
+      ext = ext.equals("jpeg") ? "jpg" : ext;
+    }
+    return ext;
   }
 
   public String getSelectedCurrentLayer() {
@@ -717,6 +676,12 @@ public class ImageViewImpl extends JFrame {
     ImageUtil.requireNonNull(layerName);
     this.buttonPanel.setBorder(
         BorderFactory.createTitledBorder("Currently selected layer: " + layerName));
+  }
+
+  public void changeCurrentVisibleLayerText(String layerName) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(layerName);
+    this.imagePanel.setBorder(
+        BorderFactory.createTitledBorder("Currently visible layer: " + layerName));
   }
 
   public void removeLayerName(String layerName) throws IllegalArgumentException {

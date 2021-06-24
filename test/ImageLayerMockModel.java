@@ -114,9 +114,13 @@ public class ImageLayerMockModel implements ImageLayerModel {
   }
 
   @Override
-  public Image getTopImage() throws IllegalArgumentException {
+  public Image getTopImage() throws IllegalStateException {
     this.log.append("Export occurring\n");
     return this.delegate.getTopImage();
+  }
+
+  public String getTopName() throws IllegalStateException {
+    return this.delegate.getTopName();
   }
 
   @Override
