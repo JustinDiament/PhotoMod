@@ -123,6 +123,7 @@ public class ImageLayerModelImpl extends ImageProcessingModelImpl implements Ima
     Image newImage = super.createProgrammaticImage(creator);
     layers.set(this.currentLayer, new LayerImpl(newImage, this.getCurrentLayer().getName(),
         this.getCurrentLayer().getVisibility()));
+    this.verifyLayerDimensions(newImage);
     return new ImageImpl(newImage);
   }
 

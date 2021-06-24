@@ -61,7 +61,10 @@ public class ImageViewImpl extends JFrame {
   private final JButton importButton;
   private final JButton exportButton;
   private final JButton exportAllButton;
-  private final JComboBox<String> exportAllDropDown;
+
+  private final JComboBox<String> exportAllDropdown;
+  private final JComboBox<String> exportDropdown;
+  private final JComboBox<String> importDropdown;
 
   private final JButton createLayerButton;
   private final JTextField createLayerTextField;
@@ -84,6 +87,10 @@ public class ImageViewImpl extends JFrame {
   private String currentLayerName;
   private String filepath;
 
+
+  private String importExtension;
+  private String exportExtension;
+  private String exportAllExtension;
 
   public ImageViewImpl() {
     super();
@@ -123,10 +130,98 @@ public class ImageViewImpl extends JFrame {
     setJMenuBar(menuBar);
 
     JMenu fileMenu = new JMenu("File");
-    JMenuItem importMenuItem = new JMenuItem("Import");
-//    importMenuItem.addActionListener();
-    JMenuItem exportMenuItem = new JMenuItem("Export");
-    JMenuItem exportAllMenuItem = new JMenuItem("Export All");
+
+    JMenu importMenuItem = new JMenu("Import");
+    JMenuItem importJPEG = new JMenuItem("JPEG");
+    importJPEG.addActionListener(e -> {
+      this.importExtension = "jpg";
+      for (Features feature : features) {
+        feature.handleImport();
+      }
+    });
+    JMenuItem importPNG = new JMenuItem("PNG");
+    importPNG.addActionListener(e -> {
+      this.importExtension = "png";
+      for (Features feature : features) {
+        feature.handleImport();
+      }
+    });
+    JMenuItem importPPM = new JMenuItem("PPM");
+    importPPM.addActionListener(e -> {
+      this.importExtension = "ppm";
+      for (Features feature : features) {
+        feature.handleImport();
+      }
+    });
+    JMenuItem importTXT = new JMenuItem("TXT");
+    importTXT.addActionListener(e -> {
+      this.importExtension = "txt";
+      for (Features feature : features) {
+        feature.handleImport();
+      }
+    });
+    importMenuItem.add(importJPEG);
+    importMenuItem.add(importPNG);
+    importMenuItem.add(importPPM);
+    importMenuItem.add(importTXT);
+
+
+
+    JMenu exportMenuItem = new JMenu("Export");
+    JMenuItem exportJPEG = new JMenuItem("JPEG");
+    exportJPEG.addActionListener(e -> {
+      this.exportExtension = "jpg";
+      for (Features feature : features) {
+        feature.handleExportLayer();
+      }
+    });
+    JMenuItem exportPNG = new JMenuItem("PNG");
+    exportPNG.addActionListener(e -> {
+      this.exportExtension = "png";
+      for (Features feature : features) {
+        feature.handleExportLayer();
+      }
+    });
+    JMenuItem exportPPM = new JMenuItem("PPM");
+    exportPPM.addActionListener(e -> {
+      this.exportExtension = "ppm";
+      for (Features feature : features) {
+        feature.handleExportLayer();
+      }
+    });
+    exportMenuItem.add(exportJPEG);
+    exportMenuItem.add(exportPNG);
+    exportMenuItem.add(exportPPM);
+
+
+    JMenu exportAllMenuItem = new JMenu("Export All");
+    JMenuItem exportAllJPEG = new JMenuItem("JPEG");
+    exportAllJPEG.addActionListener(e -> {
+      this.exportAllExtension = "jpg";
+      for (Features feature : features) {
+        feature.handleExportAll();
+      }
+    });
+    JMenuItem exportAllPNG = new JMenuItem("PNG");
+    exportAllPNG.addActionListener(e -> {
+      this.exportAllExtension = "png";
+      for (Features feature : features) {
+        feature.handleExportAll();
+      }
+    });
+    JMenuItem exportAllPPM = new JMenuItem("PPM");
+    exportAllPPM.addActionListener(e -> {
+      this.exportAllExtension = "ppm";
+      for (Features feature : features) {
+        feature.handleExportAll();
+      }
+    });
+    exportAllMenuItem.add(exportAllJPEG);
+    exportAllMenuItem.add(exportAllPNG);
+    exportAllMenuItem.add(exportAllPPM);
+
+
+
     fileMenu.add(importMenuItem);
     fileMenu.add(exportMenuItem);
     fileMenu.add(exportAllMenuItem);
@@ -390,7 +485,6 @@ public class ImageViewImpl extends JFrame {
         feature.handleDownscaleEvent();
       }
     });
-    // todo: downscale seems to not work
 
     // todo: no more inputs in buttonpanel, only buttons
 //    this.downscaleXTextField = new JTextField(5);
@@ -464,15 +558,26 @@ public class ImageViewImpl extends JFrame {
         feature.handleExportAll();
       }
     });
-    this.exportAllDropDown = new JComboBox<>();
-    exportAllDropDown.addItem("JPEG");
-    exportAllDropDown.addItem("PNG");
-    exportAllDropDown.addItem("PPM");
-    exportAllDropDown.addItem("TXT");
+
+    this.importDropdown = new JComboBox<>();
+    importDropdown.addItem("JPEG");
+    importDropdown.addItem("PNG");
+    importDropdown.addItem("PPM");
+    importDropdown.addItem("TXT");
+
+    this.exportDropdown = new JComboBox<>();
+    exportDropdown.addItem("JPEG");
+    exportDropdown.addItem("PNG");
+    exportDropdown.addItem("PPM");
+
+    this.exportAllDropdown = new JComboBox<>();
+    exportAllDropdown.addItem("JPEG");
+    exportAllDropdown.addItem("PNG");
+    exportAllDropdown.addItem("PPM");
     filePanel.add(this.importButton);
     filePanel.add(this.exportButton);
     filePanel.add(this.exportAllButton);
-    filePanel.add(this.exportAllDropDown);
+    filePanel.add(this.exportAllDropdown);
 
 //    JFileChooser fileChooser = new JFileChooser(".");
 //    FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Image or Text Files",
@@ -624,7 +729,7 @@ public class ImageViewImpl extends JFrame {
   }
 
   public String getExportAllFileType() {
-    return (String) this.exportAllDropDown.getSelectedItem();
+    return (String) this.exportAllDropdown.getSelectedItem();
   }
 
   public String getSelectedCurrentLayer() {
@@ -652,5 +757,17 @@ public class ImageViewImpl extends JFrame {
   public void renderErrorMessage(String str) throws IllegalArgumentException {
     ImageUtil.requireNonNull(str);
     JOptionPane.showMessageDialog(this, str, "Error", JOptionPane.ERROR_MESSAGE);
+  }
+
+  public String getImportExtension() {
+    return this.importExtension;
+  }
+
+  public String getExportExtension() {
+    return this.exportExtension;
+  }
+
+  public String getExportAllExtension() {
+    return this.exportAllExtension;
   }
 }

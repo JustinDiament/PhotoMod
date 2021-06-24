@@ -151,11 +151,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   @Override
   public void importExecute() {
     String path = this.view.getImportFilePath();
-
-//    String extension = this.getExtension(path);
-//    String extension = this.view.getExportAllFileType();
-    String extension = "png";
-    // todo: new import method
+    String extension = this.view.getImportExtension();
 
     if (extension == null || path == null) {
       return;
@@ -169,11 +165,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   @Override
   public void exportLayerExecute() {
     String path = this.view.getExportFilePath();
-
-//    String extension = this.getExtension(path);
-//    String extension = this.view.getExportAllFileType();
-    String extension = "png";
-    // todo: new export method
+    String extension = this.view.getExportExtension();
 
     if (extension == null || path == null) {
       return;
@@ -185,9 +177,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   @Override
   public void exportAllExecute() {
     String path = this.view.getExportFilePath();
-
-    String extension = this.view.getExportAllFileType();
-    // todo: new export all method
+    String extension = this.view.getExportAllExtension();
 
     if (extension == null || path == null) {
       return;
