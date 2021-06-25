@@ -14,9 +14,8 @@ import controller.commands.VisibilityCommand;
 import java.util.Scanner;
 import model.ImageUtil;
 import model.image.ImageLayerModel;
-import model.image.ImageLayerModelImpl;
 import view.FeaturesImpl;
-import view.ImageViewImpl;
+import view.ImageView;
 
 /**
  * Represents an implementation of a controller for an interactive Image modification graphical user
@@ -28,8 +27,7 @@ import view.ImageViewImpl;
 public class ImageInteractiveControllerImpl implements ImageInteractiveController {
 
   private final ImageLayerModel model;
-  // todo: rename all occurrences with view interface type once that is defined
-  private final ImageViewImpl view;
+  private final ImageView view;
 
   /**
    * Constructs a ImageInteractiveControllerImpl object that can modify the given model and modify
@@ -40,19 +38,12 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
    *              information from to execute its commands
    * @throws IllegalArgumentException if the given model or view are null
    */
-  public ImageInteractiveControllerImpl(ImageLayerModel model, ImageViewImpl view)
+  public ImageInteractiveControllerImpl(ImageLayerModel model, ImageView view)
       throws IllegalArgumentException {
     this.model = ImageUtil.requireNonNull(model);
     this.view = ImageUtil.requireNonNull(view);
 
     this.view.addViewEventListener(new FeaturesImpl(this));
-  }
-
-  public static void main(String[] args) {
-    ImageViewImpl v = new ImageViewImpl();
-    ImageInteractiveController cont = new ImageInteractiveControllerImpl(new ImageLayerModelImpl(),
-        v);
-    cont.run();
   }
 
   @Override
@@ -107,14 +98,12 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   @Override
   public void downscaleExecute() {
-
     int xScale = -1;
     int yScale = -1;
 
     try {
-      // handles empty xScale or yScale boxes
-      xScale = Integer.parseInt(this.view.getXScale()); //getXScale returns a String
-      yScale = Integer.parseInt(this.view.getYScale()); //getYScale returns a String
+      xScale = Integer.parseInt(this.view.getXScale());
+      yScale = Integer.parseInt(this.view.getYScale());
     } catch (NumberFormatException ignored) {
     }
 
@@ -128,7 +117,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     int seeds = -1;
 
     try {
-      seeds = Integer.parseInt(this.view.getSeeds()); //getSeeds returns a String
+      seeds = Integer.parseInt(this.view.getSeeds());
     } catch (NumberFormatException ignored) {
     }
 
@@ -141,7 +130,6 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   public void addLayerExecute() {
     String layerName = this.view.getNewLayerName();
 
-    // handles empty layerName boxes
     if (this.executeCommand(layerName, new CreateLayerCommand())) {
       this.view.addNewLayerToDropdown(layerName);
       this.view.changeCurrentVisibleLayerText(this.model.getTopName());
@@ -197,9 +185,8 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     int numSquares = -1;
 
     try {
-      // handles empty size or numSquares boxes
-      size = Integer.parseInt(this.view.getCheckerboardSize()); // getSize returns a String
-      numSquares = Integer.parseInt(this.view.getNumSquares()); // getNumSquares returns a String
+      size = Integer.parseInt(this.view.getCheckerboardSize());
+      numSquares = Integer.parseInt(this.view.getNumSquares());
     } catch (NumberFormatException ignored) {
     }
 
