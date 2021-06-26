@@ -106,6 +106,13 @@ public interface ImageView {
   String getExportFilePath();
 
   /**
+   * Retrieves the user input value for the file path of the script file to import and execute.
+   *
+   * @return the file path of the script to import and execute
+   */
+  String getScriptFilePath();
+
+  /**
    * Retrieves the user input value of the extension of the file to import or export for the file
    * type dropdown.
    *

@@ -62,7 +62,8 @@ CS3500 Object-Oriented Design. _Northeastern University Summer 1 2021_
 ### Design
 
 All parts of the program are complete in terms of both implementation and testing. This includes all
-the interfaces and classes listed below.
+the interfaces and classes listed below. Refer to the _USEME.md_ file for instructions on how to use
+this program.
 
 #### Command: An interface that represents function objects for image processing operations
 
@@ -146,12 +147,16 @@ the interfaces and classes listed below.
 
 ### Additional Deliverables
 
-The _res/_ directory contains two examples of script files, _ScriptOne.txt_ and _ScriptTwo.txt_,
-that demonstrate all the working features of this image processing application. The _res/_ directory
-also contains _class_diagram.png_, which as image of a class diagram showing the names of classes
-and interfaces, method signatures, and inheritance relationships in our program. Finally, the
+The _res/_ directory contains the following additional deliverables:
+
+- asdf
+
+two examples of script files, _ScriptOne.txt_ and _ScriptTwo.txt_, that demonstrate all the working
+features of this image processing application. The _res/_ directory also contains _
+class_diagram.png_, which as image of a class diagram showing the names of classes and interfaces,
+method signatures, and inheritance relationships in our program. Finally, the
 _res/_ directory contains _ImageProcessing.jar_, which can be executed to run the application. Refer
-to USEME.md for instructions on how to run this file.
+to the _USEME.md_ file for instructions on how to run this file.
 
 ### Citations
 

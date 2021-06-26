@@ -5,7 +5,6 @@ import controller.commands.BlurCommand;
 import controller.commands.MonochromeCommand;
 import controller.commands.SepiaCommand;
 import controller.commands.SharpenCommand;
-import java.net.http.WebSocket.Listener;
 import model.ImageUtil;
 
 /**
@@ -13,7 +12,7 @@ import model.ImageUtil;
  * of these events is broadcaster to this listener, it handles the event by delegating any
  * modifications to the model and view to the controller.
  */
-public class FeaturesImpl implements Features, Listener {
+public class FeaturesImpl implements Features {
 
   private final ImageInteractiveController controller;
 
@@ -76,27 +75,32 @@ public class FeaturesImpl implements Features, Listener {
   }
 
   @Override
-  public void handleImport() {
+  public void handleImportEvent() {
     this.controller.importExecute();
   }
 
   @Override
-  public void handleExportLayer() {
+  public void handleExportLayerEvent() {
     this.controller.exportLayerExecute();
   }
 
   @Override
-  public void handleExportAll() {
+  public void handleExportAllEvent() {
     this.controller.exportAllExecute();
   }
 
   @Override
-  public void handleCreateCheckerboard() {
+  public void handleExecuteScriptEvent() {
+    this.controller.executeScript();
+  }
+
+  @Override
+  public void handleCreateCheckerboardEvent() {
     this.controller.createCheckerboardExecute();
   }
 
   @Override
-  public void handleVisibility() {
+  public void handleVisibilityEvent() {
     this.controller.visibilityExecute();
   }
 }

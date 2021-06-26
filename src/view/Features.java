@@ -68,29 +68,35 @@ public interface Features {
    * Responds to the "import" broadcasted event by importing the Image at the chosen filepath to be
    * the Image contained in the current layer and updating the view's Image if necessary.
    */
-  void handleImport();
+  void handleImportEvent();
 
   /**
    * Responds to the "export layer" broadcasted event by exporting the current layer's Image to the
    * chosen filepath.
    */
-  void handleExportLayer();
+  void handleExportLayerEvent();
 
   /**
-   * Responds to the "export layer" broadcasted event by exporting all layer Images as a multi-layer
-   * Image to the chosen filepath.
+   * Responds to the "export all layers" broadcasted event by exporting all layer Images as a
+   * multi-layer Image to the chosen filepath.
    */
-  void handleExportAll();
+  void handleExportAllEvent();
+
+  /**
+   * Responds to the "execute script" broadcasted event by importing a script file at the chosen
+   * filepath, executing it, and displaying the results within the view.
+   */
+  void handleExecuteScriptEvent();
 
   /**
    * Responds to the "create checkerboard" broadcasted event by adding a programmatically generated
    * checkerboard Image to the current layer and updating the view's Image if necessary.
    */
-  void handleCreateCheckerboard();
+  void handleCreateCheckerboardEvent();
 
   /**
    * Responds to the "visibility" broadcasted event by changing the current layer's visibility
    * status and updating the view's Image if necessary.
    */
-  void handleVisibility();
+  void handleVisibilityEvent();
 }

@@ -177,6 +177,23 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
   }
 
   @Override
+  public void executeScript() {
+    String scriptFilepath = this.view.getScriptFilePath();
+    StringBuilder ap = new StringBuilder();
+
+    ImageController controller;
+    try {
+      controller = new ImageControllerImpl(this.model, scriptFilepath, ap);
+      controller.run();
+    }
+    catch (IllegalArgumentException | IllegalStateException e) {
+      this.view.renderErrorMessage(e.getMessage());
+    }
+
+    this.view.renderErrorMessage(ap.toString());
+  }
+
+  @Override
   public void createCheckerboardExecute() {
     String colorOne = this.view.getColorOne();
     String colorTwo = this.view.getColorTwo();

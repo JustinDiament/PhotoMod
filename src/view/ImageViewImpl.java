@@ -33,7 +33,7 @@ import model.image.Image;
  */
 public class ImageViewImpl extends JFrame implements ImageView {
 
-  private final List<Features> features;
+  private final List<Features> featuresListeners;
   private final JPanel mainPanel;
   private final JPanel imagePanel;
   private final JLabel imageLabel;
@@ -69,7 +69,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
   public ImageViewImpl() {
     super();
 
-    this.features = new ArrayList<>();
+    this.featuresListeners = new ArrayList<>();
 
     this.mainPanel = new JPanel();
 
@@ -109,7 +109,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
 
   @Override
   public void addViewEventListener(Features feature) throws IllegalArgumentException {
-    this.features.add(ImageUtil.requireNonNull(feature));
+    this.featuresListeners.add(ImageUtil.requireNonNull(feature));
   }
 
   @Override
@@ -190,6 +190,20 @@ public class ImageViewImpl extends JFrame implements ImageView {
         "jpg", "jpeg", "png", "ppm", "txt");
     fileChooser.setFileFilter(extensionFilter);
     if (fileChooser.showSaveDialog(ImageViewImpl.this) == JFileChooser.APPROVE_OPTION) {
+      File file = fileChooser.getSelectedFile();
+      return file.getAbsolutePath();
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  public String getScriptFilePath() {
+    JFileChooser fileChooser = new JFileChooser(".");
+    FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Text Files",
+        "txt");
+    fileChooser.setFileFilter(extensionFilter);
+    if (fileChooser.showOpenDialog(ImageViewImpl.this) == JFileChooser.APPROVE_OPTION) {
       File file = fileChooser.getSelectedFile();
       return file.getAbsolutePath();
     } else {
@@ -323,29 +337,29 @@ public class ImageViewImpl extends JFrame implements ImageView {
     JMenuItem importJPEG = new JMenuItem("JPEG");
     importJPEG.addActionListener(e -> {
       this.importExtension = "jpg";
-      for (Features feature : features) {
-        feature.handleImport();
+      for (Features feature : featuresListeners) {
+        feature.handleImportEvent();
       }
     });
     JMenuItem importPNG = new JMenuItem("PNG");
     importPNG.addActionListener(e -> {
       this.importExtension = "png";
-      for (Features feature : features) {
-        feature.handleImport();
+      for (Features feature : featuresListeners) {
+        feature.handleImportEvent();
       }
     });
     JMenuItem importPPM = new JMenuItem("PPM");
     importPPM.addActionListener(e -> {
       this.importExtension = "ppm";
-      for (Features feature : features) {
-        feature.handleImport();
+      for (Features feature : featuresListeners) {
+        feature.handleImportEvent();
       }
     });
     JMenuItem importTXT = new JMenuItem("TXT");
     importTXT.addActionListener(e -> {
       this.importExtension = "txt";
-      for (Features feature : features) {
-        feature.handleImport();
+      for (Features feature : featuresListeners) {
+        feature.handleImportEvent();
       }
     });
     importMenuItem.add(importJPEG);
@@ -357,22 +371,22 @@ public class ImageViewImpl extends JFrame implements ImageView {
     JMenuItem exportJPEG = new JMenuItem("JPEG");
     exportJPEG.addActionListener(e -> {
       this.exportExtension = "jpg";
-      for (Features feature : features) {
-        feature.handleExportLayer();
+      for (Features feature : featuresListeners) {
+        feature.handleExportLayerEvent();
       }
     });
     JMenuItem exportPNG = new JMenuItem("PNG");
     exportPNG.addActionListener(e -> {
       this.exportExtension = "png";
-      for (Features feature : features) {
-        feature.handleExportLayer();
+      for (Features feature : featuresListeners) {
+        feature.handleExportLayerEvent();
       }
     });
     JMenuItem exportPPM = new JMenuItem("PPM");
     exportPPM.addActionListener(e -> {
       this.exportExtension = "ppm";
-      for (Features feature : features) {
-        feature.handleExportLayer();
+      for (Features feature : featuresListeners) {
+        feature.handleExportLayerEvent();
       }
     });
     exportMenuItem.add(exportJPEG);
@@ -383,31 +397,39 @@ public class ImageViewImpl extends JFrame implements ImageView {
     JMenuItem exportAllJPEG = new JMenuItem("JPEG");
     exportAllJPEG.addActionListener(e -> {
       this.exportAllExtension = "jpg";
-      for (Features feature : features) {
-        feature.handleExportAll();
+      for (Features feature : featuresListeners) {
+        feature.handleExportAllEvent();
       }
     });
     JMenuItem exportAllPNG = new JMenuItem("PNG");
     exportAllPNG.addActionListener(e -> {
       this.exportAllExtension = "png";
-      for (Features feature : features) {
-        feature.handleExportAll();
+      for (Features feature : featuresListeners) {
+        feature.handleExportAllEvent();
       }
     });
     JMenuItem exportAllPPM = new JMenuItem("PPM");
     exportAllPPM.addActionListener(e -> {
       this.exportAllExtension = "ppm";
-      for (Features feature : features) {
-        feature.handleExportAll();
+      for (Features feature : featuresListeners) {
+        feature.handleExportAllEvent();
       }
     });
     exportAllMenuItem.add(exportAllJPEG);
     exportAllMenuItem.add(exportAllPNG);
     exportAllMenuItem.add(exportAllPPM);
 
+    JMenuItem executeScriptMenuItem = new JMenuItem("Script");
+    executeScriptMenuItem.addActionListener(e -> {
+      for (Features feature : featuresListeners) {
+        feature.handleExecuteScriptEvent();
+      }
+    });
+
     fileMenu.add(importMenuItem);
     fileMenu.add(exportMenuItem);
     fileMenu.add(exportAllMenuItem);
+    fileMenu.add(executeScriptMenuItem);
     this.menuBar.add(fileMenu);
   }
 
@@ -420,25 +442,25 @@ public class ImageViewImpl extends JFrame implements ImageView {
     JMenu filterMenu = new JMenu("Filter");
     JMenuItem blurMenuItem = new JMenuItem("Blur");
     blurMenuItem.addActionListener(e -> {
-      for (Features feature : features) {
+      for (Features feature : featuresListeners) {
         feature.handleBlurEvent();
       }
     });
     JMenuItem sharpenMenuItem = new JMenuItem("Sharpen");
     sharpenMenuItem.addActionListener(e -> {
-      for (Features feature : features) {
+      for (Features feature : featuresListeners) {
         feature.handleSharpenEvent();
       }
     });
     JMenuItem sepiaMenuItem = new JMenuItem("Sepia");
     sepiaMenuItem.addActionListener(e -> {
-      for (Features feature : features) {
+      for (Features feature : featuresListeners) {
         feature.handleSepiaEvent();
       }
     });
     JMenuItem monochromeMenuItem = new JMenuItem("Monochrome");
     monochromeMenuItem.addActionListener(e -> {
-      for (Features feature : features) {
+      for (Features feature : featuresListeners) {
         feature.handleMonochromeEvent();
       }
     });
@@ -452,7 +474,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.downscaleMenuPanel, "Downscale",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleDownscaleEvent();
         }
       }
@@ -464,7 +486,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
       int result = JOptionPane
           .showConfirmDialog(this, this.mosaicMenuPanel, "Mosaic", JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleMosaicEvent();
         }
       }
@@ -494,7 +516,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.createLayerMenuPanel, "Create Layer",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleAddLayerEvent();
         }
       }
@@ -508,7 +530,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.currentLayerMenuPanel, "Set Current Layer",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleCurrentLayerEvent();
         }
       }
@@ -522,7 +544,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.removeLayerMenuPanel, "Remove Layer",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleRemoveLayerEvent();
         }
       }
@@ -530,8 +552,8 @@ public class ImageViewImpl extends JFrame implements ImageView {
 
     JMenuItem visibleLayerMenuItem = new JMenuItem("Visible");
     visibleLayerMenuItem.addActionListener(e -> {
-      for (Features feature : features) {
-        feature.handleVisibility();
+      for (Features feature : featuresListeners) {
+        feature.handleVisibilityEvent();
       }
     });
 
@@ -568,8 +590,8 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, checkerboardMenuPanel, "Checkerboard",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
-          feature.handleCreateCheckerboard();
+        for (Features feature : featuresListeners) {
+          feature.handleCreateCheckerboardEvent();
         }
       }
     });
@@ -600,27 +622,33 @@ public class ImageViewImpl extends JFrame implements ImageView {
   private void initFilePanel() {
     JPanel filePanel = new JPanel();
     JPanel fileButtonPanel = new JPanel();
-    fileButtonPanel.setLayout(new GridLayout(3, 1));
+    fileButtonPanel.setLayout(new GridLayout(4, 1));
     filePanel.setBorder(BorderFactory.createTitledBorder("File Handling"));
     JButton importButton = new JButton("Import Layer(s)");
     importButton.addActionListener(e -> {
       this.importExtension = this.getFileTypeExtension();
-      for (Features feature : features) {
-        feature.handleImport();
+      for (Features feature : featuresListeners) {
+        feature.handleImportEvent();
       }
     });
     JButton exportButton = new JButton("Export Topmost Visible Layer");
     exportButton.addActionListener(e -> {
       this.exportExtension = this.getFileTypeExtension();
-      for (Features feature : features) {
-        feature.handleExportLayer();
+      for (Features feature : featuresListeners) {
+        feature.handleExportLayerEvent();
       }
     });
     JButton exportAllButton = new JButton("Export All Layers");
     exportAllButton.addActionListener(e -> {
       this.exportExtension = this.getFileTypeExtension();
-      for (Features feature : features) {
-        feature.handleExportLayer();
+      for (Features feature : featuresListeners) {
+        feature.handleExportLayerEvent();
+      }
+    });
+    JButton executeScriptButton = new JButton("Execute Script");
+    executeScriptButton.addActionListener(e -> {
+      for (Features feature : featuresListeners) {
+        feature.handleExecuteScriptEvent();
       }
     });
 
@@ -631,6 +659,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
     fileButtonPanel.add(importButton);
     fileButtonPanel.add(exportButton);
     fileButtonPanel.add(exportAllButton);
+    fileButtonPanel.add(executeScriptButton);
 
     filePanel.add(fileButtonPanel);
     filePanel.add(this.extensionDropdown);
@@ -648,25 +677,25 @@ public class ImageViewImpl extends JFrame implements ImageView {
     operationPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
     JButton blurButton = new JButton("Blur");
     blurButton.addActionListener(e -> {
-      for (Features feature : features) {
+      for (Features feature : featuresListeners) {
         feature.handleBlurEvent();
       }
     });
     JButton monochromeButton = new JButton("Monochrome");
     monochromeButton.addActionListener(e -> {
-      for (Features feature : features) {
+      for (Features feature : featuresListeners) {
         feature.handleMonochromeEvent();
       }
     });
     JButton sepiaButton = new JButton("Sepia");
     sepiaButton.addActionListener(e -> {
-      for (Features feature : features) {
+      for (Features feature : featuresListeners) {
         feature.handleSepiaEvent();
       }
     });
     JButton sharpenButton = new JButton("Sharpen");
     sharpenButton.addActionListener(e -> {
-      for (Features feature : features) {
+      for (Features feature : featuresListeners) {
         feature.handleSharpenEvent();
       }
     });
@@ -676,7 +705,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.downscaleMenuPanel, "Downscale",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleDownscaleEvent();
         }
       }
@@ -686,7 +715,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
       int result = JOptionPane
           .showConfirmDialog(this, this.mosaicMenuPanel, "Mosaic", JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleMosaicEvent();
         }
       }
@@ -716,7 +745,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.createLayerMenuPanel, "Create Layer",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleAddLayerEvent();
         }
       }
@@ -727,7 +756,7 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.currentLayerMenuPanel, "Set Current Layer",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleCurrentLayerEvent();
         }
       }
@@ -738,15 +767,15 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.removeLayerMenuPanel, "Remove Layer",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
+        for (Features feature : featuresListeners) {
           feature.handleRemoveLayerEvent();
         }
       }
     });
     JButton visibilityButton = new JButton("Toggle Current Layer Visibility");
     visibilityButton.addActionListener(e -> {
-      for (Features feature : features) {
-        feature.handleVisibility();
+      for (Features feature : featuresListeners) {
+        feature.handleVisibilityEvent();
       }
     });
 
@@ -772,8 +801,8 @@ public class ImageViewImpl extends JFrame implements ImageView {
           .showConfirmDialog(this, this.checkerboardMenuPanel, "Checkerboard",
               JOptionPane.OK_CANCEL_OPTION);
       if (result == JOptionPane.OK_OPTION) {
-        for (Features feature : features) {
-          feature.handleCreateCheckerboard();
+        for (Features feature : featuresListeners) {
+          feature.handleCreateCheckerboardEvent();
         }
       }
     });

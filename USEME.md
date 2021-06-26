@@ -11,11 +11,109 @@ IN THE ROOT _/_ DIRECTORY.** The _res/_ directory was compressed to a zip file i
 accommodate the size restrictions of the Handins server.
 
 A JAR file, ImageProcessing.jar, can be found in the _res/_ directory. A user may run this file by
-moving it from the _res/_ directory to the root _/_ directory, then navigating to this directory
-within a command terminal and entering `java -jar ImageProcessing.jar`, then following the printed
-instructions to either run one of the example script files, _res/ScriptOne.txt_ and
-_res/ScriptTwo.txt_, or enter commands via the command line. **ATTEMPTING TO RUN EITHER OF THE
-EXAMPLE SCRIPT FILES WILL FAIL IF THE JAR FILE IS NOT IN THE ROOT DIRECTORY.**
+navigating to this directory within a command terminal and entering one of three valid commands:
+
+1. `java -jar ImageProcessing.jar -script path-of-script-file`  
+   The program will execute the script file at the provided _path-of-script-file_
+2. `java -jar ImageProcessing.jar -text`  
+   The program will allow the user to type and execute batch commands through the command terminal
+3. `java -jar ImageProcessing.jar -interactive`  
+   The program will open the GUI
+
+In order to run the example script file, _res/todo.txt_, the JAR file must be moved from the _res/_
+directory to the root _/_ directory. **ATTEMPTING TO RUN THE EXAMPLE SCRIPT FILE WILL FAIL IF THE
+JAR FILE IS NOT IN THE ROOT DIRECTORY.**
+
+## Using the GUI
+
+<img src="https://user-images.githubusercontent.com/52764831/123495605-6cda9b80-d5f2-11eb-8598-e55d0da365ea.jpg" width="400" alt="Screenshot of the program with an image loaded">
+
+The GUI contains a panel for displaying the image, a menu bar containing all the image processing
+operations, and a panel containing buttons for quicker access to the operations. The image panel
+contains a border title displaying the currently visible layer, and displays the topmost visible
+layer to the user, or a blank panel of there are no visible layers. The button panel contains a
+border title displaying the currently selected layer that operations will be applied to. Referencing
+both border titles in conjunction can provide insight into whether the layer being displayed to the
+user is also the selected layer to be operated on.
+
+- Loading an image
+    - Loading a single image
+        - Select the menu item File > Import > JPEG, PNG, or PPM, depending on the file type of the
+          image being imported, then select the desired file from the file explorer
+        - Click the Import Layer(s) button with the JPEG, PNG, or PPM extension selected within the
+          dropdown, depending on the file type of the image being imported, then select the desired
+          file from the file explorer
+    - Loading a multi-layered image
+        - Select the menu item File > Import > TXT, then select the desired file from the file
+          explorer
+        - Click the Import Layer(s) button with the TXT extension selected within the dropdown, then
+          select the desired file from the file explorer
+- Saving the topmost visible layer
+    - Select the menu item File > Export > JPEG, PNG, or PPM, depending on the file type of the
+      image to be exported, then navigate to the desired directory and enter the new file name
+    - Click the Export Topmost Visible Layer button with the JPEG, PNG, or PPM extension selected
+      within the dropdown, depending on the file type of the image being exported, then navigate to
+      the desired directory and enter the new file name
+- Saving all layers
+    - Select the menu item File > Export All > JPEG, PNG, or PPM, depending on the file types of the
+      images to be exported, then navigate to the desired directory and enter the new file name
+      without any extension
+    - Click the Export All Layers button with the JPEG, PNG, or PPM extension selected within the
+      dropdown, depending on the file types of the images being exported, then navigate to the
+      desired directory and enter the new file name without any extension
+- Executing a script
+    - Select the menu item File > Script, then select the desired file from the file explorer
+    - Click the Execute Script button, then select the desired file from the file explorer
+- Applying filters and color transformations
+    - Blur
+        - Select the menu item Filter > Blur to blur the currently selected layer
+        - Click the Blur button to blur the currently selected layer
+    - Sharpen
+        - Select the menu item Filter > Sharpen to sharpen the currently selected layer
+        - Click the Sharpen button to sharpen the currently selected layer
+    - Sepia
+        - Select the menu item Filter > Sepia to apply the sepia transformation to the currently
+          selected layer
+        - Click the Sepia button to apply the sepia transformation to the currently selected layer
+    - Monochrome
+        - Select the menu item Filter > Monochrome to apply the monochrome transformation to the
+          currently selected layer
+        - Click the Monochrome button to apply the monochrome transformation to the currently
+          selected layer
+    - Downscale
+        - Select the menu item Filter > Downscale, then enter the desired x and y scales as
+          percentages between 1-100 to downscale all layers
+        - Click the Downscale button, then enter the desired x and y scales as percentages between
+          1-100 to downscale all layers
+    - Mosaic
+        - Select the menu item Filter > Mosaic, then enter the desired number of seeds to mosaic the
+          currently selected layer
+        - Click the Mosaic button, then enter the desired number of seeds to mosaic the currently
+          selected layer
+- Creating a new layer
+    - Select the menu item Layer > Create, then enter the name of the new layer to add
+    - Click the Create Layer button, then enter the name of the new layer to add
+- Setting a layer as the current layer
+    - Select the menu item Layer > Current, then select the name of the layer to set as the current
+      layer from the dropdown
+    - Click the Set Current Layer button, then select the name of the layer to set as the current
+      layer from the dropdown
+- Removing a layer
+    - Select the menu item Layer > Remove, then select the name of the layer to remove from the
+      dropdown
+    - Click the Remove Layer button, then select the name of the layer to remove from the dropdown
+- Changing the visibility of the current layer
+    - Select the menu item Layer > Visible to change the visibility of the current layer from
+      visible to invisible or vice versa
+    - Click the Toggle Current Layer visibility button to change the visibility of the current layer
+      from visible to invisible or vice versa
+- Create a checkerboard image programmatically
+    - Select the menu item Image > Checkerboard, then enter the number of squares and checkerboard
+      size and select the two colors to use from the respective dropdowns to set the current layer
+      image as the configured checkerboard
+    - Click the Checkerboard button, then enter the number of squares and checkerboard size and
+      select the two colors to use from the respective dropdowns to set the current layer image as
+      the configured checkerboard
 
 ## Script Commands
 
@@ -97,18 +195,4 @@ Conditions
     3. A visible layer must exist within the image
 13. **quit**: immediately stops running the application when entered  
     _Example: quit_
-
-## Supported Colors
-
-The following colors are supported by the program to be used to create images programmatically.
-
-- blue
-- black
-- white
-- green
-- red
-- orange
-- yellow
-- cyan
-- magenta
-- gray
+    

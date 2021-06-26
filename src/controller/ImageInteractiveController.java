@@ -1,6 +1,7 @@
 package controller;
 
 import controller.commands.Command;
+
 /**
  * Represents a controller for an interactive Image modification graphical user interface. Executes
  * various commands to modify, import, export, and create Images based on methods called by a
@@ -54,6 +55,12 @@ public interface ImageInteractiveController extends ImageController {
    * Exports all layer Images as a multi-layer Image to the chosen filepath.
    */
   void exportAllExecute();
+
+  /**
+   * Imports the script at the chosen filepath, executes it, and displays the results within the
+   * view.
+   */
+  void executeScript();
 
   /**
    * Adds a programmatically generated checkerboard Image to the current layer by getting the
