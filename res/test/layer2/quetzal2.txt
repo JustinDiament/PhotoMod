@@ -1,0 +1,6 @@
+res//test//layer2//quetzal2one.jpg jpg
+res//test//layer2//quetzal2two.jpg jpg
+res//test//layer2//quetzal2quetzaljpgsq.jpg jpg
+res//test//layer2//quetzal2quetzalpngsq.jpg jpg
+res//test//layer2//quetzal2quetzalppmsq.jpg jpg
+res//test//layer2//quetzal2three.jpg jpg

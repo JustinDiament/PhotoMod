@@ -866,10 +866,8 @@ public class ImageControllerImplTest {
   }
 
   @Test
-  public void testScriptOne() {
-    this.controller = new ImageControllerImpl(this.mockModel,
-        "res//ScriptOne.txt",
-        this.ap);
+  public void testScript() {
+    this.controller = new ImageControllerImpl(this.mockModel, "res//Script.txt", this.ap);
 
     this.controller.run();
 
@@ -878,15 +876,15 @@ public class ImageControllerImplTest {
             + "New layer created with this name: two\n"
             + "Current layer changed to layer with this index: 0\n"
             + "Current layer image set\n"
-            + "New layer created with this name: quetzaljpg\n"
+            + "New layer created with this name: quetzaljpgsq\n"
             + "Multi-layer export occurring\n"
             + "Current layer changed to layer with this index: 2\n"
             + "Current layer image set\n"
-            + "New layer created with this name: quetzalpng\n"
+            + "New layer created with this name: quetzalpngsq\n"
             + "Multi-layer export occurring\n"
             + "Current layer changed to layer with this index: 3\n"
             + "Current layer image set\n"
-            + "New layer created with this name: quetzalppm\n"
+            + "New layer created with this name: quetzalppmsq\n"
             + "Multi-layer export occurring\n"
             + "Current layer changed to layer with this index: 4\n"
             + "Current layer image set\n"
@@ -896,12 +894,11 @@ public class ImageControllerImplTest {
             + "Applied this type of operation to the current layer: BLUR\n"
             + "Applied this type of operation to the current layer: SEPIA\n"
             + "New layer created with this name: three\n"
+            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
             + "New layer created with this name: four\n"
             + "Current layer changed to layer with this index: 5\n"
             + "Current layer image set\n"
             + "Current layer changed to layer with this index: 6\n"
-            + "Created programmatic image of this type: "
-            + "class model.image.programmatic.CreateCheckerboard\n"
             + "Removed layer at this index: 6\n"
             + "Current layer changed to layer with this index: -1\n"
             + "Current layer changed to layer with this index: 5\n"
@@ -909,7 +906,6 @@ public class ImageControllerImplTest {
             + "Export occurring\n"
             + "Current layer changed to this visibility level: true\n"
             + "Export occurring\n"
-            + "Export occurring\n"
             + "Applied this type of operation to the current layer: SHARPEN\n"
             + "Applied this type of operation to the current layer: MONOCHROME\n"
             + "Multi-layer export occurring\n"
@@ -917,75 +913,32 @@ public class ImageControllerImplTest {
             + "Applied this type of operation to the current layer: SHARPEN\n"
             + "Multi-layer export occurring\n"
             + "Applied this type of operation to the current layer: SEPIA\n"
-            + "Multi-layer export occurring\n",
-        this.mockAp.toString());
-
-    assertEquals(
-        "Image processing has been quit.\n",
-        this.ap.toString());
-  }
-
-
-  @Test
-  public void testScriptTwo() {
-    this.controller = new ImageControllerImpl(this.mockModel,
-        "res//ScriptTwo.txt",
-        this.ap);
-
-    this.controller.run();
-
-    assertEquals(
-        "New layer created with this name: quetzaljpg\n"
+            + "Multi-layer export occurring\n"
+            + "New layer created with this name: five\n"
+            + "Current layer changed to layer with this index: 6\n"
+            + "Created programmatic image of this type: class model.image.programmatic.CreateCheckerboard\n"
+            + "New layer created with this name: mos\n"
+            + "Current layer changed to layer with this index: 7\n"
+            + "Current layer image set\n"
+            + "Current layer image set\n"
             + "Multi-layer export occurring\n"
             + "Current layer changed to layer with this index: 0\n"
             + "Current layer image set\n"
-            + "New layer created with this name: quetzalpng\n"
-            + "Multi-layer export occurring\n"
             + "Current layer changed to layer with this index: 1\n"
             + "Current layer image set\n"
-            + "New layer created with this name: quetzalppm\n"
-            + "Multi-layer export occurring\n"
             + "Current layer changed to layer with this index: 2\n"
             + "Current layer image set\n"
-            + "New layer created with this name: one\n"
             + "Current layer changed to layer with this index: 3\n"
             + "Current layer image set\n"
-            + "New layer created with this name: two\n"
-            + "New layer created with this name: three\n"
-            + "Current layer changed to layer with this index: 5\n"
-            + "Current layer image set\n"
-            + "Current layer changed to layer with this index: 3\n"
-            + "Applied this type of operation to the current layer: SHARPEN\n"
-            + "Applied this type of operation to the current layer: SEPIA\n"
-            + "Current layer changed to this visibility level: false\n"
             + "Current layer changed to layer with this index: 4\n"
             + "Current layer image set\n"
-            + "Current layer changed to this visibility level: false\n"
-            + "Applied this type of operation to the current layer: MONOCHROME\n"
-            + "Export occurring\n"
-            + "Current layer changed to this visibility level: true\n"
             + "Current layer changed to layer with this index: 5\n"
-            + "Current layer changed to this visibility level: true\n"
-            + "Export occurring\n"
-            + "Removed layer at this index: 5\n"
-            + "Current layer changed to layer with this index: -1\n"
-            + "Current layer changed to layer with this index: 3\n"
-            + "Export occurring\n"
-            + "Applied this type of operation to the current layer: BLUR\n"
-            + "Export occurring\n"
-            + "Current layer changed to layer with this index: 4\n"
-            + "Created programmatic image of this type: "
-            + "class model.image.programmatic.CreateCheckerboard\n"
-            + "Export occurring\n"
-            + "Multi-layer export occurring\n"
-            + "Applied this type of operation to the current layer: SHARPEN\n"
-            + "Applied this type of operation to the current layer: SEPIA\n"
-            + "Current layer changed to layer with this index: 3\n"
-            + "Created programmatic image of this type: "
-            + "class model.image.programmatic.CreateCheckerboard\n"
-            + "Multi-layer export occurring\n"
-            + "Applied this type of operation to the current layer: MONOCHROME\n"
-            + "Applied this type of operation to the current layer: BLUR\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 6\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 7\n"
+            + "Current layer image set\n"
+            + "Current layer changed to layer with this index: 7\n"
             + "Multi-layer export occurring\n",
         this.mockAp.toString());
 

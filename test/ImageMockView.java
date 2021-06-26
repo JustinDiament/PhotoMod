@@ -98,7 +98,8 @@ public class ImageMockView implements ImageView {
 
   @Override
   public String getScriptFilePath() {
-    return null;
+    this.log.append("Got script file path. Returned res//Script.txt.\n");
+    return "res//Script.txt";
   }
 
   @Override

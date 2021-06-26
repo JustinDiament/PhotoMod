@@ -185,12 +185,19 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
     try {
       controller = new ImageControllerImpl(this.model, scriptFilepath, ap);
       controller.run();
-    }
-    catch (IllegalArgumentException | IllegalStateException e) {
+
+    } catch (IllegalArgumentException | IllegalStateException e) {
       this.view.renderErrorMessage(e.getMessage());
     }
 
     this.view.renderErrorMessage(ap.toString());
+
+    this.renderTopmostVisibleLayer();
+    for (String layerName : this.model.getLayerNames()) {
+      this.view.addNewLayerToDropdown(layerName);
+    }
+    this.view.changeCurrentVisibleLayerText(this.model.getTopName());
+    this.view.changeCurrentLayerText(this.model.getCurrentLayerName());
   }
 
   @Override

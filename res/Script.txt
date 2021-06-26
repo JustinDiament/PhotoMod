@@ -1,0 +1,41 @@
+createlayer one 
+createlayer two 
+current one 
+import res//test//quetzal//quetzaljpgsq.jpg jpg
+import res//test//quetzal//quetzalsq.txt txt
+sharpen
+current two
+import res//test//quetzal//quetzalpngsq.png png
+blur
+sepia
+createlayer three
+createcheckerboard 76 4 black white
+createlayer four
+current three
+import res//test//quetzal//quetzalppmsq.ppm ppm
+current four
+removelayer four
+current three
+visibility invisible
+export res//test//quetzal//quetzal2.jpg jpg
+visibility visible
+export res//test//quetzal//quetzal2.png png
+sharpen
+monochrome
+exportall res//test//layer2//quetzal2 jpg
+current one
+sharpen
+exportall res//test//layer3//quetzal3 png
+sepia
+exportall res//test//layer4//quetzal4 ppm
+createlayer five
+current five
+createcheckerboard 76 19 red blue
+createlayer mos
+current mos
+import res//test//quetzal//quetzalppmsq.ppm ppm
+mosaic 1000
+exportall res//test//layer5//quetzalpredownscale png
+downscale 50 40
+exportall res//test//layer6//quetzalpostdownscale jpg
+quit

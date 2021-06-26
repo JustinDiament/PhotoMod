@@ -5,6 +5,7 @@ import controller.commands.BlurCommand;
 import controller.commands.MonochromeCommand;
 import controller.commands.SepiaCommand;
 import controller.commands.SharpenCommand;
+import java.util.EventListener;
 import model.ImageUtil;
 
 /**
@@ -12,7 +13,7 @@ import model.ImageUtil;
  * of these events is broadcaster to this listener, it handles the event by delegating any
  * modifications to the model and view to the controller.
  */
-public class FeaturesImpl implements Features {
+public class FeaturesImpl implements Features, EventListener {
 
   private final ImageInteractiveController controller;
 

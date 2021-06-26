@@ -1,0 +1,8 @@
+res//test//layer6//quetzalpostdownscaleone.jpg jpg
+res//test//layer6//quetzalpostdownscaletwo.jpg jpg
+res//test//layer6//quetzalpostdownscalequetzaljpgsq.jpg jpg
+res//test//layer6//quetzalpostdownscalequetzalpngsq.jpg jpg
+res//test//layer6//quetzalpostdownscalequetzalppmsq.jpg jpg
+res//test//layer6//quetzalpostdownscalethree.jpg jpg
+res//test//layer6//quetzalpostdownscalefive.jpg jpg
+res//test//layer6//quetzalpostdownscalemos.jpg jpg

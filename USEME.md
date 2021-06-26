@@ -20,7 +20,7 @@ navigating to this directory within a command terminal and entering one of three
 3. `java -jar ImageProcessing.jar -interactive`  
    The program will open the GUI
 
-In order to run the example script file, _res/todo.txt_, the JAR file must be moved from the _res/_
+In order to run the example script file, _res/Script.txt_, the JAR file must be moved from the _res/_
 directory to the root _/_ directory. **ATTEMPTING TO RUN THE EXAMPLE SCRIPT FILE WILL FAIL IF THE
 JAR FILE IS NOT IN THE ROOT DIRECTORY.**
 
@@ -114,6 +114,10 @@ user is also the selected layer to be operated on.
     - Click the Checkerboard button, then enter the number of squares and checkerboard size and
       select the two colors to use from the respective dropdowns to set the current layer image as
       the configured checkerboard
+        - Note that if a layer already exists within the image, a checkerboard can only be added to
+          a new layer if it matches the dimensions of the existing layers. For examples of square
+          images, reference _res/test/quetzal.jpg_, _res/test/quetzal.png_, and _
+          res/test/quetzal.ppm_. This applies to creating checkerboards through the menu as well
 
 ## Script Commands
 

@@ -1,6 +1,6 @@
 res//test//layer3//quetzal3one.png png
 res//test//layer3//quetzal3two.png png
-res//test//layer3//quetzal3quetzaljpg.png png
-res//test//layer3//quetzal3quetzalpng.png png
-res//test//layer3//quetzal3quetzalppm.png png
+res//test//layer3//quetzal3quetzaljpgsq.png png
+res//test//layer3//quetzal3quetzalpngsq.png png
+res//test//layer3//quetzal3quetzalppmsq.png png
 res//test//layer3//quetzal3three.png png

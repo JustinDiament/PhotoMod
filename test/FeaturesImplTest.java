@@ -710,4 +710,68 @@ public class FeaturesImplTest {
             + "Rendered error popup with this message: Current layer index is invalid\n",
         this.log.toString());
   }
+
+  @Test
+  public void testScriptEventRunsScript() {
+    assertEquals(0, this.model.getLayerNames().size());
+
+    this.features.handleExecuteScriptEvent();
+
+    assertEquals(8, this.model.getLayerNames().size());
+
+    assertEquals("one", this.model.getLayerNames().get(0));
+    assertEquals("two", this.model.getLayerNames().get(1));
+    assertEquals("quetzaljpgsq", this.model.getLayerNames().get(2));
+    assertEquals("quetzalpngsq", this.model.getLayerNames().get(3));
+    assertEquals("quetzalppmsq", this.model.getLayerNames().get(4));
+    assertEquals("three", this.model.getLayerNames().get(5));
+    assertEquals("five", this.model.getLayerNames().get(6));
+    assertEquals("mos", this.model.getLayerNames().get(7));
+  }
+
+  @Test
+  public void testScriptEventViewProperlyInteractedWith() {
+    this.features.handleExecuteScriptEvent();
+
+    assertEquals("Added a new listener: class view.FeaturesImpl\n"
+        + "Got script file path. Returned res//Script.txt.\n"
+        + "Rendered error popup with this message: Image processing has been quit.\n"
+        + "\n"
+        + "Rendered a new image.\n"
+        + "Added new layer to dropdown with name: one\n"
+        + "Added new layer to dropdown with name: two\n"
+        + "Added new layer to dropdown with name: quetzaljpgsq\n"
+        + "Added new layer to dropdown with name: quetzalpngsq\n"
+        + "Added new layer to dropdown with name: quetzalppmsq\n"
+        + "Added new layer to dropdown with name: three\n"
+        + "Added new layer to dropdown with name: five\n"
+        + "Added new layer to dropdown with name: mos\n"
+        + "Changed current visible layer text to: mos\n"
+        + "Changed current layer text to: mos\n", this.log.toString());
+  }
+
+  @Test
+  public void testScriptEventFailsViewCorrectlyIndicatesError() {
+    this.model.addLayer("one");
+
+    this.features.handleExecuteScriptEvent();
+
+    assertEquals("Added a new listener: class view.FeaturesImpl\n"
+            + "Got script file path. Returned res//Script.txt.\n"
+            + "Rendered error popup with this message: Command failed to execute. Reason: Layer with the given name already exists.\n"
+            + "Image processing has been quit.\n"
+            + "\n"
+            + "Rendered a new image.\n"
+            + "Added new layer to dropdown with name: one\n"
+            + "Added new layer to dropdown with name: two\n"
+            + "Added new layer to dropdown with name: quetzaljpgsq\n"
+            + "Added new layer to dropdown with name: quetzalpngsq\n"
+            + "Added new layer to dropdown with name: quetzalppmsq\n"
+            + "Added new layer to dropdown with name: three\n"
+            + "Added new layer to dropdown with name: five\n"
+            + "Added new layer to dropdown with name: mos\n"
+            + "Changed current visible layer text to: mos\n"
+            + "Changed current layer text to: mos\n",
+        this.log.toString());
+  }
 }

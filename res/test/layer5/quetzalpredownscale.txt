@@ -1,0 +1,8 @@
+res//test//layer5//quetzalpredownscaleone.png png
+res//test//layer5//quetzalpredownscaletwo.png png
+res//test//layer5//quetzalpredownscalequetzaljpgsq.png png
+res//test//layer5//quetzalpredownscalequetzalpngsq.png png
+res//test//layer5//quetzalpredownscalequetzalppmsq.png png
+res//test//layer5//quetzalpredownscalethree.png png
+res//test//layer5//quetzalpredownscalefive.png png
+res//test//layer5//quetzalpredownscalemos.png png

@@ -65,6 +65,16 @@ All parts of the program are complete in terms of both implementation and testin
 the interfaces and classes listed below. Refer to the _USEME.md_ file for instructions on how to use
 this program.
 
+#### Features: An interface that represents event listeners for components within the GUI view
+
+- FeaturesImpl: A class that delegates operations to the controller that modify the model based on
+  user input from the view
+
+#### ImageView: An interface that represents a GUI view of an image processing model
+
+- ImageViewImpl: A class that displays a GUI for the user to perform image processing operations and
+  view images via menus and panels, and displays messages to the user via popups
+
 #### Command: An interface that represents function objects for image processing operations
 
 - OperationCommand: An abstract class that promotes reuse between image manipulation operations
@@ -83,11 +93,18 @@ this program.
   from a valid text file
 - RemoveLayerCommand: A function object that removes the selected layer from the image
 - VisibilityCommand: A function object that sets the visibility of the currently selected layer
+- DownscaleCommand: A function object that downscales an image by the given x and y scaling factors
+- MosaicCommand: A function object that mosaics an image by the given number of seeds
 
 #### ImageController: An interface that handles user input and output for processing images
 
 - ImageControllerImpl: A class that allows users to input text commands to process images using the
   supported operations and renders messages
+
+#### ImageInteractiveController: An interface that handles communication between user input via a GUI and outputs of data from the model
+
+- ImageInteractiveControllerImpl: A class that executes commands based on listeners from a GUI view
+  and retrieves necessary data from the model to render to the view
 
 #### ImageFile: An interface that represents an image file and handles file importing and exporting
 
@@ -121,6 +138,9 @@ this program.
 - ColorOperation: An abstract class that promotes code reuse between color transformation operations
     - MonochromeOperation: A class that applies the sepia color transformation on an image
     - SepiaOperation: A class that applies the monochrome/greyscale color transformation on an image
+- DownscaleOperation: A class that downscales an image by and x and y scale
+- MosaicOperation: A class that creates a mosaic effect using a given number of seeds randomly
+  placed within the image
 
 #### ProgrammaticCreator: An interface that supports creating images programmatically
 
@@ -145,18 +165,34 @@ this program.
 
 ##### Main: A class that contains a main method to run the application
 
+### Additional Image Operations
+
+Our application supports two additional features, the downscale and mosaic image operations. To
+implement these two new features, two classes were written, DownscaleOperation and MosaicOperation,
+that implemented the existing ImageOperation interface. Both classes overrode the apply method,
+which takes in an Image object and returns a copy of the Image with the desired operation applied.
+Following the command pattern, two classes were written, DownscaleCommand and MosaicCommand, that
+implemented the existing Command interface. Both classes overrode the execute method, which
+performed the desired operation on the given model using the provided parameter values. This allowed
+both operations to be supported through both the new GUI view through menu items and buttons, and
+the existing text view through batch commands. In the controller implementation that uses the text
+view, commands are stored within a hashmap with their corresponding batch commands. In the
+controller implementation that uses the GUI view, commands are executed via the executeCommand
+method that executes the given Command with the given input parameters.
+
 ### Additional Deliverables
 
 The _res/_ directory contains the following additional deliverables:
 
-- asdf
-
-two examples of script files, _ScriptOne.txt_ and _ScriptTwo.txt_, that demonstrate all the working
-features of this image processing application. The _res/_ directory also contains _
-class_diagram.png_, which as image of a class diagram showing the names of classes and interfaces,
-method signatures, and inheritance relationships in our program. Finally, the
-_res/_ directory contains _ImageProcessing.jar_, which can be executed to run the application. Refer
-to the _USEME.md_ file for instructions on how to run this file.
+- A JAR file, _ImageProcessing.jar_
+- A screenshot of the program with an image loaded, _gui.jpg_
+- An example script file that demonstrates all the working features of the application, _Script.txt_
+- A subdirectory, _downscale/_, that contains an original image, _quetzal_original.jpg_, and two
+  downsized versions of that image, _quetzal_half_x_half_y.jpg_ and _quetzal_half_x_quarter_y.jpg_,
+  the latter of which has a different width:height ratio than the original image.
+- A subdirectory, _mosaic/_, that contains an original image, _popeyes_original.png_, and three
+  mosaicked versions of that image, _popeyes_1000_seeds.png_, _popeyes_4000_seeds.png_, and _
+  popeyes_8000_seeds.png_, which all have a different number of seeds used.
 
 ### Citations
 
