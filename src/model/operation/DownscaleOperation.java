@@ -58,8 +58,8 @@ public class DownscaleOperation implements ImageOperation {
         double locationX = ((double) (i * oldWidth)) / (newWidth);
         double locationY = ((double) (j * oldHeight)) / (newHeight);
 
-        if (Math.floor(locationX) == Math.ceil(locationX) ||
-            (Math.floor(locationY) == Math.ceil(locationY))) {
+        if (Math.floor(locationX) == Math.ceil(locationX)
+            || (Math.floor(locationY) == Math.ceil(locationY))) {
           row.add(img.getPixelAt((int) (locationX), (int) (locationY)));
           continue;
         }
@@ -98,13 +98,12 @@ public class DownscaleOperation implements ImageOperation {
    *                  in the pixel square
    * @param locationY an y coordinate which is located between the x coordinates of the four pixels
    *                  in the pixel square
-   * @return the average color value for the color channel being operated on of the four pixels in
-   * the pixel square
+   * @return the average color value for the color channel of the four pixels in the pixel square
    */
   private int getAverageColor(int a, int b, int c, int d, double locationX, double locationY) {
     double m = (b * (locationX - Math.floor(locationX))) + (a * (Math.ceil(locationX) - locationX));
     double n = (d * (locationX - Math.floor(locationX))) + (c * (Math.ceil(locationX) - locationX));
-    return (int) ((n * (locationY - Math.floor(locationY))) +
-        (m * (Math.ceil(locationY) - locationY)));
+    return (int) ((n * (locationY - Math.floor(locationY)))
+        + (m * (Math.ceil(locationY) - locationY)));
   }
 }

@@ -1,2 +1,0 @@
-res//test//layer2//test4one.jpg jpg
-res//test//layer2//test4two.jpg jpg

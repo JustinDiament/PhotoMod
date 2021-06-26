@@ -6,8 +6,8 @@ import controller.commands.Command;
  * Represents a controller for an interactive Image modification graphical user interface. Executes
  * various commands to modify, import, export, and create Images based on methods called by a
  * listener which is awaiting event broadcasts from a view. Requests necessary data to execute these
- * commands from the view and modifies them to reflect * changes to the model and other changes by
- * the controller.
+ * commands from the view and modifies them to reflect changes to the model and other changes by the
+ * controller.
  */
 public interface ImageInteractiveController extends ImageController {
 

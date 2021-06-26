@@ -48,6 +48,10 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
 
   @Override
   public void run() {
+    // This method is inherited from the ImageController interface, but the controller does not
+    // actually need to "run" anything in order to display the GUI view. Rather, the GUI view is
+    // made visible to the user when the object is constructed.
+    return;
   }
 
   /**
@@ -58,8 +62,7 @@ public class ImageInteractiveControllerImpl implements ImageInteractiveControlle
    * @param scannerData the data that will be fed to the command to determine its execution
    *                    parameters
    * @param command     the command that will attempt to be executes
-   * @return true if the command was successfully executed (does not throw an error) or false if the
-   * command fails
+   * @return true if the command was successfully executed or false if the command fails
    * @throws IllegalArgumentException if the given scanner data or command are null
    */
   private boolean executeCommand(String scannerData, Command command)

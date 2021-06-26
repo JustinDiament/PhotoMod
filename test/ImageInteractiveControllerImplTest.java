@@ -16,6 +16,9 @@ import org.junit.Before;
 import org.junit.Test;
 import view.ImageView;
 
+/**
+ * Test class for the ImageInteractiveControllerImpl class.
+ */
 public class ImageInteractiveControllerImplTest {
 
   private ImageInteractiveController controller;
@@ -457,7 +460,8 @@ public class ImageInteractiveControllerImplTest {
 
     assertEquals("Added a new listener: class view.FeaturesImpl\n"
             + "Got current layer name. Returned two\n"
-            + "Rendered error popup with this message: No layer with the specified name to change to exists.\n",
+            + "Rendered error popup with this message: "
+            + "No layer with the specified name to change to exists.\n",
         this.log.toString());
   }
 
@@ -528,7 +532,8 @@ public class ImageInteractiveControllerImplTest {
 
     assertEquals("Added a new listener: class view.FeaturesImpl\n"
             + "Got removed layer name. Returned RemovedLayer\n"
-            + "Rendered error popup with this message: No layer with the specified name to remove exists.\n",
+            + "Rendered error popup with this message: "
+            + "No layer with the specified name to remove exists.\n",
         this.log.toString());
   }
 
@@ -771,7 +776,8 @@ public class ImageInteractiveControllerImplTest {
 
     assertEquals("Added a new listener: class view.FeaturesImpl\n"
             + "Got script file path. Returned res//Script.txt.\n"
-            + "Rendered error popup with this message: Command failed to execute. Reason: Layer with the given name already exists.\n"
+            + "Rendered error popup with this message: "
+            + "Command failed to execute. Reason: Layer with the given name already exists.\n"
             + "Image processing has been quit.\n"
             + "\n"
             + "Rendered a new image.\n"

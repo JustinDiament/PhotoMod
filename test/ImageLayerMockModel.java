@@ -5,7 +5,6 @@ import model.image.ImageLayerModelImpl;
 import model.image.Pixel;
 import model.image.layer.Layer;
 import model.image.programmatic.ProgrammaticCreator;
-import model.operation.ImageOperation;
 import model.operation.Operations;
 
 /**

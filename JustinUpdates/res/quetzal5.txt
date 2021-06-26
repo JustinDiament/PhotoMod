@@ -1,2 +1,0 @@
-res//quetzal5one.png png
-res//quetzal5two.png png

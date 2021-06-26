@@ -23,19 +23,19 @@ CS3500 Object-Oriented Design. _Northeastern University Summer 1 2021_
    in order to add the ability to request the application of these operations through scripting
    commands.
 3. The ImageControllerImpl class was slightly modified to add the DownscaleCommand and MosaicCommand
-   function objects to the supported operations String to Command Map returned by the getCommands
-   method. This modification does not harm any of the previously existing functionality of the
-   ImageControllerImpl class, nor does it add enough new functionality to warrant an entirely new
-   controller implementation for scripting commands. Adding these two function objects to the Map
-   simply allows users of this implementation to utilize the new downscale and mosaic operations in
-   their scripts; users can also easily choose not to utilize these new commands and all old scripts
-   will not be rendered broken by this addition.
+   function objects to the supported operations String to the command Map returned by the
+   getCommands method. This modification does not harm any of the previously existing functionality
+   of the ImageControllerImpl class, nor does it add enough new functionality to warrant an entirely
+   new controller implementation for scripting commands. Adding these two function objects to the
+   Map simply allows users of this implementation to utilize the new downscale and mosaic operations
+   in their scripts; users can also easily choose not to utilize these new commands and all old
+   scripts will not be rendered broken by this addition.
 4. We created a Features interface, and a corresponding FeaturesImpl implementation of that
    interface to respond to broadcast from the ImageViewImpl class. FeaturesImpl utilizes the
    subscriber pattern to register itself as a listener for ImageViewImpl. When the user interacts
    with the GUI, ImageViewImpl broadcasts events to its listeners and FeaturesImpl responds by
-   calling methods in the controller, which in turn update the model and/or view according to the
-   user’s request.
+   calling methods in the controller, which in turn update the model and/or the view according to
+   the user’s specific request.
 5. We created a new controller interface called ImageInteractiveController, and a corresponding
    class that implements that interface called ImageInteractiveControllerImpl in order to support
    the functionality that FeaturesImpl needs to accurately respond to the events it is listening

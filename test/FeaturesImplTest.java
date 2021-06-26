@@ -14,21 +14,23 @@ import view.Features;
 import view.FeaturesImpl;
 import view.ImageView;
 
+/**
+ * Test class for the FeaturesImpl class.
+ */
 public class FeaturesImplTest {
 
   private Features features;
-  private ImageInteractiveController controller;
-  private ImageView mockView;
   private ImageLayerModel model;
   private StringBuilder log;
 
   @Before
   public void init() {
     this.log = new StringBuilder();
-    this.mockView = new ImageMockView(this.log);
+    ImageView mockView = new ImageMockView(this.log);
     this.model = new ImageLayerModelImpl();
-    this.controller = new ImageInteractiveControllerImpl(this.model, this.mockView);
-    this.features = new FeaturesImpl(this.controller);
+    ImageInteractiveController controller = new ImageInteractiveControllerImpl(this.model,
+        mockView);
+    this.features = new FeaturesImpl(controller);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -444,7 +446,8 @@ public class FeaturesImplTest {
 
     assertEquals("Added a new listener: class view.FeaturesImpl\n"
             + "Got current layer name. Returned two\n"
-            + "Rendered error popup with this message: No layer with the specified name to change to exists.\n",
+            + "Rendered error popup with this message: "
+            + "No layer with the specified name to change to exists.\n",
         this.log.toString());
   }
 
@@ -515,7 +518,8 @@ public class FeaturesImplTest {
 
     assertEquals("Added a new listener: class view.FeaturesImpl\n"
             + "Got removed layer name. Returned RemovedLayer\n"
-            + "Rendered error popup with this message: No layer with the specified name to remove exists.\n",
+            + "Rendered error popup with this message: "
+            + "No layer with the specified name to remove exists.\n",
         this.log.toString());
   }
 
@@ -758,7 +762,8 @@ public class FeaturesImplTest {
 
     assertEquals("Added a new listener: class view.FeaturesImpl\n"
             + "Got script file path. Returned res//Script.txt.\n"
-            + "Rendered error popup with this message: Command failed to execute. Reason: Layer with the given name already exists.\n"
+            + "Rendered error popup with this message: Command failed to execute. "
+            + "Reason: Layer with the given name already exists.\n"
             + "Image processing has been quit.\n"
             + "\n"
             + "Rendered a new image.\n"
