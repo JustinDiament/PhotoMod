@@ -40,9 +40,9 @@ CS3500 Object-Oriented Design. _Northeastern University Summer 1 2021_
    class that implements that interface called ImageInteractiveControllerImpl in order to support
    the functionality that FeaturesImpl needs to accurately respond to the events it is listening
    for. The existing controller interface, ImageController, lacked the necessary functionality to
-   provide visual response to individual events that FeaturesImpl would need to react to over time (
-   rather, it was geared towards reacting to batch commands submitted en masse through scripting and
-   not showing the user the resulting Images directly). As a result, the ImageInteractiveController
+   provide visual response to individual events that FeaturesImpl would need to react to over time.
+   Rather, it was geared towards reacting to batch commands submitted en masse through scripting and
+   not showing the user the resulting Images directly. As a result, the ImageInteractiveController
    interface and its implementation were created to update the model and view in response to
    FeaturesImpl hearing a broadcast event.
 
