@@ -20,7 +20,8 @@ navigating to this directory within a command terminal and entering one of three
 3. `java -jar ImageProcessing.jar -interactive`  
    The program will open the GUI
 
-In order to run the example script file, _res/Script.txt_, the JAR file must be moved from the _res/_
+In order to run the example script file, _res/Script.txt_, the JAR file must be moved from the _
+res/_
 directory to the root _/_ directory. **ATTEMPTING TO RUN THE EXAMPLE SCRIPT FILE WILL FAIL IF THE
 JAR FILE IS NOT IN THE ROOT DIRECTORY.**
 
@@ -145,6 +146,16 @@ Conditions
    _Example: monochrome_
     1. A layer must already be created and selected as the current layer
     2. The current layer must have an image imported
+5. **downscale** _[x_scale y_scale]_: downscales the current layer of the image by the given x and y
+   scaling factors
+    1. A layer must already be created and selected as the current layer
+    2. The current layer must have an image imported
+    3. _x_scale_ and _y_scale_ must be integers between 1 and 100, inclusive
+6. **mosaic** _[seeds]_: mosaics the current layer of the image using the given number of seeds
+   placed randomly within the image
+    1. A layer must already be created and selected as the current layer
+    2. The current layer must have an image imported
+    3. _seeds_ must be a natural number
 5. **current** _[layer_name]_: changes the current layer to the layer with the given name  
    _Example: current layerOne_
     1. A layer must already be created that has the given name

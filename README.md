@@ -9,55 +9,42 @@ CS3500 Object-Oriented Design. _Northeastern University Summer 1 2021_
 
 ### Design Changes & Justifications
 
-1. Our model implementation in HW5 containing public methods that called other classes that were
-   responsible for importing and exporting a specific file type. However, the methods in the model
-   still took in a file path from the user, so they contained some I/O. However, I/O is the
-   responsibility of the controller, not the model. Thus, we elected to remove these methods from
-   the ImageProcessingModel interface and move them to the classes implementing the Command
-   interface that are used in our controller implementation. As such, both our old
-   ImageProcessingModelImpl and our new ImageLayerModelImpl model classes are completely free of any
-   file handling, as it is all contained within the controller. Additionally, exporting is supported
-   for both single image files and multi-layered images as directories containing image files for
-   each layer in the multi-layered image, as well as a text file with the file paths and file types
-   of all the image files. For the multi-layered images, users are able to export the topmost
-   visible layer.
-2. In our old design, we had an ImageFile interface that contained methods for importing and
-   exporting image file types, as well as a PPM class that implemented it that was responsible for
-   handling PPM file types. However, with the introduction of supporting JPEG and PNG file formats
-   in HW6, we created two new classes to handle this functionality. It turned out that all three
-   classes shared similar functionality in terms of the implementation of the import and export
-   methods, so this common functionality was abstracted out into an abstract ImageFileFormat class.
-   As such, there were no public-facing effects, but code duplication was eliminated. Since all the
-   file types share the same signatures for their import and export capabilities, all file types are
-   able to be easily converted between one another.
-3. In our old design, the supported image processing operations were categorized as either filtering
-   operations or color transformation operations. While we included a FilterOperation abstract class
-   to factor out similar code between the two filtering operation classes - BlurOperation and
-   SharpenOperation, we did not have a similar abstraction for the color transformation operation
-   classes - MonochromeOperation and SepiaOperation. As such, we introduced a second abstract class
-   implementing the ImageOperation class that factors out the similar functionality between the two
-   color transformation classes.
-4. Our model implementation in HW5 did not store any objects of our Image representation, but simply
-   had methods to create, process, and return Images. With the introduction of the concept of
-   layering in HW6, we decided that we needed to be able to store multiple layers of an image within
-   the model. We introduced a new Layer interface that represents a single layer of a multi-layered
-   image, and we created a new model interface, ImageLayerModel, that extends our old model
-   implementation so that we could make use of the code that was already written. We then created a
-   new model class ImageLayerModelImpl that extended our old model implementation
-   ImageProcessingModelImpl and implemented the new interface, which stores a list of layers as a
-   private field of the class. This new model implementation also offers many more public observer
-   and setter methods that allow the client to interact with individual layers in the model by
-   manipulating and changing the currently selected layer, which allow users to be able to process
-   images without having to know our actual representation of images within the Image interface.
-5. HW6 requires supporting image manipulation via batch commands, which in turn requires the ability
-   to read input from and display output to the user. As such, we introduced a controller interface,
-   ImageController, to handle user I/O. The controller reads in specific command keywords from
-   either the console, or a prepared script, then executes a particular implementation of the
-   Command interface, via the command pattern, based on the user input, along with any additional
-   required arguments needed to interact with the model. We also introduced a view interface,
-   ImageTextView that allows the controller to render messages to the user. This particular view
-   interface is an interactive text view that displays messages to the user when a command is
-   entered incorrectly or is not able to execute to completion.
+1. We created a new view interface called ImageView and a corresponding class that implements that
+   interface called ImageViewImpl in order to implement the Swing GUI. The existing view interface,
+   ImageTextView, was limited to only textual implementations in its ability to display information
+   about the image modification program to the user and allow the user to interact with the view.
+   Thus, a new view interface was needed that includes all methods necessary for displaying Images
+   to the user and interacting with a graphical user interface. The ImageTextView interface, and an
+   implementation (ImageTextViewImpl) still exist and function properly for backwards compatibility
+   purpose, but all new GUI functionality is supported exclusively through ImageView.
+2. Two new ImageOperation function objects were created, DownscaleOperation and MosaicOperation.
+   These function object classes apply the downscale and mosaic operations respectively to a given
+   Image. Two corresponding Command classes, DownscaleCommand and MosaicCommand, were also created
+   in order to add the ability to request the application of these operations through scripting
+   commands.
+3. The ImageControllerImpl class was slightly modified to add the DownscaleCommand and MosaicCommand
+   function objects to the supported operations String to Command Map returned by the getCommands
+   method. This modification does not harm any of the previously existing functionality of the
+   ImageControllerImpl class, nor does it add enough new functionality to warrant an entirely new
+   controller implementation for scripting commands. Adding these two function objects to the Map
+   simply allows users of this implementation to utilize the new downscale and mosaic operations in
+   their scripts; users can also easily choose not to utilize these new commands and all old scripts
+   will not be rendered broken by this addition.
+4. We created a Features interface, and a corresponding FeaturesImpl implementation of that
+   interface to respond to broadcast from the ImageViewImpl class. FeaturesImpl utilizes the
+   subscriber pattern to register itself as a listener for ImageViewImpl. When the user interacts
+   with the GUI, ImageViewImpl broadcasts events to its listeners and FeaturesImpl responds by
+   calling methods in the controller, which in turn update the model and/or view according to the
+   user’s request.
+5. We created a new controller interface called ImageInteractiveController, and a corresponding
+   class that implements that interface called ImageInteractiveControllerImpl in order to support
+   the functionality that FeaturesImpl needs to accurately respond to the events it is listening
+   for. The existing controller interface, ImageController, lacked the necessary functionality to
+   provide visual response to individual events that FeaturesImpl would need to react to over time (
+   rather, it was geared towards reacting to batch commands submitted en masse through scripting and
+   not showing the user the resulting Images directly). As a result, the ImageInteractiveController
+   interface and its implementation were created to update the model and view in response to
+   FeaturesImpl hearing a broadcast event.
 
 ### Design
 
