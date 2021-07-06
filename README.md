@@ -153,7 +153,7 @@ this program.
 ##### Main: A class that contains a main method to run the application
 
 ### Additional Image Operations
-
+ 
 Our application supports two additional features, the downscale and mosaic image operations. To
 implement these two new features, two classes were written, DownscaleOperation and MosaicOperation,
 that implemented the existing ImageOperation interface. Both classes overrode the apply method,
