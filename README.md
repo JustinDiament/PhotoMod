@@ -7,45 +7,6 @@ CS3500 Object-Oriented Design. _Northeastern University Summer 1 2021_
 |<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121575831-cdb08400-c9f5-11eb-8177-933bc858cfa4.jpg" width="70" height="50"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121575993-f8024180-c9f5-11eb-8090-98be3ac64ca8.png" width="70" height="50"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121576177-23852c00-c9f6-11eb-8198-4485f348e31e.png" width="70" height="50"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121576302-3b5cb000-c9f6-11eb-87d5-f05fc9e94f77.png" width="70" height="50"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121576328-43b4eb00-c9f6-11eb-9469-d4ad8760caef.png" width="70" height="50"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/122719882-c9c60280-d23c-11eb-896b-c3f0d3dbd7a5.png" width="70" height="50"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/122721521-c5024e00-d23e-11eb-8bf3-d85ddfaa30d9.png" width="35" height="25"></p>|
 |<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121576880-dfdef200-c9f6-11eb-8c39-ce98cb86c958.jpg" width="50" height="60"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121576704-a3ab9180-c9f6-11eb-86b3-6d23cee90119.png" width="50" height="60"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121576963-fd13c080-c9f6-11eb-9887-a6d59cad566b.png" width="50" height="60"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121577018-0d2ba000-c9f7-11eb-8bde-8f14ed4bbc78.png" width="50" height="60"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/121577055-1c125280-c9f7-11eb-8350-da05c75aa907.png" width="50" height="60"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/122720377-67b9cd00-d23d-11eb-95c4-7d4a62f0846c.jpg" width="50" height="60"></p>|<p align="center"><img src="https://user-images.githubusercontent.com/52764831/122720043-f7ab4700-d23c-11eb-80dc-1ab89bf65c24.jpg" width="25" height="30"></p>|
 
-### Design Changes & Justifications
-
-1. We created a new view interface called ImageView and a corresponding class that implements that
-   interface called ImageViewImpl in order to implement the Swing GUI. The existing view interface,
-   ImageTextView, was limited to only textual implementations in its ability to display information
-   about the image modification program to the user and allow the user to interact with the view.
-   Thus, a new view interface was needed that includes all methods necessary for displaying Images
-   to the user and interacting with a graphical user interface. The ImageTextView interface, and an
-   implementation (ImageTextViewImpl) still exist and function properly for backwards compatibility
-   purpose, but all new GUI functionality is supported exclusively through ImageView.
-2. Two new ImageOperation function objects were created, DownscaleOperation and MosaicOperation.
-   These function object classes apply the downscale and mosaic operations respectively to a given
-   Image. Two corresponding Command classes, DownscaleCommand and MosaicCommand, were also created
-   in order to add the ability to request the application of these operations through scripting
-   commands.
-3. The ImageControllerImpl class was slightly modified to add the DownscaleCommand and MosaicCommand
-   function objects to the supported operations String to the command Map returned by the
-   getCommands method. This modification does not harm any of the previously existing functionality
-   of the ImageControllerImpl class, nor does it add enough new functionality to warrant an entirely
-   new controller implementation for scripting commands. Adding these two function objects to the
-   Map simply allows users of this implementation to utilize the new downscale and mosaic operations
-   in their scripts; users can also easily choose not to utilize these new commands and all old
-   scripts will not be rendered broken by this addition.
-4. We created a Features interface, and a corresponding FeaturesImpl implementation of that
-   interface to respond to broadcast from the ImageViewImpl class. FeaturesImpl utilizes the
-   subscriber pattern to register itself as a listener for ImageViewImpl. When the user interacts
-   with the GUI, ImageViewImpl broadcasts events to its listeners and FeaturesImpl responds by
-   calling methods in the controller, which in turn update the model and/or the view according to
-   the user’s specific request.
-5. We created a new controller interface called ImageInteractiveController, and a corresponding
-   class that implements that interface called ImageInteractiveControllerImpl in order to support
-   the functionality that FeaturesImpl needs to accurately respond to the events it is listening
-   for. The existing controller interface, ImageController, lacked the necessary functionality to
-   provide visual response to individual events that FeaturesImpl would need to react to over time.
-   Rather, it was geared towards reacting to batch commands submitted en masse through scripting and
-   not showing the user the resulting Images directly. As a result, the ImageInteractiveController
-   interface and its implementation were created to update the model and view in response to
-   FeaturesImpl hearing a broadcast event.
-
 ### Design
 
 All parts of the program are complete in terms of both implementation and testing. This includes all
@@ -180,8 +141,3 @@ The _res/_ directory contains the following additional deliverables:
 - A subdirectory, _mosaic/_, that contains an original image, _popeyes_original.png_, and three
   mosaicked versions of that image, _popeyes_1000_seeds.png_, _popeyes_4000_seeds.png_, and _
   popeyes_8000_seeds.png_, which all have a different number of seeds used.
-
-### Citations
-
-All images are owned by Nathan Gong and authorized for use in this project. The _res/test/_
-subdirectory contains sample files that are used for code testing purposes only.
