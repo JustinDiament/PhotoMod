@@ -126,9 +126,9 @@ view, commands are stored within a hashmap with their corresponding batch comman
 controller implementation that uses the GUI view, commands are executed via the executeCommand
 method that executes the given Command with the given input parameters.
 
-### Additional Deliverables
+### Additional Files
 
-The _res/_ directory contains the following additional deliverables:
+The _res/_ directory contains the following additional files:
 
 - A JAR file, _ImageProcessing.jar_
 - A screenshot of the program with an image loaded, _gui.jpg_
