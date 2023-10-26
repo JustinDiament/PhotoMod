@@ -1,6 +1,4 @@
-# Image Processing
-
-CS3500 Object-Oriented Design. _Northeastern University Summer 1 2021_
+# PhotoMod 
 
 |Original|Blur|Sharpen|Sepia|Monochrome|Mosaic|Downscale|
 |--------|----|-------|-----|----------|------|---------| 
