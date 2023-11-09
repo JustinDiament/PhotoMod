@@ -1,14 +1,6 @@
 # Image Processing
 
-CS3500 Object-Oriented Design. _Northeastern University Summer 1 2021_
-
 ## Running the Application
-
-The _res/_ directory will be submitted as a zip file _res.zip_ within the root _/_ directory. In
-order for the JAR file or any of the test classes within the _test/_ directory to run
-successfully, **THE CONTENTS OF _res.zip_ MUST BE EXTRACTED AND PLACED IN A _res/_ DIRECTORY LOCATED
-IN THE ROOT _/_ DIRECTORY.** The _res/_ directory was compressed to a zip file in order to
-accommodate the size restrictions of the Handins server.
 
 A JAR file, ImageProcessing.jar, can be found in the _res/_ directory. A user may run this file by
 navigating to this directory within a command terminal and entering one of three valid commands:
@@ -21,9 +13,8 @@ navigating to this directory within a command terminal and entering one of three
    The program will open the GUI
 
 In order to run the example script file, _res/Script.txt_, the JAR file must be moved from the _
-res/_
-directory to the root _/_ directory. **ATTEMPTING TO RUN THE EXAMPLE SCRIPT FILE WILL FAIL IF THE
-JAR FILE IS NOT IN THE ROOT DIRECTORY.**
+res/_ directory to the root _/_ directory. **ATTEMPTING TO RUN THE EXAMPLE SCRIPT FILE WILL 
+FAIL IF THE JAR FILE IS NOT IN THE ROOT DIRECTORY.**
 
 ## Using the GUI
 
